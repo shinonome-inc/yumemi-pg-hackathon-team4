@@ -3,11 +3,16 @@ resource "google_project" "default" {
   provider        = google-beta
   project_id      = var.project_id
   billing_account = var.billing_account
+
+  labels = {
+    "firebase" = "enabled"
+  }
 }
 
-resource "google_project_service" "enable_services" {
-  project = google_project.default.project_id
-  service = each.key
+resource "google_project_service" "default" {
+  provider = google-beta.no_user_project_override
+  project  = google_project.default.project_id
+  service  = each.key
 
   for_each = toset([
     "compute.googleapis.com",
@@ -17,5 +22,17 @@ resource "google_project_service" "enable_services" {
     "billingbudgets.googleapis.com",
     "firebase.googleapis.com",
     "firebaserules.googleapis.com",
+    "firestore.googleapis.com",
+    "serviceusage.googleapis.com",
+    "identitytoolkit.googleapis.com",
+    "firebasestorage.googleapis.com",
+    "storage.googleapis.com",
+    "cloudbuild.googleapis.com",
   ])
+}
+
+module "firebase" {
+  source     = "./modules/firebase"
+  project_id = var.project_id
+  region     = var.region
 }
