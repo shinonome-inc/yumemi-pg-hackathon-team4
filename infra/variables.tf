@@ -1,5 +1,5 @@
 variable "project_id" {
-  default = "terraform-gcp-learning-yo2"
+  default = "yumemi-pg-hackathon-team4"
 }
 variable "region" {
   default = "asia-northeast1"

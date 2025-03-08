@@ -1,5 +1,5 @@
 resource "google_project" "default" {
-  name            = "Terraform GCP Learning Yo"
+  name            = "YUMEMI×PG Hackathon Team4's Project"
   provider        = google
   project_id      = var.project_id
   billing_account = var.billing_account

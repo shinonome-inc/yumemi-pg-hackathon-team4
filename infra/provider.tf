@@ -18,6 +18,7 @@ provider "google" {
 }
 
 provider "google-beta" {
+  credentials           = try(file("gcp-terraform-sa-key.json"), null)
   project               = var.project_id
   billing_project       = var.project_id
   region                = var.region
@@ -25,6 +26,7 @@ provider "google-beta" {
 }
 
 provider "google-beta" {
+  credentials           = try(file("gcp-terraform-sa-key.json"), null)
   alias                 = "no_user_project_override"
   project               = var.project_id
   billing_project       = var.project_id
