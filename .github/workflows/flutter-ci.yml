@@ -5,7 +5,7 @@ on:
       - main
       - feature/**
     paths:
-      - client
+      - 'client'
 jobs:
   flutter_ci:
     runs-on: ubuntu-latest
