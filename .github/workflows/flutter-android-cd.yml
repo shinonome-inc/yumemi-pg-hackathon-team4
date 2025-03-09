@@ -1,7 +1,7 @@
 name: Flutter Android CD
 on:
   push:
-    branches: ["main", "develop", "feature/**"]
+    branches: ["main", "develop"]
 jobs:
   build_and_upload:
     runs-on: ubuntu-latest
@@ -30,5 +30,5 @@ jobs:
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
           gcloud auth activate-service-account --key-file=key.json
       - name: Upload file to Google Cloud Storage
-        run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://terraform-gcp-learning-yo2.firebasestorage.app
+        run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://terraform-gcp-learning-yo2-deploy-bucket
         working-directory: client
