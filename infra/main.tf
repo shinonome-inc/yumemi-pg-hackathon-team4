@@ -36,3 +36,10 @@ module "firebase" {
   project_id = var.project_id
   region     = var.region
 }
+
+module "firebase_hosting" {
+  source       = "./firebase_hosting"
+  project_id   = var.project_id
+  region       = var.region
+  github_token = var.github_token
+}
