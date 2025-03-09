@@ -42,3 +42,15 @@ module "firebase" {
   project_id = var.project_id
   region     = var.region
 }
+
+
+resource "google_storage_bucket" "deploy_bucket" {
+  name                        = "terraform-gcp-learning-yo2-deploy-bucket"
+  location                    = "US-WEST1"
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
