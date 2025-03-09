@@ -43,6 +43,11 @@ module "firebase" {
   region     = var.region
 }
 
+module "authentication" {
+  source     = "./modules/authentication"
+  project_id = var.project_id
+  region     = var.region
+}
 
 resource "google_storage_bucket" "deploy_bucket" {
   name                        = "terraform-gcp-learning-yo2-deploy-bucket"
