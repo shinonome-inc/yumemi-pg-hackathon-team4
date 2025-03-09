@@ -1,0 +1,16 @@
+# Python関連
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+# Django関連
+db.sqlite3
+/media/
+*.log
+local_settings.py
+# Docker関連
+*.tar
+*.bak
+.dockerignore
