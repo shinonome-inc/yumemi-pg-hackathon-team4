@@ -49,9 +49,7 @@ jobs:
         run: terraform fmt -check
         working-directory: infra
 
-      # Generates an execution plan for Terraform
-      - name: Terraform Plan
-        env:
-          TF_VAR_billing_account: ${{ secrets.GCP_BILLING_ACCOUNT }}
-        run: terraform plan -input=false
-        working-directory: infra
+      # Apply the Terraform configuration to build or modify infrastructure
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
