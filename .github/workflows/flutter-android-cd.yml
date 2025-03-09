@@ -24,11 +24,11 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: flutter-web-deploy-learning
+          project_id: terraform-gcp-learning-yo2
       - name: Authenticate with service account
         run: |
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
           gcloud auth activate-service-account --key-file=key.json
       - name: Upload file to Google Cloud Storage
-        run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://flutter-web-deploy-learning.firebasestorage.app
+        run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://terraform-gcp-learning-yo2-deploy-bucket
         working-directory: client
