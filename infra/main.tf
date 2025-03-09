@@ -31,6 +31,12 @@ resource "google_project_service" "default" {
   ])
 }
 
+module "iam" {
+  source     = "./modules/iam"
+  project_id = var.project_id
+  region     = var.region
+}
+
 module "firebase" {
   source     = "./modules/firebase"
   project_id = var.project_id
