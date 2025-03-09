@@ -5,4 +5,3 @@ variable "region" {
   default = "asia-northeast1"
 }
 variable "billing_account" {}
-variable "github_token" {}
