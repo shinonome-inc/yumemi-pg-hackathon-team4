@@ -1,0 +1,57 @@
+name: "Terraform CD"
+
+on:
+  push:
+    branches: ["main", "develop", "feature/**", "release/**", "hotfix/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Generate gcp-terraform-sa-key.json from secrets.GCP_TERRAFORM_SERVICE_ACCOUNT_KEY
+      - name: Setup Google Cloud authentication
+        run: echo "${{ secrets.GCP_TERRAFORM_SERVICE_ACCOUNT_KEY }}" | base64 --decode > gcp-terraform-sa-key.json
+        working-directory: infra
+
+      # Log in to Google Cloud using key file
+      - name: Authenticate with Google Cloud
+        run: gcloud auth activate-service-account --key-file=gcp-terraform-sa-key.json
+        working-directory: infra
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infra
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        run: terraform fmt -check
+        working-directory: infra
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        env:
+          TF_VAR_billing_account: ${{ secrets.GCP_BILLING_ACCOUNT }}
+        run: terraform plan -input=false
+        working-directory: infra
