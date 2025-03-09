@@ -1,7 +1,7 @@
 name: Flutter Android CD
 on:
   push:
-    branches: ["main", "develop"]
+    branches: ["main", "develop", "feature/**"]
 jobs:
   build_and_upload:
     runs-on: ubuntu-latest
@@ -18,9 +18,10 @@ jobs:
           flutter-version: 3.29.0
       - run: flutter pub get
         working-directory: client
-      - name: Build Android APK
-        run: flutter build apk --release
-        working-directory: client
+      # TODO: 動作確認完了後にコメントアウトを解除する。
+      # - name: Build Android APK
+      #   run: flutter build apk --release
+      #   working-directory: client
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -29,6 +30,10 @@ jobs:
         run: |
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
           gcloud auth activate-service-account --key-file=key.json
+      # TODO: 動作確認完了後にコメントアウトを解除する。
+      # - name: Upload file to Google Cloud Storage
+      #   run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://terraform-gcp-learning-yo2.firebasestorage.app
+      #   working-directory: client
       - name: Upload file to Google Cloud Storage
-        run: gcloud storage cp build/app/outputs/flutter-apk/app-release.apk gs://terraform-gcp-learning-yo2.firebasestorage.app
+        run: gcloud storage cp hoge.txt gs://terraform-gcp-learning-yo2-deploy-bucket
         working-directory: client
