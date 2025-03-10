@@ -22,6 +22,9 @@ jobs:
       - name: Generate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
         working-directory: client
+      - name: Generate google_service.json
+        run: echo "${{ secrets.GOOGLE_SERVICE_JSON }}" | base64 --decode > android/app/google_service.json
+        working-directory: client
       - run: flutter pub get
         working-directory: client
       - name: Build Android APK
