@@ -1,7 +1,7 @@
 name: Flutter Android CD
 on:
   push:
-    branches: ["main", "develop", "feature/**"]
+    branches: ["main", "develop"]
 jobs:
   build_and_upload:
     runs-on: ubuntu-latest
