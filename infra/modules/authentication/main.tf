@@ -19,18 +19,9 @@ resource "google_identity_platform_project_default_config" "default" {
   project  = var.project_id
   sign_in {
     allow_duplicate_emails = true
-    anonymous {
-      enabled = true
-    }
     email {
       enabled           = true
       password_required = false
-    }
-    phone_number {
-      enabled = true
-      test_phone_numbers = {
-        "+11231231234" = "000000"
-      }
     }
     // TODO: Google認証の設定はコンソールで行なっているので、Terraformに置き換える。
   }
