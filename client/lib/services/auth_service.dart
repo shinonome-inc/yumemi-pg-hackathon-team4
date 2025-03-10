@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// Firebase Authentication による認証を行うクラスです。
@@ -51,7 +52,8 @@ class AuthService {
   /// - 失敗時は例外を投げます。
   Future<UserCredential> signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
+      final clientId = dotenv.env['GCP_CLIENT_ID'];
+      final googleUser = await GoogleSignIn(clientId: clientId).signIn();
       if (googleUser == null) {
         throw Exception('Google Sign-In aborted');
       }
