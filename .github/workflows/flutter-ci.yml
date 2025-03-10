@@ -26,7 +26,7 @@ jobs:
         run: echo "${{ secrets.ENV }}" | base64 --decode > .env
         working-directory: client
       - name: Generate firebase_options.dart
-        run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > firebase_options.dart
+        run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
         working-directory: client
       - name: Install dependencies
         run: flutter pub get
