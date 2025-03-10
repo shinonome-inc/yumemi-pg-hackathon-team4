@@ -7,7 +7,6 @@ from django.db import models
 
 # UserモデルはAbstractBaseUserを継承
 
-
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -26,6 +25,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    #usernameは一意にはしていない
     username = models.CharField(max_length=255)
     image_url = models.URLField(blank=True)
     profile_description = models.TextField(blank=True)
