@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:client/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class SamplePage extends StatefulWidget {
   const SamplePage({super.key});
@@ -14,57 +13,25 @@ class _SamplePageState extends State<SamplePage> {
   final _passwordController = TextEditingController();
 
   Future<void> _onPressedSignUp() async {
-    try {
-      (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      ))
-          .user;
-    } catch (e) {
-      throw Exception(e);
-    }
+    await AuthService.instance.signUpWithEmail(
+      _emailController.text,
+      _emailController.text,
+    );
   }
 
   Future<void> _onPressedSignIn() async {
-    print('Start Sign In: ${FirebaseAuth.instance.currentUser}');
-    try {
-      (await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      ))
-          .user;
-    } catch (e) {
-      throw Exception(e);
-    }
-    print('Sign In Success: ${FirebaseAuth.instance.currentUser}');
+    await AuthService.instance.signInWithEmail(
+      _emailController.text,
+      _emailController.text,
+    );
   }
 
-  Future<UserCredential> _signInWithGoogle() async {
-    print('Start Sign In: ${FirebaseAuth.instance.currentUser}');
-    // Trigger the authentication flow
-    final googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final googleAuth = await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return FirebaseAuth.instance.signInWithCredential(credential);
+  Future<void> _signInWithGoogle() async {
+    await AuthService.instance.signInWithGoogle();
   }
 
   Future<void> _onPressedSignOut() async {
-    print('Start Sign Out: ${FirebaseAuth.instance.currentUser}');
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      throw Exception(e);
-    }
-    print('Sign Out Success: ${FirebaseAuth.instance.currentUser}');
+    await AuthService.instance.signOut();
   }
 
   @override
