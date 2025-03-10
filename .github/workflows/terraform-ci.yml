@@ -23,8 +23,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Generate terraform.tfvars from secrets
+      - name: Generate terraform.tfvars
+        run: echo "${{ secrets.TERRAFORM_TFVARS }}" | base64 --decode > terraform.tfvars
+        working-directory: infra
+
       # Generate gcp-terraform-sa-key.json from secrets.GCP_TERRAFORM_SERVICE_ACCOUNT_KEY
-      - name: Setup Google Cloud authentication
+      - name: Generate gcp-terraform-sa-key.json
         run: echo "${{ secrets.GCP_TERRAFORM_SERVICE_ACCOUNT_KEY }}" | base64 --decode > gcp-terraform-sa-key.json
         working-directory: infra
 
