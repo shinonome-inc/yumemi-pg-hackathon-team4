@@ -1,1 +1,42 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"terraform-gcp-learning-yo2","appId":"1:978511832387:android:c097f564b723cdbffa7bf6","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"terraform-gcp-learning-yo2","appId":"1:978511832387:ios:5ed239f8a91aa2d1fa7bf6","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"terraform-gcp-learning-yo2","configurations":{"android":"1:978511832387:android:c097f564b723cdbffa7bf6","ios":"1:978511832387:ios:5ed239f8a91aa2d1fa7bf6","web":"1:978511832387:web:4c6255b3a5327dfffa7bf6"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "terraform-gcp-learning-yo2",
+          "appId": "1:978511832387:android:c097f564b723cdbffa7bf6",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "terraform-gcp-learning-yo2",
+          "appId": "1:978511832387:ios:5ed239f8a91aa2d1fa7bf6",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "terraform-gcp-learning-yo2",
+          "configurations": {
+            "android": "1:978511832387:android:c097f564b723cdbffa7bf6",
+            "ios": "1:978511832387:ios:5ed239f8a91aa2d1fa7bf6",
+            "web": "1:978511832387:web:4c6255b3a5327dfffa7bf6"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "asia-east1"
+    }
+  }
+}
