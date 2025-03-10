@@ -39,9 +39,11 @@ module "iam" {
 }
 
 module "firebase" {
-  source     = "./modules/firebase"
-  project_id = var.project_id
-  region     = var.region
+  source              = "./modules/firebase"
+  project_id          = var.project_id
+  region              = var.region
+  finger_print_sha1   = var.finger_print_sha1
+  finger_print_sha256 = var.finger_print_sha256
 }
 
 module "authentication" {
