@@ -28,6 +28,7 @@ resource "google_project_service" "default" {
     "firebasestorage.googleapis.com",
     "storage.googleapis.com",
     "cloudbuild.googleapis.com",
+    "people.googleapis.com",
   ])
 }
 
