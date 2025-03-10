@@ -32,6 +32,7 @@ resource "google_identity_platform_project_default_config" "default" {
         "+11231231234" = "000000"
       }
     }
+    // TODO: Google認証の設定はコンソールで行なっているので、Terraformに置き換える。
   }
   depends_on = [google_identity_platform_config.default]
 }
