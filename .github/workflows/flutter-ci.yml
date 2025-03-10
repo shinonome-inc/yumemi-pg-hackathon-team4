@@ -22,10 +22,12 @@ jobs:
         with:
           channel: stable
           flutter-version: 3.29.0
-      # TODO: Firebase追加時にコメントアウトを解除する。
-      # - name: Generate firebase_options.dart
-      #   run: echo '${{ secrets.FIREBASE_OPTIONS_DART }}' > firebase_options.dart
-      #   working-directory: client/lib
+      - name: Generate .env
+        run: echo "${{ secrets.ENV }}" | base64 --decode > .env
+        working-directory: client
+      - name: Generate firebase_options.dart
+        run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
+        working-directory: client
       - name: Install dependencies
         run: flutter pub get
         working-directory: client

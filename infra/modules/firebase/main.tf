@@ -1,5 +1,7 @@
 variable "project_id" {}
 variable "region" {}
+variable "finger_print_sha1" {}
+variable "finger_print_sha256" {}
 
 provider "google-beta" {
   credentials           = try(file("gcp-terraform-sa-key.json"), null)
@@ -43,10 +45,12 @@ resource "google_firebase_web_app" "basic" {
 }
 
 resource "google_firebase_android_app" "basic" {
-  provider     = google-beta
-  project      = var.project_id
-  display_name = "YUMEMI PG Hackathon Team4 Android App"
-  package_name = "com.example.client"
+  provider      = google-beta
+  project       = var.project_id
+  display_name  = "YUMEMI PG Hackathon Team4 Android App"
+  package_name  = "com.example.client"
+  sha1_hashes   = [var.finger_print_sha1]
+  sha256_hashes = [var.finger_print_sha256]
 }
 
 resource "google_firebase_apple_app" "default" {
