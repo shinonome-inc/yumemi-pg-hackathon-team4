@@ -1,7 +1,7 @@
 name: Flutter Android CD
 on:
   push:
-    branches: ["main", "develop"]
+    branches: ["main", "develop", "feature/**"]
 jobs:
   build_and_upload:
     runs-on: ubuntu-latest
@@ -21,6 +21,9 @@ jobs:
         working-directory: client
       - name: Generate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
+        working-directory: client
+      - name: Generate google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICE_JSON }}" | base64 --decode > android/app/google-services.json
         working-directory: client
       - run: flutter pub get
         working-directory: client
