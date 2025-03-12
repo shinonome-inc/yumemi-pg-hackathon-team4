@@ -20,6 +20,8 @@ class Recipe with _$Recipe {
     required String description,
     required String tips,
     required List<Comment> comments,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _Recipe;
 
   factory Recipe.fromJson(Map<String, Object?> json) => _$RecipeFromJson(json);
