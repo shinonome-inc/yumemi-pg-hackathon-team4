@@ -1,3 +1,4 @@
+import 'package:client/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
@@ -11,7 +12,7 @@ class User with _$User {
     required String imageUrl,
     required String profileDescription,
     required DateTime createdAt,
-    required List<String> recipes,
+    required List<Recipe> recipes,
   }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);
