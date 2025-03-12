@@ -195,11 +195,15 @@ class FirestoreService {
 
   /// いいねを Firestore に投稿します。
   Future<void> postLike(Like like) async {
+    final data = {
+      ...like.toJson(),
+      'user': like.user.toJson(),
+    };
     try {
       await _instance
           .collection(_CollectionPath.likes.name)
           .doc(like.id)
-          .set(like.toJson());
+          .set(data);
     } catch (e) {
       throw Exception('Failed to post like: $e');
     }
@@ -238,11 +242,27 @@ class FirestoreService {
 
   /// レシピを Firestore に投稿します。
   Future<void> postRecipe(Recipe recipe) async {
+    final data = {
+      ...recipe.toJson(),
+      'comments': recipe.comments
+          .map(
+              (comment) => {...comment.toJson(), 'user': comment.user.toJson()})
+          .toList(),
+      'cookingSteps': recipe.cookingSteps.map((step) => step.toJson()).toList(),
+      'gatheringSteps':
+          recipe.gatheringSteps.map((step) => step.toJson()).toList(),
+      'ingredients':
+          recipe.ingredients.map((ingredient) => ingredient.toJson()).toList(),
+      'likes': recipe.likes
+          .map((like) => {...like.toJson(), 'user': like.user.toJson()})
+          .toList(),
+      'user': recipe.user.toJson(),
+    };
     try {
       await _instance
           .collection(_CollectionPath.recipes.name)
           .doc(recipe.id)
-          .set(recipe.toJson());
+          .set(data);
     } catch (e) {
       throw Exception('Failed to post recipe: $e');
     }
@@ -273,6 +293,18 @@ class FirestoreService {
       return Recipe.fromJson(data);
     } catch (e) {
       throw Exception('Failed to get recipe: $e');
+    }
+  }
+
+  /// ユーザーを投稿します。
+  Future<void> postUser(User user) async {
+    try {
+      await _instance
+          .collection(_CollectionPath.users.name)
+          .doc(user.id)
+          .set(user.toJson());
+    } catch (e) {
+      throw Exception('Failed to post user: $e');
     }
   }
 
