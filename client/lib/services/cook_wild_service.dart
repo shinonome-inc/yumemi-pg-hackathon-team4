@@ -172,6 +172,15 @@ class CookWildService {
     }
   }
 
+  /// レシピを更新します。
+  Future<void> updateRecipe(Recipe recipe) async {
+    try {
+      await _repository.updateRecipe(recipe);
+    } catch (e) {
+      throw Exception('Failed to update recipe: $e');
+    }
+  }
+
   /// ユーザーを投稿します。
   Future<void> postUser(User user) async {
     try {

@@ -193,6 +193,14 @@ class FirestoreRepository {
     return Recipe.fromJson(data);
   }
 
+  /// レシピを更新します。
+  Future<void> updateRecipe(Recipe recipe) async {
+    await _firestore
+        .collection(_CollectionPath.recipes.name)
+        .doc(recipe.id)
+        .update(recipe.toJson());
+  }
+
   /// ユーザーを投稿します。
   Future<void> setUser(User user) async {
     await _firestore
