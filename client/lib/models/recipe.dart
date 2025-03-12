@@ -8,7 +8,7 @@ part 'recipe.g.dart';
 class Recipe with _$Recipe {
   const factory Recipe({
     required String id,
-    required String user,
+    required User user,
     required String title,
     required List<String> thumbnailImageUrls,
     required List<Ingredient> ingredients,

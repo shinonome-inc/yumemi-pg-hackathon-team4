@@ -7,7 +7,7 @@ part 'cooking_steps.g.dart';
 class CookingSteps with _$CookingSteps {
   const factory CookingSteps({
     required String id,
-    String? imageUrl,
+    required String? imageUrl,
     required String description,
   }) = _CookingSteps;
 

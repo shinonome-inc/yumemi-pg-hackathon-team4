@@ -7,7 +7,7 @@ part 'gathering_steps.g.dart';
 class GatheringSteps with _$GatheringSteps {
   const factory GatheringSteps({
     required String id,
-    String? imageUrl,
+    required String? imageUrl,
     required String description,
   }) = _GatheringSteps;
 

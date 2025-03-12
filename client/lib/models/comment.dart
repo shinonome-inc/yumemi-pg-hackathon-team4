@@ -1,3 +1,4 @@
+import 'package:client/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'comment.freezed.dart';
@@ -7,9 +8,9 @@ part 'comment.g.dart';
 class Comment with _$Comment {
   const factory Comment({
     required String id,
-    required String user,
+    required User user,
     required String contentText,
-    String? imageUrl,
+    required String? imageUrl,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _Comment;
