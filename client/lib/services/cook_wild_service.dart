@@ -185,19 +185,47 @@ class CookWildService {
 
   /// レシピにいいねをつけます。
   Future<void> likeRecipe(Recipe recipe, User currentUser) async {
+    final hasLiked = recipe.likes.any((like) => like.user.id == currentUser.id);
+    if (hasLiked) {
+      return;
+    }
+
     final createdLike = Like(
       id: '${recipe.id}_${currentUser.id}',
       user: currentUser,
       createdAt: _now,
     );
+    final updatedLikes = List.of(recipe.likes)..add(createdLike);
     final updatedRecipe = recipe.copyWith(
-      likes: [...recipe.likes, createdLike],
+      likes: updatedLikes,
       likesCounts: recipe.likesCounts + 1,
     );
+
     try {
       await _repository.updateRecipe(updatedRecipe);
     } catch (e) {
       throw Exception('Failed to like recipe: $e');
+    }
+  }
+
+  /// レシピのいいねを取り消します。
+  Future<void> undoLikeRecipe(Recipe recipe, User currentUser) async {
+    final hasLiked = recipe.likes.any((like) => like.user.id == currentUser.id);
+    if (!hasLiked) {
+      return;
+    }
+
+    final updatedLikes = List.of(recipe.likes)
+      ..removeWhere((like) => like.user.id == currentUser.id);
+    final updatedRecipe = recipe.copyWith(
+      likes: updatedLikes,
+      likesCounts: (recipe.likesCounts > 0) ? recipe.likesCounts - 1 : 0,
+    );
+
+    try {
+      await _repository.updateRecipe(updatedRecipe);
+    } catch (e) {
+      throw Exception('Failed to undo like for recipe: $e');
     }
   }
 
