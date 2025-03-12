@@ -10,6 +10,8 @@ class CookWildService {
 
   final _repository = FirestoreRepository.instance;
 
+  final _now = DateTime.now();
+
   /// コメントを投稿します。
   Future<void> postComment(Comment comment) async {
     try {
@@ -178,6 +180,24 @@ class CookWildService {
       await _repository.updateRecipe(recipe);
     } catch (e) {
       throw Exception('Failed to update recipe: $e');
+    }
+  }
+
+  /// レシピにいいねをつけます。
+  Future<void> likeRecipe(Recipe recipe, User currentUser) async {
+    final createdLike = Like(
+      id: '${recipe.id}_${currentUser.id}',
+      user: currentUser,
+      createdAt: _now,
+    );
+    final updatedRecipe = recipe.copyWith(
+      likes: [...recipe.likes, createdLike],
+      likesCounts: recipe.likesCounts + 1,
+    );
+    try {
+      await _repository.updateRecipe(updatedRecipe);
+    } catch (e) {
+      throw Exception('Failed to like recipe: $e');
     }
   }
 
