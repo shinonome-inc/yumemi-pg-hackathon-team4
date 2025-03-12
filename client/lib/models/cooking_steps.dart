@@ -5,6 +5,7 @@ part 'cooking_steps.g.dart';
 
 @freezed
 class CookingSteps with _$CookingSteps {
+  @JsonSerializable(explicitToJson: true)
   const factory CookingSteps({
     required String id,
     required String? imageUrl,

@@ -6,6 +6,7 @@ part 'like.g.dart';
 
 @freezed
 class Like with _$Like {
+  @JsonSerializable(explicitToJson: true)
   const factory Like({
     required String id,
     required User user,

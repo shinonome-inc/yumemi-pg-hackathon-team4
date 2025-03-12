@@ -5,6 +5,7 @@ part 'ingredient.g.dart';
 
 @freezed
 class Ingredient with _$Ingredient {
+  @JsonSerializable(explicitToJson: true)
   const factory Ingredient({
     required String id,
     required String ingredientName,

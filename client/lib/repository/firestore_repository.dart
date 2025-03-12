@@ -23,14 +23,10 @@ class FirestoreRepository {
 
   /// コメントを投稿します。
   Future<void> setComment(Comment comment) async {
-    final data = {
-      ...comment.toJson(),
-      'user': comment.user.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.comments.name)
         .doc(comment.id)
-        .set(data);
+        .set(comment.toJson());
   }
 
   /// コメント一覧を取得します。
@@ -55,13 +51,10 @@ class FirestoreRepository {
 
   /// 調理手順を投稿します。
   Future<void> setCookingSteps(CookingSteps cookingSteps) async {
-    final data = {
-      ...cookingSteps.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.cookingSteps.name)
         .doc(cookingSteps.id)
-        .set(data);
+        .set(cookingSteps.toJson());
   }
 
   /// 調理手順一覧を取得します。
@@ -88,13 +81,10 @@ class FirestoreRepository {
 
   /// 採取方法を投稿します。
   Future<void> setGatheringSteps(GatheringSteps gatheringSteps) async {
-    final data = {
-      ...gatheringSteps.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.gatheringSteps.name)
         .doc(gatheringSteps.id)
-        .set(data);
+        .set(gatheringSteps.toJson());
   }
 
   /// 採取方法一覧を取得します。
@@ -121,13 +111,10 @@ class FirestoreRepository {
 
   /// 食材を投稿します。
   Future<void> setIngredient(Ingredient ingredient) async {
-    final data = {
-      ...ingredient.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.ingredients.name)
         .doc(ingredient.id)
-        .set(data);
+        .set(ingredient.toJson());
   }
 
   /// 食材一覧を取得します。
@@ -152,14 +139,10 @@ class FirestoreRepository {
 
   /// いいねを投稿します。
   Future<void> setLike(Like like) async {
-    final data = {
-      ...like.toJson(),
-      'user': like.user.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.likes.name)
         .doc(like.id)
-        .set(data);
+        .set(like.toJson());
   }
 
   /// いいね一覧を取得します。
@@ -184,27 +167,10 @@ class FirestoreRepository {
 
   /// レシピを投稿します。
   Future<void> setRecipe(Recipe recipe) async {
-    final data = {
-      ...recipe.toJson(),
-      'comments': recipe.comments
-          .map(
-            (comment) => {...comment.toJson(), 'user': comment.user.toJson()},
-          )
-          .toList(),
-      'cookingSteps': recipe.cookingSteps.map((step) => step.toJson()).toList(),
-      'gatheringSteps':
-          recipe.gatheringSteps.map((step) => step.toJson()).toList(),
-      'ingredients':
-          recipe.ingredients.map((ingredient) => ingredient.toJson()).toList(),
-      'likes': recipe.likes
-          .map((like) => {...like.toJson(), 'user': like.user.toJson()})
-          .toList(),
-      'user': recipe.user.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.recipes.name)
         .doc(recipe.id)
-        .set(data);
+        .set(recipe.toJson());
   }
 
   /// レシピ一覧を取得します。
@@ -229,13 +195,10 @@ class FirestoreRepository {
 
   /// ユーザーを投稿します。
   Future<void> setUser(User user) async {
-    final data = {
-      ...user.toJson(),
-    };
     await _firestore
         .collection(_CollectionPath.users.name)
         .doc(user.id)
-        .set(data);
+        .set(user.toJson());
   }
 
   /// ユーザー一覧を取得します。

@@ -5,6 +5,7 @@ part 'gathering_steps.g.dart';
 
 @freezed
 class GatheringSteps with _$GatheringSteps {
+  @JsonSerializable(explicitToJson: true)
   const factory GatheringSteps({
     required String id,
     required String? imageUrl,

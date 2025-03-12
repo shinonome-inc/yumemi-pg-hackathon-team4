@@ -6,6 +6,7 @@ part 'comment.g.dart';
 
 @freezed
 class Comment with _$Comment {
+  @JsonSerializable(explicitToJson: true)
   const factory Comment({
     required String id,
     required User user,
