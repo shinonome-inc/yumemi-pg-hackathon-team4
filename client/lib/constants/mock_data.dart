@@ -27,6 +27,8 @@ final user3 = User(
   createdAt: now,
 );
 
+final users = [user1, user2, user3];
+
 // コメント定義
 final comments = [
   Comment(
