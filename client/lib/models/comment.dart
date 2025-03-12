@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'comment.freezed.dart';
+part 'comment.g.dart';
 
 @freezed
 class Comment with _$Comment {
@@ -12,4 +13,7 @@ class Comment with _$Comment {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _Comment;
+
+  factory Comment.fromJson(Map<String, Object?> json) =>
+      _$CommentFromJson(json);
 }
