@@ -4,4 +4,3 @@ from django.shortcuts import render
 class RecipeViewSet():
     pass
 
-    
