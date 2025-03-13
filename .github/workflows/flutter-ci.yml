@@ -28,6 +28,9 @@ jobs:
       - name: Generate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
         working-directory: client
+      - name: Clean project
+        run: flutter clean
+        working-directory: client
       - name: Install dependencies
         run: flutter pub get && dart pub get
         working-directory: client
