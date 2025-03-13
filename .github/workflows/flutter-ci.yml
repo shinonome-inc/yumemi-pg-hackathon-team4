@@ -32,7 +32,7 @@ jobs:
         run: flutter pub get && dart pub get
         working-directory: client
       - name: Run build_runner
-        run: dart run build_runner watch -d
+        run: dart run build_runner build --delete-conflicting-outputs
         working-directory: client
       - name: Run flutter analyze
         run: flutter analyze
