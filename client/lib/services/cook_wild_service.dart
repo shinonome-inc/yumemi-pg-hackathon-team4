@@ -220,6 +220,18 @@ class CookWildService {
     }
   }
 
+  /// レシピを削除します。
+  ///
+  /// [recipeId] には削除対象のレシピIDを指定します。
+  ///
+  Future<void> deleteRecipe(String recipeId) async {
+    try {
+      await _repository.deleteRecipe(recipeId);
+    } catch (e) {
+      throw Exception('Failed to delete recipe: $e');
+    }
+  }
+
   /// レシピにいいねをつけます。
   Future<void> likeRecipe(Recipe recipe, User currentUser) async {
     final hasLiked = recipe.likes.any((like) => like.user.id == currentUser.id);

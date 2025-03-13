@@ -161,6 +161,14 @@ class FirestoreRepository {
         .update(recipe.toJson());
   }
 
+  /// レシピを削除します。
+  Future<void> deleteRecipe(String recipeId) async {
+    await _firestore
+        .collection(_CollectionPath.recipes.name)
+        .doc(recipeId)
+        .delete();
+  }
+
   /// ユーザーを投稿します。
   Future<void> setUser(User user) async {
     await _firestore
