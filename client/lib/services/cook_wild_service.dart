@@ -1,5 +1,6 @@
 import 'package:client/models/models.dart';
 import 'package:client/repository/firestore_repository.dart';
+import 'package:uuid/uuid.dart';
 
 /// CookWild のバックエンドとのデータ操作を行うクラス。
 ///
@@ -10,12 +11,42 @@ class CookWildService {
 
   final _repository = FirestoreRepository.instance;
 
+  static const _uuid = Uuid();
   final _now = DateTime.now();
 
+  /// UUIDを生成します。
+  String _generateUuid() => _uuid.v4();
+
   /// コメントを投稿します。
-  Future<void> postComment(Comment comment) async {
+  ///
+  /// [recipe] にはコメントを投稿するレシピを指定します。
+  /// [authenticatedUser] にはコメントを投稿するユーザーを指定します。
+  /// [contentText] にはコメントの本文を指定します。
+  /// [imageUrl] にはコメントの画像URLを指定します。
+  ///
+  /// [contentText] または [imageUrl] が空の場合、ArgumentErrorをスローします。
+  ///
+  Future<void> postComment({
+    required Recipe recipe,
+    required User authenticatedUser,
+    String contentText = '',
+    String imageUrl = '',
+  }) async {
+    if (contentText.isEmpty && imageUrl.isEmpty) {
+      throw ArgumentError('contentText and imageUrl are both empty');
+    }
+    final createdComment = Comment(
+      id: _generateUuid(),
+      user: authenticatedUser,
+      contentText: contentText,
+      imageUrl: imageUrl,
+      createdAt: _now,
+      updatedAt: _now,
+    );
+    final updatedComments = List.of(recipe.comments)..add(createdComment);
+    final updatedRecipe = recipe.copyWith(comments: updatedComments);
     try {
-      await _repository.setComment(comment);
+      await _repository.updateRecipe(updatedRecipe);
     } catch (e) {
       throw Exception('Failed to post comment: $e');
     }
@@ -36,6 +67,48 @@ class CookWildService {
       return await _repository.getCommentById(commentId);
     } catch (e) {
       throw Exception('Failed to get comment: $e');
+    }
+  }
+
+  /// コメントを更新します。
+  ///
+  /// [recipe] には更新対象のレシピを指定します。
+  /// [authenticatedUser] には更新を行うユーザーを指定します。
+  /// [comment] には更新対象のコメントを指定します。
+  /// [contentText] には更新後のコメントの本文を指定します。
+  /// [imageUrl] には更新後のコメントの画像URLを指定します。
+  ///
+  /// [contentText] または [imageUrl] が指定されていない場合、元の値を使用します。
+  ///
+  /// [comment] のユーザーが [authenticatedUser] と一致しない場合、
+  /// ArgumentErrorをスローします。
+  ///
+  Future<void> updateComment({
+    required Recipe recipe,
+    required User authenticatedUser,
+    required Comment comment,
+    String? contentText,
+    String? imageUrl,
+  }) async {
+    if (comment.user.id != authenticatedUser.id) {
+      throw ArgumentError('Comment user does not match authenticated user');
+    }
+    if (contentText == null && imageUrl == null) {
+      return;
+    }
+    final updatedComment = comment.copyWith(
+      contentText: contentText ?? comment.contentText,
+      imageUrl: imageUrl ?? comment.imageUrl,
+      updatedAt: _now,
+    );
+    try {
+      final updatedComments = List.of(recipe.comments)
+        ..removeWhere((c) => c.id == comment.id)
+        ..add(updatedComment);
+      final updatedRecipe = recipe.copyWith(comments: updatedComments);
+      await _repository.updateRecipe(updatedRecipe);
+    } catch (e) {
+      throw Exception('Failed to post comment: $e');
     }
   }
 
