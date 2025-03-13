@@ -8,6 +8,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = []  # 認証なし
     permission_classes = [AllowAny]  # 誰でもアクセス可能
-class UserProfilesViewSet():
-    pass
+
+
 
