@@ -328,4 +328,32 @@ class CookWildService {
       throw Exception('Failed to get user: $e');
     }
   }
+
+  /// ユーザーを更新します。
+  ///
+  /// [user] には更新対象のユーザーを指定します。
+  /// [authenticatedUser] には更新を行うユーザーを指定します。
+  /// [name] には更新後のユーザー名を指定します。
+  /// [imageUrl] には更新後の画像URLを指定します。
+  /// [profileDescription] には更新後のプロフィール説明を指定します。
+  ///
+  /// [user] が [authenticatedUser] と一致しない場合、
+  /// ArgumentErrorをスローします。
+  ///
+  Future<void> updateUser({
+    required User user,
+    required User authenticatedUser,
+    required String name,
+    required String imageUrl,
+    required String profileDescription,
+  }) async {
+    if (user.id != authenticatedUser.id) {
+      throw ArgumentError('User does not match authenticated user');
+    }
+    try {
+      await _repository.updateUser(user);
+    } catch (e) {
+      throw Exception('Failed to update user: $e');
+    }
+  }
 }
