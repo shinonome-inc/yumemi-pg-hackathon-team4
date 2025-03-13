@@ -228,4 +228,12 @@ class FirestoreRepository {
     }
     return User.fromJson(data);
   }
+
+  /// ユーザーを更新します。
+  Future<void> updateUser(User user) async {
+    await _firestore
+        .collection(_CollectionPath.users.name)
+        .doc(user.id)
+        .update(user.toJson());
+  }
 }
