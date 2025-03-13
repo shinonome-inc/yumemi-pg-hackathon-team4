@@ -13,7 +13,8 @@ final _bottomNavigationPages = <AppPage>[
 ///
 /// ルーティングする画面の追加・削除・変更を行う場合は、列挙型`AppPage`を変更する。
 final router = GoRouter(
-  initialLocation: AppPage.top.path,
+  // TODO: initialLocationはAppPage.top.pathに変更する。
+  initialLocation: AppPage.sample.path,
   routes: [
     // BottomNavigationBar用のルーティング
     StatefulShellRoute.indexedStack(
