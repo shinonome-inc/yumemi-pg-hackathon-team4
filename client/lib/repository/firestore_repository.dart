@@ -21,14 +21,6 @@ class FirestoreRepository {
 
   final _firestore = FirebaseFirestore.instance;
 
-  /// コメントを投稿します。
-  Future<void> setComment(Comment comment) async {
-    await _firestore
-        .collection(_CollectionPath.comments.name)
-        .doc(comment.id)
-        .set(comment.toJson());
-  }
-
   /// コメント一覧を取得します。
   Future<List<Comment>> getComments() async {
     final snapshot =
@@ -47,14 +39,6 @@ class FirestoreRepository {
       throw Exception('Comment not found');
     }
     return Comment.fromJson(data);
-  }
-
-  /// 調理手順を投稿します。
-  Future<void> setCookingSteps(CookingSteps cookingSteps) async {
-    await _firestore
-        .collection(_CollectionPath.cookingSteps.name)
-        .doc(cookingSteps.id)
-        .set(cookingSteps.toJson());
   }
 
   /// 調理手順一覧を取得します。
@@ -79,14 +63,6 @@ class FirestoreRepository {
     return CookingSteps.fromJson(data);
   }
 
-  /// 採取方法を投稿します。
-  Future<void> setGatheringSteps(GatheringSteps gatheringSteps) async {
-    await _firestore
-        .collection(_CollectionPath.gatheringSteps.name)
-        .doc(gatheringSteps.id)
-        .set(gatheringSteps.toJson());
-  }
-
   /// 採取方法一覧を取得します。
   Future<List<GatheringSteps>> getGatheringSteps() async {
     final snapshot =
@@ -109,14 +85,6 @@ class FirestoreRepository {
     return GatheringSteps.fromJson(data);
   }
 
-  /// 食材を投稿します。
-  Future<void> setIngredient(Ingredient ingredient) async {
-    await _firestore
-        .collection(_CollectionPath.ingredients.name)
-        .doc(ingredient.id)
-        .set(ingredient.toJson());
-  }
-
   /// 食材一覧を取得します。
   Future<List<Ingredient>> getIngredients() async {
     final snapshot =
@@ -135,14 +103,6 @@ class FirestoreRepository {
       throw Exception('Ingredient not found');
     }
     return Ingredient.fromJson(data);
-  }
-
-  /// いいねを投稿します。
-  Future<void> setLike(Like like) async {
-    await _firestore
-        .collection(_CollectionPath.likes.name)
-        .doc(like.id)
-        .set(like.toJson());
   }
 
   /// いいね一覧を取得します。

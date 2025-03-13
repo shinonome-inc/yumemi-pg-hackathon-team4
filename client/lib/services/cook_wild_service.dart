@@ -112,15 +112,6 @@ class CookWildService {
     }
   }
 
-  /// 調理手順を投稿します。
-  Future<void> postCookingStep(CookingSteps cookingSteps) async {
-    try {
-      await _repository.setCookingSteps(cookingSteps);
-    } catch (e) {
-      throw Exception('Failed to post cooking step: $e');
-    }
-  }
-
   /// 調理手順一覧を取得します。
   Future<List<CookingSteps>> getCookingSteps() async {
     try {
@@ -136,15 +127,6 @@ class CookWildService {
       return await _repository.getCookingStepsById(cookingStepsId);
     } catch (e) {
       throw Exception('Failed to get cooking step: $e');
-    }
-  }
-
-  /// 採取方法を投稿します。
-  Future<void> postGatheringStep(GatheringSteps gatheringSteps) async {
-    try {
-      await _repository.setGatheringSteps(gatheringSteps);
-    } catch (e) {
-      throw Exception('Failed to post gathering step: $e');
     }
   }
 
@@ -166,15 +148,6 @@ class CookWildService {
     }
   }
 
-  /// 食材を投稿します。
-  Future<void> postIngredient(Ingredient ingredient) async {
-    try {
-      await _repository.setIngredient(ingredient);
-    } catch (e) {
-      throw Exception('Failed to post ingredient: $e');
-    }
-  }
-
   /// 食材一覧を取得します。
   Future<List<Ingredient>> getIngredients() async {
     try {
@@ -190,15 +163,6 @@ class CookWildService {
       return await _repository.getIngredientById(ingredientId);
     } catch (e) {
       throw Exception('Failed to get ingredient: $e');
-    }
-  }
-
-  /// いいねを投稿します。
-  Future<void> postLike(Like like) async {
-    try {
-      await _repository.setLike(like);
-    } catch (e) {
-      throw Exception('Failed to post like: $e');
     }
   }
 
