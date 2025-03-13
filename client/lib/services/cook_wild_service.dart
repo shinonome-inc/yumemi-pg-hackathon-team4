@@ -343,15 +343,23 @@ class CookWildService {
   Future<void> updateUser({
     required User user,
     required User authenticatedUser,
-    required String name,
-    required String imageUrl,
-    required String profileDescription,
+    String? name,
+    String? imageUrl,
+    String? profileDescription,
   }) async {
+    if (name == null && imageUrl == null && profileDescription == null) {
+      return;
+    }
     if (user.id != authenticatedUser.id) {
       throw ArgumentError('User does not match authenticated user');
     }
+    final updatedUser = user.copyWith(
+      name: name ?? user.name,
+      imageUrl: imageUrl ?? user.imageUrl,
+      profileDescription: profileDescription ?? user.profileDescription,
+    );
     try {
-      await _repository.updateUser(user);
+      await _repository.updateUser(updatedUser);
     } catch (e) {
       throw Exception('Failed to update user: $e');
     }
