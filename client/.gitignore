@@ -57,7 +57,3 @@ lib/firebase_options.dart
 
 # iOS
 ios/build
-
-# build_runner
-*.freezed.dart
-*.g.dart
