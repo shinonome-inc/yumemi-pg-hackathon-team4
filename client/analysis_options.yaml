@@ -13,6 +13,7 @@ analyzer:
   errors:
     sort_pub_dependencies: ignore
     invalid_annotation_target: ignore
+    lines_longer_than_80_chars: ignore
   plugins:
     - custom_lint
   exclude:
