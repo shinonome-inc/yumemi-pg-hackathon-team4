@@ -2,8 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
-class LikeViewSet():
+
+class LikeViewSet:
     pass
 
-class CommentViewSet():
+
+class CommentViewSet:
     pass

@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 
-# Create your views here.
+from .models import User
+from .serializers import UserSerializer
 
-class UserViewSet():
-    pass
 
-class UserProfilesViewSet():
-    pass
-
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    authentication_classes = []  # 認証なし
+    permission_classes = [AllowAny]  # 誰でもアクセス可能
