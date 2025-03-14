@@ -1,12 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'ingredient.freezed.dart';
+part 'ingredient.g.dart';
 
 @freezed
 class Ingredient with _$Ingredient {
+  @JsonSerializable(explicitToJson: true)
   const factory Ingredient({
     required String id,
     required String ingredientName,
     required String quantity,
   }) = _Ingredient;
+
+  factory Ingredient.fromJson(Map<String, Object?> json) =>
+      _$IngredientFromJson(json);
 }
