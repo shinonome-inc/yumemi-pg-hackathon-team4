@@ -1,22 +1,29 @@
+import 'package:client/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe.freezed.dart';
+part 'recipe.g.dart';
 
 @freezed
 class Recipe with _$Recipe {
+  @JsonSerializable(explicitToJson: true)
   const factory Recipe({
     required String id,
-    required String user,
+    required User user,
     required String title,
     required List<String> thumbnailImageUrls,
-    required List<String> ingredients,
-    required List<String> likes,
-    required List<String> cookingSteps,
-    required List<String> gatheringSteps,
+    required List<Ingredient> ingredients,
+    required List<Like> likes,
+    required List<CookingSteps> cookingSteps,
+    required List<GatheringSteps> gatheringSteps,
     required int likesCounts,
     required String aiComment,
     required String description,
     required String tips,
-    required List<String> comments,
+    required List<Comment> comments,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _Recipe;
+
+  factory Recipe.fromJson(Map<String, Object?> json) => _$RecipeFromJson(json);
 }

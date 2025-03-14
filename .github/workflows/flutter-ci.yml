@@ -29,10 +29,7 @@ jobs:
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
         working-directory: client
       - name: Install dependencies
-        run: flutter pub get
-        working-directory: client
-      - name: Run build_runner
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: flutter pub get && dart pub get
         working-directory: client
       - name: Run flutter analyze
         run: flutter analyze

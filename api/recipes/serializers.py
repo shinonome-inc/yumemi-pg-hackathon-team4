@@ -1,13 +1,8 @@
 from rest_framework import serializers
-from .models import Recipe,Comment
+from .models import Recipe
 
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
-        fields = ['title','thumbnail_image_urls','description','tips','AI_comment']
-
-class CommentSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Comment
-        fields = [ 'content_text', 'image_url']
+        fields = ['id','title','thumbnail_image_urls','description','tips','AI_comment','ingredients','cooking_steps','gathering_steps','created_at','updated_at']
+        read_only_fields = ["id",'AI_comment',"created_at",'updated_at']
