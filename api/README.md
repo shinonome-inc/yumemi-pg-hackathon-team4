@@ -26,3 +26,9 @@ docker-compose up --build -d
 4.マイグレーション
 docker-compose exec web python manage.py migrate
 
+5.テスト
+docker-compose exec web python manage.py test
+
+6.管理サイト
+docker-compose exec web python manage.py createsuperuser
+
