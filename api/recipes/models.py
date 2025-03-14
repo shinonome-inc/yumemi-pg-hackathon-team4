@@ -14,7 +14,7 @@ class Recipe(models.Model):
     tips = models.TextField(blank=True)
     AI_comment = models.TextField(blank=True)
     # クエリを実行すればいいね数は取得可能
-    # likes_count = models.PositiveIntegerField(default=0)
+    likes_count = models.PositiveIntegerField(default=0)
 
 
 class Ingredient(models.Model):
@@ -39,3 +39,5 @@ class CookingStep(models.Model):
     )
     image_url = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+
+
