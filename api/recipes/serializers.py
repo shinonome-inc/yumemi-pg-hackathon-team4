@@ -10,17 +10,17 @@ from .models import Recipe, Ingredient, GatheringStep, CookingStep
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = 'all'
+        fields = '__all__'
 
 class GatheringStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = GatheringStep
-        fields = 'all'
+        fields = '__all__'
 
 class CookingStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = CookingStep
-        fields = 'all'
+        fields = '__all__'
 
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
@@ -29,4 +29,4 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = 'all'
+        fields = '__all__'
