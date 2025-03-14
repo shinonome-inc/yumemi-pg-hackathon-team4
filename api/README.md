@@ -1,8 +1,9 @@
 バックエンドチーム
 開発するときは
-1.Dockerを動かして仮想環境に入る
-2.必ずブランチを切る
-3.テストは正常だけでもしっかり書く
+
+1.必ずブランチを切る
+2.テストは正常だけでもしっかり書く
+3.動作確認するときはDockerを立ち上げる(コードを変更した際は再度立ち上げる必要があることが判明)
 4.flack8 isort . black .でフォーマットを整える
 
 
@@ -24,4 +25,10 @@ docker-compose up --build -d
 
 4.マイグレーション
 docker-compose exec web python manage.py migrate
+
+5.テスト
+docker-compose exec web python manage.py test
+
+6.管理サイト
+docker-compose exec web python manage.py createsuperuser
 
