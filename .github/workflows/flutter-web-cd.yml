@@ -4,7 +4,16 @@
 name: Flutter Web CD
 on:
   push:
-    branches: ["main", "develop"]
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - feature/**
+      - release/**
+      - hotfix/**
+    paths:
+      - "client/**"
 permissions:
   checks: write
   contents: read

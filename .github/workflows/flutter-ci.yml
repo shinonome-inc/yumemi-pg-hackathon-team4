@@ -4,10 +4,13 @@ on:
     branches:
       - main
       - develop
+  pull_request:
+    branches:
       - feature/**
-    # TODO: apiやinfraリポジトリ作成後にコメントアウトを解除する。
-    # paths:
-    #   - 'client'
+      - release/**
+      - hotfix/**
+    paths:
+      - "client/**"
 jobs:
   flutter_ci:
     runs-on: ubuntu-latest
