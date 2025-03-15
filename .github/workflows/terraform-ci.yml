@@ -2,7 +2,14 @@ name: "Terraform CI"
 
 on:
   push:
-    branches: ["main", "develop", "feature/**", "release/**", "hotfix/**"]
+    branches:
+      - main
+      - develop
+      - feature/**
+      - release/**
+      - hotfix/**
+    paths:
+      - "infra"
 
 permissions:
   contents: read

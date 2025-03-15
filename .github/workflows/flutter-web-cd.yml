@@ -4,7 +4,14 @@
 name: Flutter Web CD
 on:
   push:
-    branches: ["main", "develop"]
+    branches:
+      - main
+      - develop
+      - feature/**
+      - release/**
+      - hotfix/**
+    paths:
+      - "client"
 permissions:
   checks: write
   contents: read
@@ -28,6 +35,9 @@ jobs:
         working-directory: client
       - name: Install dependencies
         run: flutter pub get
+        working-directory: client
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
         working-directory: client
       - name: Build Web App
         run: flutter build web
