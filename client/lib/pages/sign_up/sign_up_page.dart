@@ -1,3 +1,6 @@
+import 'package:client/constants/app_colors.dart';
+import 'package:client/extensions/build_context_extension.dart';
+import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,8 +12,189 @@ class SignUpPage extends ConsumerStatefulWidget {
 }
 
 class _TopPageState extends ConsumerState<SignUpPage> {
+  // パスワードの表示・非表示を切り替えるためのフラグ
+  bool _isObscure = true;
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left),
+          onPressed: () {},
+        ),
+        backgroundColor: AppColors.background,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Transform.translate(
+            offset: const Offset(0, -40),
+            child: SingleChildScrollView(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 360,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 48),
+                    Text(
+                      '新規登録',
+                      style: context.textTheme.titleLargeBold?.copyWith(
+                        color: AppColors.gray1,
+                      ),
+                    ),
+                    const SizedBox(height: 36),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '表示名',
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.gray1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'ゲテモノ好き',
+                            hintStyle: TextStyle(
+                              color: AppColors.gray2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'メールアドレス',
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.gray1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'example@email.com',
+                            hintStyle: TextStyle(
+                              color: AppColors.gray2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'パスワード',
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.gray1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        TextField(
+                          obscureText: _isObscure,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              // 文字の表示・非表示でアイコンを変える
+                              icon: Icon(
+                                _isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: AppColors.gray2,
+                              ),
+                              // アイコンがタップされたら現在と反対の状態をセットする
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              },
+                            ),
+                            border: const OutlineInputBorder(),
+                            hintText: 'password',
+                            hintStyle: const TextStyle(
+                              color: AppColors.gray2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      child: FilledButton(
+                        onPressed: () {},
+                        child: const Text('新規登録'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.green1,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: AppColors.gray3,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            'または',
+                            style: TextStyle(color: AppColors.gray2),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: AppColors.gray3,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: const Text('Googleで続ける'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'ログインはこちら',
+                          style: TextStyle(
+                            color: AppColors.green1,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.green1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
