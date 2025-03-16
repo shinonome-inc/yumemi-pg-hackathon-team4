@@ -13,7 +13,7 @@ root
 ```
 
 ## 各プロジェクトのARCHITECTURE.md
-| ディレクトリ | URL |  
+| プロジェクト名 | URL |  
 |------------|-----------------------------------------------|  
 | **`api`** |  |  
 | **`client`** | https://github.com/shinonome-inc/yumemi-pg-hackathon-team4/blob/develop/client/docs/ARCHITECTURE.md |  
