@@ -11,7 +11,7 @@ on:
       - release/**
       - hotfix/**
     paths:
-      - "client"
+      - 'client'
 permissions:
   checks: write
   contents: read
