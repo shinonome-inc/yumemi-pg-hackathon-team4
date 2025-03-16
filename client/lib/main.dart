@@ -1,3 +1,4 @@
+import 'package:client/app_theme.dart';
 import 'package:client/firebase_options.dart';
 import 'package:client/router.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,9 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: appTheme(),
       routerConfig: router,
     );
   }
