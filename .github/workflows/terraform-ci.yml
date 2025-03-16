@@ -9,7 +9,8 @@ on:
       - release/**
       - hotfix/**
     paths:
-      - 'infra/**'
+      - "infra/**"
+      - "!**.md"
 
 permissions:
   contents: read
