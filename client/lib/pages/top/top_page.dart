@@ -12,6 +12,9 @@ class TopPage extends ConsumerStatefulWidget {
 }
 
 class _TopPageState extends ConsumerState<TopPage> {
+  // パスワードの表示・非表示を切り替えるためのフラグ
+  bool _isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,12 +83,27 @@ class _TopPageState extends ConsumerState<TopPage> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const TextField(
-                        obscureText: true,
+                      TextField(
+                        obscureText: _isObscure,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            // 文字の表示・非表示でアイコンを変える
+                            icon: Icon(
+                              _isObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: AppColors.gray2,
+                            ),
+                            // アイコンがタップされたら現在と反対の状態をセットする
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            },
+                          ),
+                          border: const OutlineInputBorder(),
                           hintText: 'password',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             color: AppColors.gray2,
                           ),
                         ),
