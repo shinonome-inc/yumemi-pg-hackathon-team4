@@ -11,7 +11,8 @@ on:
       - release/**
       - hotfix/**
     paths:
-      - 'client/**'
+      - "client/**"
+      - "!**.md"
 permissions:
   checks: write
   contents: read
