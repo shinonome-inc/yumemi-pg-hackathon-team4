@@ -5,7 +5,8 @@
 ```text
 client
 ├─ assets
-│  └─ images
+│  ├─ fonts         # フォントファイルを格納
+│  └─ images        # 画像ファイルを格納
 └─ lib
    ├─ components    # 各画面共通の UI コンポーネントを定義
    ├─ constants     # 定数クラスを定義
