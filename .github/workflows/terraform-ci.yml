@@ -8,8 +8,6 @@ on:
       - feature/**
       - release/**
       - hotfix/**
-    paths:
-      - 'infra/**'
 
 permissions:
   contents: read
