@@ -10,8 +10,6 @@ on:
       - feature/**
       - release/**
       - hotfix/**
-    paths:
-      - 'client/**'
 permissions:
   checks: write
   contents: read
