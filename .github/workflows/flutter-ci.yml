@@ -7,6 +7,8 @@ on:
       - feature/**
       - release/**
       - hotfix/**
+    paths:
+      - 'client/**'
 jobs:
   flutter_ci:
     runs-on: ubuntu-latest
