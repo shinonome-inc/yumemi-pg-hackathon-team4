@@ -31,10 +31,6 @@ class CookingStepViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
-    authentication_classes = []  # 認証なし
-    permission_classes = [AllowAny]  # 誰でもアクセス可能
+
 
 
