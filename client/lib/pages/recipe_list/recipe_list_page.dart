@@ -15,10 +15,10 @@ class RecipeListPage extends ConsumerStatefulWidget {
 
 class _TopPageState extends ConsumerState<RecipeListPage> {
   final List<String> _items = <String>[
-    '新着順',
     '人気順',
+    '新着順',
   ];
-  String _selectedItem = '新着順';
+  String _selectedItem = '人気順';
   final TextEditingController _controller = TextEditingController();
 
   @override
