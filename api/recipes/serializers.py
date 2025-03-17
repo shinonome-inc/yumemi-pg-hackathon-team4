@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from .models import Recipe, Ingredient, GatheringStep, CookingStep
+from users.serializers import UserSerializer
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,18 +26,19 @@ class RecipeSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True)
     gathering_steps = GatheringStepSerializer(many=True)
     cooking_steps = CookingStepSerializer(many=True)
+    user = UserSerializer(read_only=True)  # Add user field
 
     class Meta:
         model = Recipe
         fields = '__all__'
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'user']  # Make user read-only
     
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
         gathering_steps_data = validated_data.pop('gathering_steps')
         cooking_steps_data = validated_data.pop('cooking_steps')
         
-        recipe = Recipe.objects.create(**validated_data)
+        recipe = Recipe.objects.create(**validated_data)  # Remove user
         
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
@@ -54,8 +56,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         gathering_steps_data = validated_data.pop('gathering_steps')
         cooking_steps_data = validated_data.pop('cooking_steps')
 
-        instance.name = validated_data.get('name', instance.name)
+        instance.title = validated_data.get('title', instance.title)
+        instance.thumbnail_image_url = validated_data.get('thumbnail_image_url', instance.thumbnail_image_url)
         instance.description = validated_data.get('description', instance.description)
+        instance.tips = validated_data.get('tips', instance.tips)
+        instance.AI_comment = validated_data.get('AI_comment', instance.AI_comment)
         instance.save()
 
         instance.ingredients.all().delete()
@@ -71,4 +76,3 @@ class RecipeSerializer(serializers.ModelSerializer):
             CookingStep.objects.create(recipe=instance, **cooking_step_data)
 
         return instance
-    
