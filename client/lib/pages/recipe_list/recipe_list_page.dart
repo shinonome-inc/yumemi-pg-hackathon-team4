@@ -27,7 +27,7 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 32),
           child: Column(
             spacing: 16,
             children: [
