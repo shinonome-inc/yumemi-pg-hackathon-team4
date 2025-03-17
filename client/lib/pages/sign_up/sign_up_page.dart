@@ -29,13 +29,14 @@ class _TopPageState extends ConsumerState<SignUpPage> {
       body: SafeArea(
         child: Center(
           child: Transform.translate(
-            offset: const Offset(0, -40),
+            offset: const Offset(0, -56),
             child: SingleChildScrollView(
               child: Container(
                 constraints: const BoxConstraints(
                   maxWidth: 360,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -47,87 +48,57 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                       ),
                     ),
                     const SizedBox(height: 36),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '表示名',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.gray1,
-                          ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '表示名',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintText: 'ゲテモノ好き',
+                        hintStyle: TextStyle(
+                          color: AppColors.gray2,
                         ),
-                        const SizedBox(height: 4),
-                        const TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'ゲテモノ好き',
-                            hintStyle: TextStyle(
-                              color: AppColors.gray2,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 24),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'メールアドレス',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.gray1,
-                          ),
+                    const TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'メールアドレス',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintText: 'example@email.com',
+                        hintStyle: TextStyle(
+                          color: AppColors.gray2,
                         ),
-                        const SizedBox(height: 4),
-                        const TextField(
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'example@email.com',
-                            hintStyle: TextStyle(
-                              color: AppColors.gray2,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 24),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'パスワード',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.gray1,
+                    TextField(
+                      obscureText: _isObscure,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          // 文字の表示・非表示でアイコンを変える
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppColors.gray2,
                           ),
+                          // アイコンがタップされたら現在と反対の状態をセットする
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
                         ),
-                        const SizedBox(height: 4),
-                        TextField(
-                          obscureText: _isObscure,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              // 文字の表示・非表示でアイコンを変える
-                              icon: Icon(
-                                _isObscure
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: AppColors.gray2,
-                              ),
-                              // アイコンがタップされたら現在と反対の状態をセットする
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure = !_isObscure;
-                                });
-                              },
-                            ),
-                            border: const OutlineInputBorder(),
-                            hintText: 'password',
-                            hintStyle: const TextStyle(
-                              color: AppColors.gray2,
-                            ),
-                          ),
+                        border: const OutlineInputBorder(),
+                        labelText: 'パスワード',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintText: 'password',
+                        hintStyle: const TextStyle(
+                          color: AppColors.gray2,
                         ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 24),
                     Container(
@@ -170,11 +141,17 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                       child: OutlinedButton(
                         onPressed: () {},
                         child: const Text('Googleで続ける'),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.white,
+                          foregroundColor: AppColors.gray1,
+                          side: const BorderSide(
+                            color: AppColors.gray1,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
                     Container(
-                      width: double.infinity,
                       height: 40,
                       child: TextButton(
                         onPressed: () {},
