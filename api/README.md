@@ -14,11 +14,6 @@ Docker関連
 2.apiディレクトリの中に.envファイルを作成する
 書く内容
 
-# PostgreSQLの環境変数
-DATABASE_URL=postgres://user:password@db:5432/db_name
-DB_USER=user
-DB_PASSWORD=password
-DB_NAME=db_name
 
 3.Docker Desktopを起動後ターミナルで
 docker-compose up --build -d
