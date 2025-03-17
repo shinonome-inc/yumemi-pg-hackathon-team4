@@ -23,11 +23,11 @@ class _TopPageState extends ConsumerState<TopPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              constraints: const BoxConstraints(
+              constraints: BoxConstraints(
                 maxWidth: 360,
+                minHeight: MediaQuery.of(context).size.height,
               ),
-              height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -50,65 +50,43 @@ class _TopPageState extends ConsumerState<TopPage> {
                     ),
                   ),
                   const SizedBox(height: 36),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'メールアドレス',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.gray1,
-                        ),
+                  const TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      label: Text('メールアドレス'),
+                      border: OutlineInputBorder(),
+                      hintText: 'example@email.com',
+                      hintStyle: TextStyle(
+                        color: AppColors.gray2,
                       ),
-                      const SizedBox(height: 4),
-                      const TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'example@email.com',
-                          hintStyle: TextStyle(
-                            color: AppColors.gray2,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 24),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'パスワード',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.gray1,
+                  TextField(
+                    obscureText: _isObscure,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        // 文字の表示・非表示でアイコンを変える
+                        icon: Icon(
+                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          color: AppColors.gray2,
                         ),
+                        // アイコンがタップされたら現在と反対の状態をセットする
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
                       ),
-                      const SizedBox(height: 4),
-                      TextField(
-                        obscureText: _isObscure,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            // 文字の表示・非表示でアイコンを変える
-                            icon: Icon(
-                              _isObscure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: AppColors.gray2,
-                            ),
-                            // アイコンがタップされたら現在と反対の状態をセットする
-                            onPressed: () {
-                              setState(() {
-                                _isObscure = !_isObscure;
-                              });
-                            },
-                          ),
-                          border: const OutlineInputBorder(),
-                          hintText: 'password',
-                          hintStyle: const TextStyle(
-                            color: AppColors.gray2,
-                          ),
-                        ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      label: const Text('パスワード'),
+                      border: const OutlineInputBorder(),
+                      hintText: 'password',
+                      hintStyle: const TextStyle(
+                        color: AppColors.gray2,
                       ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Container(
@@ -155,7 +133,6 @@ class _TopPageState extends ConsumerState<TopPage> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: double.infinity,
                     height: 40,
                     child: TextButton(
                       onPressed: () {},
