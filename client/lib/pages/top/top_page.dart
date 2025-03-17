@@ -23,9 +23,8 @@ class _TopPageState extends ConsumerState<TopPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxWidth: 360,
-                minHeight: MediaQuery.of(context).size.height,
               ),
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               child: Column(
@@ -54,7 +53,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      label: Text('メールアドレス'),
+                      labelText: 'メールアドレス',
                       border: OutlineInputBorder(),
                       hintText: 'example@email.com',
                       hintStyle: TextStyle(
@@ -80,7 +79,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                         },
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      label: const Text('パスワード'),
+                      labelText: 'パスワード',
                       border: const OutlineInputBorder(),
                       hintText: 'password',
                       hintStyle: const TextStyle(
@@ -128,7 +127,14 @@ class _TopPageState extends ConsumerState<TopPage> {
                     height: 40,
                     child: OutlinedButton(
                       onPressed: () {},
-                      child: const Text('Googleでログイン'),
+                      child: const Text('Googleで続ける'),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: AppColors.white,
+                        foregroundColor: AppColors.gray1,
+                        side: const BorderSide(
+                          color: AppColors.gray1,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
