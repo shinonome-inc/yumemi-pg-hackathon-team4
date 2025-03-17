@@ -16,4 +16,4 @@ class UserSerializer(serializers.ModelSerializer):
         instance.profile_description = validated_data.get("profile_description", instance.profile_description)
         instance.save()
         return instance
-    
+

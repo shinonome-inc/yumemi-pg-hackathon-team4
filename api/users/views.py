@@ -11,3 +11,4 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
     permission_classes = [IsAuthenticated]
+

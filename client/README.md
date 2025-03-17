@@ -1,16 +1,13 @@
-# client
+# Client
 
-Yumemi×PG Hackathon Team4's Flutter project.
+## 概要
 
-## Getting Started
+「Cook Wild」のクライアントサイドの実装を行うための Flutter プロジェクトです。
 
-This project is a starting point for a Flutter application.
+## ARCHITECTURE
 
-A few resources to get you started if this is your first Flutter project:
+[ARCHITECTURE.md](https://github.com/shinonome-inc/yumemi-pg-hackathon-team4/blob/develop/client/docs/ARCHITECTURE.md)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## GET STARTED
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[GET_STARTED.md](https://github.com/shinonome-inc/yumemi-pg-hackathon-team4/blob/develop/client/docs/GET_STARTED.md)

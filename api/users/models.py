@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
@@ -22,7 +23,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+
     username = models.CharField(max_length=255, blank=True)
+
     image_url = models.URLField(blank=True)
     profile_description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
