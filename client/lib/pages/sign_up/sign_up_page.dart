@@ -94,10 +94,6 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                         border: const OutlineInputBorder(),
                         labelText: 'パスワード',
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'password',
-                        hintStyle: const TextStyle(
-                          color: AppColors.gray2,
-                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
