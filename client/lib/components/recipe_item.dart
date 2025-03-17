@@ -19,6 +19,7 @@ class RecipeItem extends StatelessWidget {
   final String userName;
   final int likes;
   final int comments;
+  static const String thumbnailUrl = 'https://picsum.photos/id/292/160';
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,11 @@ class RecipeItem extends StatelessWidget {
         child: Row(
           children: [
             // 画像部分
-            Container(
+            Image.network(
+              thumbnailUrl,
               width: 160,
               height: 120,
-              color: Colors.grey,
+              fit: BoxFit.cover,
             ),
             Expanded(
               child: Container(
