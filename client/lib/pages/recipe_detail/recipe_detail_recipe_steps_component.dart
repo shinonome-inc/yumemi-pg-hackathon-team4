@@ -16,6 +16,12 @@ class RecipeStepsComponent extends StatelessWidget {
           _buildHarvestingMethodsSection(),
           const SizedBox(height: 48),
           _buildCookingMethodsSection(),
+          const SizedBox(height: 48),
+          _buildTipsSection(),
+          const SizedBox(height: 48),
+          _buildEatReportSection(),
+          const SizedBox(height: 48),
+          _buildAICommentSection(),
         ],
       ),
     );
@@ -220,6 +226,67 @@ class RecipeStepsComponent extends StatelessWidget {
               ),
             );
           }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTipsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitle('コツ・ポイント', ''),
+        const SizedBox(height: 16),
+        const Text(
+          'コツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキスト',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEatReportSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitle('食レポ', ''),
+        const SizedBox(height: 16),
+        const Text('感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト'),
+      ],
+    );
+  }
+
+  Widget _buildAICommentSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitle('AIの補足コメント', ''),
+        const SizedBox(height: 16),
+        const Text('コメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメント'),
+        const SizedBox(height: 6),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          decoration: BoxDecoration(
+            color: AppColors.red2,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Row(
+            children: [
+              Icon(
+                Icons.error,
+                size: 20,
+                color: AppColors.red1,
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'AI補足コメントは、参考情報として提供されるものであり正確性や最新性を保証するものではありません。',
+                  style: TextStyle(fontSize: 14, color: AppColors.gray1),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
