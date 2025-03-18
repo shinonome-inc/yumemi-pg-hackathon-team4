@@ -36,7 +36,7 @@ urlpatterns = [
     path("api/", include("users.urls")),
     path("api/", include("authentication.urls")),
     path("api/", include("recipes.urls")),
-    # path("api/", include("reviews.urls")),
+    path("api/", include("reviews.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),

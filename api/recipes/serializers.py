@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from .models import Recipe, Ingredient, GatheringStep, CookingStep
 from users.serializers import UserSerializer
+from reviews.models import Like
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,11 +28,22 @@ class RecipeSerializer(serializers.ModelSerializer):
     gathering_steps = GatheringStepSerializer(many=True)
     cooking_steps = CookingStepSerializer(many=True)
     user = UserSerializer(read_only=True)  # Add user field
-
+    is_liked = serializers.SerializerMethodField()
+    like_count = serializers.SerializerMethodField()
+    
     class Meta:
         model = Recipe
         fields = '__all__'
-        read_only_fields = ['id', 'created_at', 'updated_at', 'user']  # Make user read-only
+        read_only_fields = ['id', 'created_at', 'updated_at', 'user', 'is_liked', 'like_count']  # Make user read-only
+    
+    def get_is_liked(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return Like.objects.filter(recipe=obj, user=request.user).exists()
+        return True
+
+    def get_like_count(self, obj):
+        return Like.objects.filter(recipe=obj).count()
     
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
@@ -76,3 +88,5 @@ class RecipeSerializer(serializers.ModelSerializer):
             CookingStep.objects.create(recipe=instance, **cooking_step_data)
 
         return instance
+    
+    
