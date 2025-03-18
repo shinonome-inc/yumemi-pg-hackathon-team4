@@ -3,6 +3,7 @@ import 'package:client/firebase_options.dart';
 import 'package:client/router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_info/flutter_app_info.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,8 +14,13 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: AppInfo(
+        data: await AppInfoData.get(),
+        child: const ProviderScope(
+          child: MyApp(),
+        ),
+      ),
     ),
   );
 }

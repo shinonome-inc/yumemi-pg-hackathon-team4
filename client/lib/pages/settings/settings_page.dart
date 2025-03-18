@@ -1,6 +1,7 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_info/flutter_app_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
@@ -13,6 +14,7 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _TopPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final package = AppInfo.of(context).package;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.white, // 白背景
@@ -113,7 +115,7 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                     style: context.textTheme.bodyMedium,
                   ),
                   trailing: Text(
-                    'v.1.0.0', // 右端に表示されるアプリバージョン
+                    'v.${package.versionWithoutBuild}', // 右端に表示されるアプリバージョン
                     style: context.textTheme.bodyMedium,
                   ),
                 ),
