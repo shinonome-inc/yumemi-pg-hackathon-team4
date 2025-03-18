@@ -21,20 +21,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
-    permission_classes = [IsAuthenticated]
+    
 
 class GatheringStepViewSet(viewsets.ModelViewSet):
     queryset = GatheringStep.objects.all()
     serializer_class = GatheringStepSerializer
-    authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
-    permission_classes = [IsAuthenticated]
+    
 
 class CookingStepViewSet(viewsets.ModelViewSet):
     queryset = CookingStep.objects.all()
     serializer_class = CookingStepSerializer
-    authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
-    permission_classes = [IsAuthenticated]
+    
+    
 
 
 
