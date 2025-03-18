@@ -13,8 +13,7 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tips = models.TextField(blank=True)
     AI_comment = models.TextField(blank=True)
-    # クエリを実行すればいいね数は取得可能
-    # likes_count = models.PositiveIntegerField(default=0)
+   
 
 
 class Ingredient(models.Model):
