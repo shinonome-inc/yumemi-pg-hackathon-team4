@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import firebase_admin
+from firebase_admin import credentials
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     "users",
     "recipes",
     "reviews",
+    "authentication",
 ]
 
 MIDDLEWARE = [
@@ -129,3 +132,18 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+
+FIREBASE_CREDENTIALS = os.path.join(BASE_DIR, "config/firebase_credentials.json")
+
+cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+firebase_admin.initialize_app(cred)
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "authentication.authentication.FirebaseAuthentication",
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
