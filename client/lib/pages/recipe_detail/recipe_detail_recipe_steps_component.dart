@@ -1,4 +1,6 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/extensions/build_context_extension.dart';
+import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class RecipeStepsComponent extends StatelessWidget {
@@ -64,23 +66,33 @@ class RecipeStepsComponent extends StatelessWidget {
               [
                 _buildIngredientsSection(
                   apiData['ingredients']! as List<Map<String, String>>,
+                  context,
                 ),
                 const SizedBox(height: 48),
                 _buildHarvestingMethodsSection(
                   apiData['harvestingMethods']! as List<Map<String, String>>,
+                  context,
                 ),
                 const SizedBox(height: 48),
                 _buildCookingMethodsSection(
                   apiData['cookingMethods']! as List<Map<String, String>>,
+                  context,
                 ),
                 const SizedBox(height: 48),
                 _buildTipsSection(
                   apiData['tips']! as String,
+                  context,
                 ),
                 const SizedBox(height: 48),
-                _buildEatReportSection(apiData['eatReport']! as String),
+                _buildEatReportSection(
+                  apiData['eatReport']! as String,
+                  context,
+                ),
                 const SizedBox(height: 48),
-                _buildAICommentSection(apiData['aiComment']! as String),
+                _buildAICommentSection(
+                  apiData['aiComment']! as String,
+                  context,
+                ),
               ],
             ),
           ),
@@ -89,11 +101,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildIngredientsSection(List<Map<String, String>> ingredients) {
+  Widget _buildIngredientsSection(
+    List<Map<String, String>> ingredients,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('材料', '(2人前)'),
+        _buildTitle('材料', '(2人前)', context),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
@@ -113,14 +128,18 @@ class RecipeStepsComponent extends StatelessWidget {
                         Expanded(
                           child: Text(
                             ingredients[index]['name']!,
-                            style: const TextStyle(fontSize: 16),
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              color: AppColors.gray1,
+                            ),
                             softWrap: true,
                           ),
                         ),
                         const SizedBox(width: 12),
                         Text(
                           ingredients[index]['amount']!,
-                          style: const TextStyle(fontSize: 16),
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            color: AppColors.gray1,
+                          ),
                         ),
                       ],
                     ),
@@ -141,11 +160,12 @@ class RecipeStepsComponent extends StatelessWidget {
 
   Widget _buildHarvestingMethodsSection(
     List<Map<String, String>> harvestingMethods,
+    BuildContext context,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('採集方法', ''),
+        _buildTitle('採集方法', '', context),
         const SizedBox(height: 16),
         Column(
           children: harvestingMethods.map((method) {
@@ -173,10 +193,8 @@ class RecipeStepsComponent extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         method['step']!,
-                        style: const TextStyle(
+                        style: context.textTheme.labelSmall?.copyWith(
                           color: AppColors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -184,7 +202,9 @@ class RecipeStepsComponent extends StatelessWidget {
                     Expanded(
                       child: Text(
                         method['description']!,
-                        style: const TextStyle(fontSize: 16),
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.gray1,
+                        ),
                         softWrap: true,
                       ),
                     ),
@@ -208,11 +228,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildCookingMethodsSection(List<Map<String, String>> cookingMethods) {
+  Widget _buildCookingMethodsSection(
+    List<Map<String, String>> cookingMethods,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('料理方法', ''),
+        _buildTitle('料理方法', '', context),
         const SizedBox(height: 16),
         Column(
           children: cookingMethods.map((method) {
@@ -240,10 +263,8 @@ class RecipeStepsComponent extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         method['step']!,
-                        style: const TextStyle(
+                        style: context.textTheme.labelSmall?.copyWith(
                           color: AppColors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -251,7 +272,9 @@ class RecipeStepsComponent extends StatelessWidget {
                     Expanded(
                       child: Text(
                         method['description']!,
-                        style: const TextStyle(fontSize: 16),
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.gray1,
+                        ),
                         softWrap: true,
                       ),
                     ),
@@ -275,37 +298,50 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildTipsSection(String tips) {
+  Widget _buildTipsSection(String tips, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('コツ・ポイント', ''),
+        _buildTitle('コツ・ポイント', '', context),
         const SizedBox(height: 16),
         Text(
           tips,
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: AppColors.gray1,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildEatReportSection(String eatReport) {
+  Widget _buildEatReportSection(String eatReport, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('食レポ', ''),
+        _buildTitle('食レポ', '', context),
         const SizedBox(height: 16),
-        Text(eatReport),
+        Text(
+          eatReport,
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: AppColors.gray1,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildAICommentSection(String aiComment) {
+  Widget _buildAICommentSection(String aiComment, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('AIの補足コメント', ''),
+        _buildTitle('AIの補足コメント', '', context),
         const SizedBox(height: 16),
-        Text(aiComment),
+        Text(
+          aiComment,
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: AppColors.gray1,
+          ),
+        ),
         const SizedBox(height: 6),
         Container(
           width: double.infinity,
@@ -314,18 +350,20 @@ class RecipeStepsComponent extends StatelessWidget {
             color: AppColors.red2,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.error,
                 size: 20,
                 color: AppColors.red1,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'AI補足コメントは、参考情報として提供されるものであり正確性や最新性を保証するものではありません。',
-                  style: TextStyle(fontSize: 14, color: AppColors.gray1),
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: AppColors.gray1,
+                  ),
                   softWrap: true,
                 ),
               ),
@@ -336,7 +374,7 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(String title, String subtitle) {
+  Widget _buildTitle(String title, String subtitle, BuildContext context) {
     return Stack(
       children: [
         Row(
@@ -345,16 +383,13 @@ class RecipeStepsComponent extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+              style: context.textTheme.titleLargeBold?.copyWith(
                 color: AppColors.gray1,
               ),
             ),
             Text(
               subtitle,
-              style: const TextStyle(
-                fontSize: 14,
+              style: context.textTheme.titleMedium?.copyWith(
                 color: AppColors.gray1,
               ),
             ),

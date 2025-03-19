@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
+import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:uuid/uuid.dart';
@@ -160,112 +161,112 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
       {
         'userID': '12345',
         'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18 12:00',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18 12:30',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18 13:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18 14:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18 12:00',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18 12:30',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18 13:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18 14:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18 12:00',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18 12:30',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18 13:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18 14:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18 12:00',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '12345',
         'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18 12:30',
+        'datetime': '2024/03/18',
         'content': 'これは自分の投稿で、画像がありません。',
         'image': null,
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18 13:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
       },
       {
         'userID': '1',
         'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18 14:00',
+        'datetime': '2024/03/18',
         'content': 'これは他人の投稿で、画像がありません。',
         'image': null,
       },
@@ -274,7 +275,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('コメント', '(201)'),
+        _buildTitle('コメント', '(201)', context),
         const SizedBox(height: 16),
         TextField(
           controller: myController,
@@ -284,7 +285,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
           decoration: InputDecoration(
             suffixIcon: isTextFieldActive ? _buildImageButton() : null,
             hintText: 'コメントする...',
-            hintStyle: const TextStyle(color: AppColors.gray3),
+            hintStyle: context.textTheme.labelLarge?.copyWith(
+              color: AppColors.gray3,
+            ),
             filled: true,
             fillColor: AppColors.white,
             hoverColor: AppColors.white, // ホバー時の色変更を無効化
@@ -301,7 +304,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             isDense: true,
           ),
           cursorColor: AppColors.green1,
-          style: const TextStyle(color: AppColors.gray1),
+          style: context.textTheme.labelLarge?.copyWith(
+            color: AppColors.gray1,
+          ),
         ),
         const SizedBox(height: 16),
         // if (isTextFieldActive)
@@ -378,7 +383,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: const BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: AppColors.gray2),
+                  bottom: BorderSide(color: AppColors.gray4),
                 ),
               ),
               child: Row(
@@ -405,25 +410,38 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                           children: [
                             Expanded(
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
                                     comment['username']!,
-                                    style:
-                                        const TextStyle(color: AppColors.gray1),
+                                    style: context.textTheme.bodyMediumBold
+                                        ?.copyWith(
+                                      color: AppColors.gray1,
+                                    ),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     comment['datetime']!,
                                     style:
-                                        const TextStyle(color: AppColors.gray2),
+                                        context.textTheme.bodySmall?.copyWith(
+                                      color: AppColors.gray2,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            if (comment['userID'] == '12345') //ユーザーが自分自身かどうか判定
-                              const Padding(
-                                padding: EdgeInsets.all(2),
-                                child: Icon(Icons.more_horiz, size: 16),
+                            if (comment['userID'] == '12345') // ユーザーが自分自身かどうか判定
+                              Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: IconButton(
+                                  icon: const Icon(Icons.more_horiz, size: 16),
+                                  onPressed: () {
+                                    print('Click');
+                                  },
+                                  padding: EdgeInsets.zero, // アイコンの余白をなくす
+                                  constraints:
+                                      const BoxConstraints(), // サイズ制約を解除
+                                ),
                               ),
                           ],
                         ),
@@ -434,7 +452,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                             Expanded(
                               child: Text(
                                 comment['content']!,
-                                style: const TextStyle(color: AppColors.gray1),
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.gray1,
+                                ),
                                 softWrap: true,
                               ),
                             ),
@@ -465,16 +485,18 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
           width: double.infinity,
           child: FilledButton(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              padding: const EdgeInsets.symmetric(vertical: 22),
               backgroundColor: AppColors.green3,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(1000),
               ),
             ),
             onPressed: () {},
-            child: const Text(
+            child: Text(
               'もっと見る',
-              style: TextStyle(color: AppColors.gray1),
+              style: context.textTheme.labelLargeBold?.copyWith(
+                color: AppColors.gray1,
+              ),
             ),
           ),
         ),
@@ -483,7 +505,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   }
 }
 
-Widget _buildTitle(String title, String subtitle) {
+Widget _buildTitle(String title, String subtitle, BuildContext context) {
   return Stack(
     children: [
       Row(
@@ -492,17 +514,14 @@ Widget _buildTitle(String title, String subtitle) {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            style: context.textTheme.titleLargeBold?.copyWith(
               color: AppColors.gray1,
             ),
           ),
           Text(
             subtitle,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.gray1,
+            style: context.textTheme.titleMedium?.copyWith(
+              color: AppColors.gray2,
             ),
           ),
         ],

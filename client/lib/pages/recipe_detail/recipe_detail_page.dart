@@ -1,4 +1,6 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/extensions/build_context_extension.dart';
+import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_component.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class RecipeDetailPage extends ConsumerStatefulWidget {
 class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _isLiked = false;
 
   @override
   void initState() {
@@ -34,21 +37,23 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     final apiData = {
       'titleImage': 'assets/images/FlyedSawagani.png',
-      'recipeTitle': 'レシピタイトルレシピタイトルレシピタイトルレシピタイトルレシピタイトル',
+      'recipeTitle': 'タイトルタイトルタイトルタイトルタイトル',
       'userIcon': 'assets/images/FlyedSawagani.png',
       'userName': 'ユーザー名',
-      'likeCount': '123',
-      'comment': 'コメント内容コメント内容コメント内容コメント内容コメント内容コメント内容',
+      'likeCount': '24',
+      'comment': 'コメントコメントコメントコメントコメントコメントコメントコメント',
       'postDate': 'YYYY/MM/DD',
     };
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
+            surfaceTintColor: AppColors.white,
             backgroundColor: AppColors.white,
             pinned: true,
-            expandedHeight: 300, // 画像の高さ
+            expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
               background: AspectRatio(
                 aspectRatio: 393 / 351,
@@ -59,17 +64,17 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
               ),
             ),
             leading: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(14),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back, size: 24),
+                icon: const Icon(Icons.chevron_left, size: 20),
                 onPressed: () => Navigator.pop(context),
               ),
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 child: IconButton(
-                  icon: const Icon(Icons.edit, size: 24),
+                  icon: const Icon(Icons.edit, size: 20),
                   onPressed: () {},
                 ),
               ),
@@ -83,8 +88,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                 children: [
                   Text(
                     apiData['recipeTitle']!,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    style: context.textTheme.titleLargeBold?.copyWith(
+                      color: AppColors.gray1,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -98,11 +104,22 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Text(apiData['userName']!),
+                      Text(
+                        apiData['userName']!,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.gray1,
+                        ),
+                      ),
                       const Spacer(),
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _isLiked = !_isLiked;
+                          });
+                        },
                         style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              _isLiked ? AppColors.green1 : Colors.transparent,
                           side: const BorderSide(color: AppColors.green1),
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           shape: RoundedRectangleBorder(
@@ -112,15 +129,20 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.thumb_up,
                               size: 20,
-                              color: AppColors.green1,
+                              color:
+                                  _isLiked ? AppColors.white : AppColors.green1,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               apiData['likeCount']!,
-                              style: const TextStyle(color: AppColors.green1),
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: _isLiked
+                                    ? AppColors.white
+                                    : AppColors.green1,
+                              ),
                             ),
                           ],
                         ),
@@ -137,7 +159,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                     ),
                     child: Text(
                       apiData['comment']!,
-                      style: const TextStyle(color: AppColors.gray1A80),
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: AppColors.gray1A80,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -145,7 +169,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                     alignment: Alignment.centerRight,
                     child: Text(
                       '投稿日：${apiData['postDate']!}',
-                      style: const TextStyle(color: AppColors.gray2),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: AppColors.gray2,
+                      ),
                     ),
                   ),
                 ],
@@ -156,9 +182,16 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             pinned: true,
             delegate: _TabBarDelegate(
               TabBar(
+                dividerColor: AppColors.green1_50,
                 controller: _tabController,
                 labelColor: AppColors.green1,
                 unselectedLabelColor: AppColors.green1_50,
+                labelStyle: context.textTheme.titleLargeBold?.copyWith(
+                  color: AppColors.green1,
+                ),
+                unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
+                  color: AppColors.green1_50,
+                ),
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: const UnderlineTabIndicator(
                   borderSide: BorderSide(
@@ -198,7 +231,10 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Container(
       color: AppColors.white,
       child: _tabBar,
