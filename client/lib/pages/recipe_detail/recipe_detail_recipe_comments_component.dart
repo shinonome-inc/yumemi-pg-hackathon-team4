@@ -1,8 +1,36 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
-class RecipeCommentsComponent extends StatelessWidget {
+class RecipeCommentsComponent extends StatefulWidget {
   const RecipeCommentsComponent({super.key});
+
+  @override
+  RecipeCommentsComponentState createState() => RecipeCommentsComponentState();
+}
+
+class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
+  bool isTextFieldActive = false; // テキストフィールドがアクティブかどうか
+  final myController = TextEditingController(); // コメント入力欄のコントローラー
+  final FocusNode _focusNode = FocusNode(); // フォーカスを管理するためのFocusNode
+  String comment = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      setState(() {
+        isTextFieldActive = _focusNode.hasFocus;
+        print(isTextFieldActive);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +83,57 @@ class RecipeCommentsComponent extends StatelessWidget {
         _buildTitle('コメント', '(201)'),
         const SizedBox(height: 16),
         TextField(
+          controller: myController,
+          focusNode: _focusNode,
+          minLines: isTextFieldActive ? 3 : 1,
           maxLines: null,
           decoration: InputDecoration(
+            suffixIcon: isTextFieldActive // フォーカスがある時のみ表示
+                ? Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      width: 70,
+                      height: 70,
+                      child: FilledButton(
+                        onPressed: () {
+                          print('表示ボタンが押されました');
+                        },
+                        style: FilledButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          backgroundColor: AppColors.gray4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            side: const BorderSide(color: AppColors.gray3),
+                          ),
+                        ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.photo_camera,
+                              color: AppColors.gray2,
+                              size: 24,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              '写真をのせる',
+                              style: TextStyle(
+                                fontFamily: 'NotoSansJP',
+                                fontSize: 10,
+                                color: AppColors.gray2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : null, // フォーカスがない時は `suffixIcon` を非表示
             hintText: 'コメントする...',
             hintStyle: const TextStyle(color: AppColors.gray3),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColors.white,
             enabledBorder: OutlineInputBorder(
-              // 非アクティブ時の枠線
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.gray3),
             ),
@@ -70,10 +141,66 @@ class RecipeCommentsComponent extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.green1),
             ),
-            contentPadding: const EdgeInsets.all(8),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            isDense: true,
           ),
           cursorColor: AppColors.green1,
           style: const TextStyle(color: AppColors.gray1),
+        ),
+        const SizedBox(height: 16),
+        // if (isTextFieldActive)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FilledButton(
+              onPressed: () {
+                print('キャンセル');
+                // 入力をクリア
+                myController.clear();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.white, // 背景色
+                foregroundColor: AppColors.gray2, // 文字色
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                fixedSize: const Size(100, 36),
+                padding: EdgeInsets.zero, // 余白をなくす
+              ),
+              child: Text(
+                'キャンセル',
+                style: context.textTheme.labelLarge?.copyWith(
+                  color: AppColors.gray2,
+                ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            FilledButton(
+              onPressed: () {
+                print('コメントを投稿');
+                comment = myController.text;
+                print(comment);
+                // 入力をクリア
+                myController.clear();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.green1, // 背景色
+                foregroundColor: AppColors.white, // 文字色
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                fixedSize: const Size(100, 36),
+                padding: EdgeInsets.zero, // 余白をなくす
+              ),
+              child: Text(
+                'コメント',
+                style: context.textTheme.labelLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         Column(
@@ -164,7 +291,7 @@ class RecipeCommentsComponent extends StatelessWidget {
         const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
-          child: ElevatedButton(
+          child: FilledButton(
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
               backgroundColor: AppColors.green3,
