@@ -407,13 +407,13 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                               child: Row(
                                 children: [
                                   Text(
-                                    comment['username']! as String,
+                                    comment['username']!,
                                     style:
                                         const TextStyle(color: AppColors.gray1),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    comment['datetime']! as String,
+                                    comment['datetime']!,
                                     style:
                                         const TextStyle(color: AppColors.gray2),
                                   ),
@@ -433,7 +433,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                           children: [
                             Expanded(
                               child: Text(
-                                comment['content']! as String,
+                                comment['content']!,
                                 style: const TextStyle(color: AppColors.gray1),
                                 softWrap: true,
                               ),
@@ -443,7 +443,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(4),
                                 child: Image.network(
-                                  comment['image']! as String,
+                                  comment['image']!,
                                   width: 70,
                                   height: 70,
                                   fit: BoxFit.cover,

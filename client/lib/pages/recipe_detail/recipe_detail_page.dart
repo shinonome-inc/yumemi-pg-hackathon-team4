@@ -29,6 +29,18 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // API繋ぎ込みで修正が必要
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    final apiData = {
+      'titleImage': 'assets/images/FlyedSawagani.png',
+      'recipeTitle': 'レシピタイトルレシピタイトルレシピタイトルレシピタイトルレシピタイトル',
+      'userIcon': 'assets/images/FlyedSawagani.png',
+      'userName': 'ユーザー名',
+      'likeCount': '123',
+      'comment': 'コメント内容コメント内容コメント内容コメント内容コメント内容コメント内容',
+      'postDate': 'YYYY/MM/DD',
+    };
     return Scaffold(
       backgroundColor: AppColors.white,
       body: NestedScrollView(
@@ -41,7 +53,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
               background: AspectRatio(
                 aspectRatio: 393 / 351,
                 child: Image.asset(
-                  'assets/images/FlyedSawagani.png',
+                  apiData['titleImage']!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -69,23 +81,24 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'レシピタイトルレシピタイトルレシピタイトルレシピタイトルレシピタイトル',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    apiData['recipeTitle']!,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
                       ClipOval(
                         child: Image.asset(
-                          'assets/images/FlyedSawagani.png',
+                          apiData['userIcon']!,
                           width: 24,
                           height: 24,
                           fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(width: 4),
-                      const Text('ユーザー名'),
+                      Text(apiData['userName']!),
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {},
@@ -96,18 +109,18 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.thumb_up,
                               size: 20,
                               color: AppColors.green1,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              '123',
-                              style: TextStyle(color: AppColors.green1),
+                              apiData['likeCount']!,
+                              style: const TextStyle(color: AppColors.green1),
                             ),
                           ],
                         ),
@@ -122,17 +135,17 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                       color: AppColors.green3,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      'コメント内容コメント内容コメント内容コメント内容コメント内容コメント内容',
-                      style: TextStyle(color: AppColors.gray1A80),
+                    child: Text(
+                      apiData['comment']!,
+                      style: const TextStyle(color: AppColors.gray1A80),
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      '投稿日: YYYY/MM/DD',
-                      style: TextStyle(color: AppColors.gray2),
+                      '投稿日：${apiData['postDate']!}',
+                      style: const TextStyle(color: AppColors.gray2),
                     ),
                   ),
                 ],

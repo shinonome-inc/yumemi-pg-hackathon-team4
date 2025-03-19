@@ -3,9 +3,58 @@ import 'package:flutter/material.dart';
 
 class RecipeStepsComponent extends StatelessWidget {
   const RecipeStepsComponent({super.key});
-
   @override
   Widget build(BuildContext context) {
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // API繋ぎ込みで修正が必要
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    final apiData = {
+      'ingredients': [
+        {'name': '材料A材料A材料A材料A材料A材料A材料A材料A材料A材料A', 'amount': '10g'},
+        {'name': '材料B', 'amount': '20g'},
+        {'name': '材料C', 'amount': '30g'},
+        {'name': '材料D', 'amount': '40g'},
+        {'name': '材料E', 'amount': '50g'},
+      ],
+      'harvestingMethods': [
+        {
+          'step': '1',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+        {
+          'step': '2',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+        {
+          'step': '3',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+      ],
+      'cookingMethods': [
+        {
+          'step': '1',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+        {
+          'step': '2',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+        {
+          'step': '3',
+          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
+          'image': 'assets/images/FlyedSawagani.png',
+        },
+      ],
+      'tips':
+          'コツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキスト',
+      'eatReport': '感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト',
+      'aiComment': 'コメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメント',
+    };
     return CustomScrollView(
       slivers: [
         SliverPadding(
@@ -13,17 +62,25 @@ class RecipeStepsComponent extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                _buildIngredientsSection(),
+                _buildIngredientsSection(
+                  apiData['ingredients']! as List<Map<String, String>>,
+                ),
                 const SizedBox(height: 48),
-                _buildHarvestingMethodsSection(),
+                _buildHarvestingMethodsSection(
+                  apiData['harvestingMethods']! as List<Map<String, String>>,
+                ),
                 const SizedBox(height: 48),
-                _buildCookingMethodsSection(),
+                _buildCookingMethodsSection(
+                  apiData['cookingMethods']! as List<Map<String, String>>,
+                ),
                 const SizedBox(height: 48),
-                _buildTipsSection(),
+                _buildTipsSection(
+                  apiData['tips']! as String,
+                ),
                 const SizedBox(height: 48),
-                _buildEatReportSection(),
+                _buildEatReportSection(apiData['eatReport']! as String),
                 const SizedBox(height: 48),
-                _buildAICommentSection(),
+                _buildAICommentSection(apiData['aiComment']! as String),
               ],
             ),
           ),
@@ -32,15 +89,7 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildIngredientsSection() {
-    final ingredients = <Map<String, String>>[
-      {'name': '材料A材料A材料A材料A材料A材料A材料A材料A材料A材料A', 'amount': '10g'},
-      {'name': '材料B', 'amount': '20g'},
-      {'name': '材料C', 'amount': '30g'},
-      {'name': '材料D', 'amount': '40g'},
-      {'name': '材料E', 'amount': '50g'},
-    ];
-
+  Widget _buildIngredientsSection(List<Map<String, String>> ingredients) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,13 +139,9 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildHarvestingMethodsSection() {
-    final harvestingMethods = [
-      {'step': '1', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-      {'step': '2', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-      {'step': '3', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-    ];
-
+  Widget _buildHarvestingMethodsSection(
+    List<Map<String, String>> harvestingMethods,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -147,7 +192,7 @@ class RecipeStepsComponent extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: Image.asset(
-                        'assets/images/FlyedSawagani.png',
+                        method['image']!,
                         width: 80,
                         height: 80,
                         fit: BoxFit.cover,
@@ -163,13 +208,7 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildCookingMethodsSection() {
-    final cookingMethods = [
-      {'step': '1', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-      {'step': '2', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-      {'step': '3', 'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト'},
-    ];
-
+  Widget _buildCookingMethodsSection(List<Map<String, String>> cookingMethods) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -220,7 +259,7 @@ class RecipeStepsComponent extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: Image.asset(
-                        'assets/images/FlyedSawagani.png',
+                        method['image']!,
                         width: 80,
                         height: 80,
                         fit: BoxFit.cover,
@@ -236,37 +275,37 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildTipsSection() {
+  Widget _buildTipsSection(String tips) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('コツ・ポイント', ''),
         const SizedBox(height: 16),
-        const Text(
-          'コツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキスト',
+        Text(
+          tips,
         ),
       ],
     );
   }
 
-  Widget _buildEatReportSection() {
+  Widget _buildEatReportSection(String eatReport) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('食レポ', ''),
         const SizedBox(height: 16),
-        const Text('感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト'),
+        Text(eatReport),
       ],
     );
   }
 
-  Widget _buildAICommentSection() {
+  Widget _buildAICommentSection(String aiComment) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('AIの補足コメント', ''),
         const SizedBox(height: 16),
-        const Text('コメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメント'),
+        Text(aiComment),
         const SizedBox(height: 6),
         Container(
           width: double.infinity,
