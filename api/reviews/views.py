@@ -58,4 +58,3 @@ class CommentRecipeView(APIView):
         return JsonResponse({"message": "Comment deleted successfully."}, status=200)
 
 
-    

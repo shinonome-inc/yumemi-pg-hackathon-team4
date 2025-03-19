@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Like, Comment
+from users.serializers import UserSerializer
+from recipes.serializers import RecipeSerializer
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,6 +10,7 @@ class LikeSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at']
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
     class Meta:
         model = Comment
         fields = ['id', 'recipe', 'user', 'content_text', 'image_url', 'created_at', 'updated_at']
