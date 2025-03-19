@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+// import 'package:uuid/uuid.dart';
 
 class RecipeCommentsComponent extends StatefulWidget {
   const RecipeCommentsComponent({super.key});
@@ -14,6 +17,8 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   final myController = TextEditingController(); // コメント入力欄のコントローラー
   final FocusNode _focusNode = FocusNode(); // フォーカスを管理するためのFocusNode
   String comment = '';
+  File? _selectedImage; // 選択された画像
+  final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
 
   @override
   void initState() {
@@ -21,7 +26,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     _focusNode.addListener(() {
       setState(() {
         isTextFieldActive = _focusNode.hasFocus;
-        print(isTextFieldActive);
+        // print(isTextFieldActive);
       });
     });
   }
@@ -32,48 +37,237 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     super.dispose();
   }
 
+// 選択した画像の取得
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        // print("pickedFile.name:${pickedFile.name}"); //元のファイル名
+        // final uuid = const Uuid().v4();
+        // final extension = pickedFile.name.split('.').last;
+        // final fileName = '$uuid.$extension'; // ファイル名をUUIDに変更し，拡張子を下のファイルから取得.
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _showImagePickerDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: AppColors.white, // 背景色を指定
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('アルバムから選択'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('写真を撮る'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              if (_selectedImage != null)
+                ListTile(
+                  leading: const Icon(Icons.delete, color: Colors.red),
+                  title:
+                      const Text('写真を削除', style: TextStyle(color: Colors.red)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _selectedImage = null;
+                    });
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed([_buildComment()]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImageButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildCommentSection(),
-        ],
+      padding: const EdgeInsets.all(8),
+      child: GestureDetector(
+        onTap: _showImagePickerDialog,
+        child: Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            color: AppColors.gray4,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: AppColors.gray3),
+            image: _selectedImage != null
+                ? DecorationImage(
+                    image: NetworkImage(_selectedImage!.path), // ✅ Web でも動作可能
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
+          child: _selectedImage == null
+              ? const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.photo_camera,
+                      color: AppColors.gray2,
+                      size: 24,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '写真をのせる',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.gray2,
+                      ),
+                    ),
+                  ],
+                )
+              : null,
+        ),
       ),
     );
   }
 
-  Widget _buildCommentSection() {
+  Widget _buildComment() {
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // API繋ぎ込みで修正が必要 (コメントのデータ取得)
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     final comments = [
       {
+        'userID': '12345',
         'username': '自分の投稿 (写真あり)',
         'datetime': '2024/03/18 12:00',
         'content': 'これは自分の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
-        'isOwn': true,
       },
       {
+        'userID': '12345',
         'username': '自分の投稿 (写真なし)',
         'datetime': '2024/03/18 12:30',
         'content': 'これは自分の投稿で、画像がありません。',
         'image': null,
-        'isOwn': true,
       },
       {
+        'userID': '1',
         'username': '他人の投稿 (写真あり)',
         'datetime': '2024/03/18 13:00',
         'content': 'これは他人の投稿で、画像があります。',
         'image': 'assets/images/FlyedSawagani.png',
-        'isOwn': false,
       },
       {
+        'userID': '1',
         'username': '他人の投稿 (写真なし)',
         'datetime': '2024/03/18 14:00',
         'content': 'これは他人の投稿で、画像がありません。',
         'image': null,
-        'isOwn': false,
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真あり)',
+        'datetime': '2024/03/18 12:00',
+        'content': 'これは自分の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真なし)',
+        'datetime': '2024/03/18 12:30',
+        'content': 'これは自分の投稿で、画像がありません。',
+        'image': null,
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真あり)',
+        'datetime': '2024/03/18 13:00',
+        'content': 'これは他人の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真なし)',
+        'datetime': '2024/03/18 14:00',
+        'content': 'これは他人の投稿で、画像がありません。',
+        'image': null,
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真あり)',
+        'datetime': '2024/03/18 12:00',
+        'content': 'これは自分の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真なし)',
+        'datetime': '2024/03/18 12:30',
+        'content': 'これは自分の投稿で、画像がありません。',
+        'image': null,
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真あり)',
+        'datetime': '2024/03/18 13:00',
+        'content': 'これは他人の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真なし)',
+        'datetime': '2024/03/18 14:00',
+        'content': 'これは他人の投稿で、画像がありません。',
+        'image': null,
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真あり)',
+        'datetime': '2024/03/18 12:00',
+        'content': 'これは自分の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '12345',
+        'username': '自分の投稿 (写真なし)',
+        'datetime': '2024/03/18 12:30',
+        'content': 'これは自分の投稿で、画像がありません。',
+        'image': null,
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真あり)',
+        'datetime': '2024/03/18 13:00',
+        'content': 'これは他人の投稿で、画像があります。',
+        'image': 'assets/images/FlyedSawagani.png',
+      },
+      {
+        'userID': '1',
+        'username': '他人の投稿 (写真なし)',
+        'datetime': '2024/03/18 14:00',
+        'content': 'これは他人の投稿で、画像がありません。',
+        'image': null,
       },
     ];
 
@@ -88,51 +282,12 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
           minLines: isTextFieldActive ? 3 : 1,
           maxLines: null,
           decoration: InputDecoration(
-            suffixIcon: isTextFieldActive // フォーカスがある時のみ表示
-                ? Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: SizedBox(
-                      width: 70,
-                      height: 70,
-                      child: FilledButton(
-                        onPressed: () {
-                          print('表示ボタンが押されました');
-                        },
-                        style: FilledButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: AppColors.gray4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            side: const BorderSide(color: AppColors.gray3),
-                          ),
-                        ),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.photo_camera,
-                              color: AppColors.gray2,
-                              size: 24,
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              '写真をのせる',
-                              style: TextStyle(
-                                fontFamily: 'NotoSansJP',
-                                fontSize: 10,
-                                color: AppColors.gray2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : null, // フォーカスがない時は `suffixIcon` を非表示
+            suffixIcon: isTextFieldActive ? _buildImageButton() : null,
             hintText: 'コメントする...',
             hintStyle: const TextStyle(color: AppColors.gray3),
             filled: true,
             fillColor: AppColors.white,
+            hoverColor: AppColors.white, // ホバー時の色変更を無効化
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.gray3),
@@ -156,8 +311,8 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             FilledButton(
               onPressed: () {
                 print('キャンセル');
-                // 入力をクリア
-                myController.clear();
+                myController.clear(); // 入力をクリア
+                _selectedImage = null; // 画像をクリア
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.white, // 背景色
@@ -181,8 +336,22 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 print('コメントを投稿');
                 comment = myController.text;
                 print(comment);
-                // 入力をクリア
-                myController.clear();
+                //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                // API繋ぎ込みで修正が必要 (コメントの投稿)
+                //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                final uploadData = [
+                  {
+                    'userID': '12345',
+                    'username': 'ユーザー名',
+                    'datetime': '2024/03/18 12:00',
+                    'content': comment,
+                    'image':
+                        _selectedImage != null ? _selectedImage!.path : null,
+                  }, // アップロードするデータ
+                ];
+
+                myController.clear(); // 入力をクリア
+                _selectedImage = null; // 画像をクリア
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.green1, // 背景色
@@ -218,6 +387,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(14),
                     child: Image.asset(
+                      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                      // API繋ぎ込みで修正が必要　　アイコンの表示
+                      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                       'assets/images/FlyedSawagani.png',
                       width: 28,
                       height: 28,
@@ -248,7 +420,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                 ],
                               ),
                             ),
-                            if (comment['isOwn'] == true)
+                            if (comment['userID'] == '12345') //ユーザーが自分自身かどうか判定
                               const Padding(
                                 padding: EdgeInsets.all(2),
                                 child: Icon(Icons.more_horiz, size: 16),

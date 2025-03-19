@@ -1,4 +1,6 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_component.dart';
+import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,43 +30,42 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        leading: Padding(
-          padding: const EdgeInsets.all(12),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, size: 24),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: IconButton(
-              icon: const Icon(Icons.edit, size: 24),
-              onPressed: () {},
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: AppColors.white,
-        child: Column(
-          children: [
-            AspectRatio(
-              aspectRatio: 393 / 351,
-              child: Image.asset(
-                'assets/images/FlyedSawagani.png',
-                fit: BoxFit.cover,
+      backgroundColor: AppColors.white,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            backgroundColor: AppColors.white,
+            pinned: true,
+            expandedHeight: 300, // 画像の高さ
+            flexibleSpace: FlexibleSpaceBar(
+              background: AspectRatio(
+                aspectRatio: 393 / 351,
+                child: Image.asset(
+                  'assets/images/FlyedSawagani.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 24,
-                bottom: 4,
+            leading: Padding(
+              padding: const EdgeInsets.all(12),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, size: 24),
+                onPressed: () => Navigator.pop(context),
               ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: IconButton(
+                  icon: const Icon(Icons.edit, size: 24),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -115,7 +116,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                   ),
                   const SizedBox(height: 12),
                   Container(
-                    width: double.infinity, // 横幅いっぱい
+                    width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppColors.green3,
@@ -137,13 +138,11 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                 ],
               ),
             ),
-            Theme(
-              data: Theme.of(context).copyWith(
-                tabBarTheme: const TabBarTheme(
-                  dividerColor: AppColors.green2, // デフォルトのDividerの色を変更
-                ),
-              ),
-              child: TabBar(
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _TabBarDelegate(
+              TabBar(
                 controller: _tabController,
                 labelColor: AppColors.green1,
                 unselectedLabelColor: AppColors.green1_50,
@@ -152,7 +151,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                   borderSide: BorderSide(
                     color: AppColors.green1,
                     width: 3,
-                  ), // アクティブなタブのアンダーバーの太さを2px
+                  ),
                 ),
                 tabs: const [
                   Tab(text: '作り方'),
@@ -160,15 +159,13 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                 ],
               ),
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [
-                  RecipeStepsComponent(),
-                  CommentsComponent(),
-                ],
-              ),
-            ),
+          ),
+        ],
+        body: TabBarView(
+          controller: _tabController,
+          children: const [
+            RecipeStepsComponent(),
+            RecipeCommentsComponent(),
           ],
         ),
       ),
@@ -176,20 +173,27 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
   }
 }
 
-class RecipeStepsComponent extends StatelessWidget {
-  const RecipeStepsComponent({super.key});
+/// タブを固定するためのカスタム `SliverPersistentHeaderDelegate`
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar _tabBar;
+  _TabBarDelegate(this._tabBar);
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('作り方の内容'));
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: AppColors.white,
+      child: _tabBar,
+    );
   }
-}
-
-class CommentsComponent extends StatelessWidget {
-  const CommentsComponent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('コメントの内容'));
+  bool shouldRebuild(_TabBarDelegate oldDelegate) {
+    return false;
   }
 }

@@ -6,24 +6,29 @@ class RecipeStepsComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildIngredientsSection(),
-          const SizedBox(height: 48),
-          _buildHarvestingMethodsSection(),
-          const SizedBox(height: 48),
-          _buildCookingMethodsSection(),
-          const SizedBox(height: 48),
-          _buildTipsSection(),
-          const SizedBox(height: 48),
-          _buildEatReportSection(),
-          const SizedBox(height: 48),
-          _buildAICommentSection(),
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                _buildIngredientsSection(),
+                const SizedBox(height: 48),
+                _buildHarvestingMethodsSection(),
+                const SizedBox(height: 48),
+                _buildCookingMethodsSection(),
+                const SizedBox(height: 48),
+                _buildTipsSection(),
+                const SizedBox(height: 48),
+                _buildEatReportSection(),
+                const SizedBox(height: 48),
+                _buildAICommentSection(),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
