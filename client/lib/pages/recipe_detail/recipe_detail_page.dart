@@ -221,8 +221,8 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
 
 /// タブを固定するためのカスタム `SliverPersistentHeaderDelegate`
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
   _TabBarDelegate(this._tabBar);
+  final TabBar _tabBar;
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
