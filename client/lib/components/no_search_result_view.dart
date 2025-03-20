@@ -11,8 +11,8 @@ class NoSearchResultView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: AppColors.background, // 背景色をAppColors.backgroundに設定
-      padding: const EdgeInsets.symmetric(horizontal: 16), // 左右に余白を設定
+      color: AppColors.background,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Expanded(
@@ -20,9 +20,9 @@ class NoSearchResultView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  'assets/images/Spider.svg', // 適切なファイルパスを指定
+                  'assets/images/Spider.svg',
                 ),
-                const SizedBox(height: 32), // SVG画像とテキストの間に32pxの余白
+                const SizedBox(height: 32),
                 Container(
                   child: Column(
                     children: [
@@ -30,7 +30,7 @@ class NoSearchResultView extends StatelessWidget {
                         '検索結果 0件',
                         style: context.textTheme.bodyLargeBold,
                       ),
-                      const SizedBox(height: 8), // 8pxの余白
+                      const SizedBox(height: 8),
                       Text(
                         'レシピが見つかりませんでした。\nキーワードを変えて検索してみて下さい。',
                         textAlign: TextAlign.center,
