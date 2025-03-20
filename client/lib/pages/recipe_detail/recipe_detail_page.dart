@@ -15,7 +15,7 @@ class RecipeDetailPage extends ConsumerStatefulWidget {
 
 class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  late final TabController _tabController;
   bool _isLiked = false;
 
   @override
