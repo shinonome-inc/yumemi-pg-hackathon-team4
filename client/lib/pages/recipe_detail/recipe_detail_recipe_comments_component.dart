@@ -309,72 +309,60 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
           ),
         ),
         const SizedBox(height: 16),
-        // if (isTextFieldActive)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FilledButton(
-              onPressed: () {
-                print('キャンセル');
-                myController.clear(); // 入力をクリア
-                _selectedImage = null; // 画像をクリア
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.white, // 背景色
-                foregroundColor: AppColors.gray2, // 文字色
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
+        SizedBox(
+          height: isTextFieldActive ? 52 : 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FilledButton(
+                onPressed: () {
+                  print('キャンセル');
+                  myController.clear();
+                  _selectedImage = null;
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.white,
+                  foregroundColor: AppColors.gray2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  fixedSize: const Size(100, 36),
+                  padding: EdgeInsets.zero,
                 ),
-                fixedSize: const Size(100, 36),
-                padding: EdgeInsets.zero, // 余白をなくす
-              ),
-              child: Text(
-                'キャンセル',
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: AppColors.gray2,
-                ),
-              ),
-            ),
-            const SizedBox(width: 4),
-            FilledButton(
-              onPressed: () {
-                print('コメントを投稿');
-                comment = myController.text;
-                print(comment);
-                //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                // API繋ぎ込みで修正が必要 (コメントの投稿)
-                //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                final uploadData = [
-                  {
-                    'userID': '12345',
-                    'username': 'ユーザー名',
-                    'datetime': '2024/03/18 12:00',
-                    'content': comment,
-                    'image':
-                        _selectedImage != null ? _selectedImage!.path : null,
-                  }, // アップロードするデータ
-                ];
-
-                myController.clear(); // 入力をクリア
-                _selectedImage = null; // 画像をクリア
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.green1, // 背景色
-                foregroundColor: AppColors.white, // 文字色
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                fixedSize: const Size(100, 36),
-                padding: EdgeInsets.zero, // 余白をなくす
-              ),
-              child: Text(
-                'コメント',
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: AppColors.white,
+                child: Text(
+                  'キャンセル',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: AppColors.gray2,
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 4),
+              FilledButton(
+                onPressed: () {
+                  print('コメントを投稿');
+                  comment = myController.text;
+                  print(comment);
+                  myController.clear();
+                  _selectedImage = null;
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.green1,
+                  foregroundColor: AppColors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  fixedSize: const Size(100, 36),
+                  padding: EdgeInsets.zero,
+                ),
+                child: Text(
+                  'コメント',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
         Column(
