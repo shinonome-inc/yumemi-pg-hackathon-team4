@@ -26,8 +26,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     super.initState();
     _focusNode.addListener(() {
       setState(() {
-        isTextFieldActive = _focusNode.hasFocus;
-        // print(isTextFieldActive);
+        isTextFieldActive = _focusNode.hasFocus; // フォーカスがあるかどうかを判定
       });
     });
   }
@@ -57,7 +56,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
       context: context,
       builder: (context) {
         return Container(
-          color: AppColors.white, // 背景色を指定
+          color: AppColors.white,
           child: Wrap(
             children: [
               ListTile(
@@ -97,15 +96,125 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed([_buildComment()]),
+    return Column(
+      children: [
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                sliver: SliverList(
+                  delegate:
+                      SliverChildListDelegate.fixed([_buildCommentList()]),
+                ),
+              ),
+            ],
           ),
         ),
+        _buildCommentInput(),
       ],
+    );
+  }
+
+  Widget _buildCommentInput() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        border: Border(
+          top: BorderSide(color: AppColors.gray3),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: myController,
+            focusNode: _focusNode,
+            minLines: isTextFieldActive ? 3 : 1,
+            maxLines: null,
+            decoration: InputDecoration(
+              suffixIcon: isTextFieldActive ? _buildImageButton() : null,
+              hintText: 'コメントする...',
+              hintStyle: context.textTheme.labelLarge?.copyWith(
+                color: AppColors.gray3,
+              ),
+              filled: true,
+              fillColor: AppColors.white,
+              hoverColor: AppColors.white, // ホバー時の色変更を無効化
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.gray3),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.green1),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              isDense: true,
+            ),
+            cursorColor: AppColors.green1,
+            style: context.textTheme.labelLarge?.copyWith(
+              color: AppColors.gray1,
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: isTextFieldActive ? 52 : 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FilledButton(
+                  onPressed: () {
+                    myController.clear();
+                    _selectedImage = null;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.white,
+                    foregroundColor: AppColors.gray2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    fixedSize: const Size(100, 36),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: Text(
+                    'キャンセル',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: AppColors.gray2,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                FilledButton(
+                  onPressed: () {
+                    comment = myController.text;
+                    myController.clear();
+                    _selectedImage = null;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.green1,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    fixedSize: const Size(100, 36),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: Text(
+                    'コメント',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -123,7 +232,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             border: Border.all(color: AppColors.gray3),
             image: _selectedImage != null
                 ? DecorationImage(
-                    image: NetworkImage(_selectedImage!.path), // ✅ Web でも動作可能
+                    image: NetworkImage(
+                      _selectedImage!.path,
+                    ), // Web でも動作可能のため，NetworkImageを使用
                     fit: BoxFit.cover,
                   )
                 : null,
@@ -153,7 +264,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     );
   }
 
-  Widget _buildComment() {
+  Widget _buildCommentList() {
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // API繋ぎ込みで修正が必要 (コメントのデータ取得)
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,94 +388,6 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
       children: [
         _buildTitle('コメント', '(201)', context),
         const SizedBox(height: 16),
-        TextField(
-          controller: myController,
-          focusNode: _focusNode,
-          minLines: isTextFieldActive ? 3 : 1,
-          maxLines: null,
-          decoration: InputDecoration(
-            suffixIcon: isTextFieldActive ? _buildImageButton() : null,
-            hintText: 'コメントする...',
-            hintStyle: context.textTheme.labelLarge?.copyWith(
-              color: AppColors.gray3,
-            ),
-            filled: true,
-            fillColor: AppColors.white,
-            hoverColor: AppColors.white, // ホバー時の色変更を無効化
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.gray3),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.green1),
-            ),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-            isDense: true,
-          ),
-          cursorColor: AppColors.green1,
-          style: context.textTheme.labelLarge?.copyWith(
-            color: AppColors.gray1,
-          ),
-        ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: isTextFieldActive ? 52 : 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FilledButton(
-                onPressed: () {
-                  print('キャンセル');
-                  myController.clear();
-                  _selectedImage = null;
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.white,
-                  foregroundColor: AppColors.gray2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  fixedSize: const Size(100, 36),
-                  padding: EdgeInsets.zero,
-                ),
-                child: Text(
-                  'キャンセル',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: AppColors.gray2,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 4),
-              FilledButton(
-                onPressed: () {
-                  print('コメントを投稿');
-                  comment = myController.text;
-                  print(comment);
-                  myController.clear();
-                  _selectedImage = null;
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.green1,
-                  foregroundColor: AppColors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  fixedSize: const Size(100, 36),
-                  padding: EdgeInsets.zero,
-                ),
-                child: Text(
-                  'コメント',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
         Column(
           children: comments.map((comment) {
             return Container(
@@ -426,9 +449,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                   onPressed: () {
                                     print('Click');
                                   },
-                                  padding: EdgeInsets.zero, // アイコンの余白をなくす
-                                  constraints:
-                                      const BoxConstraints(), // サイズ制約を解除
+                                  padding: EdgeInsets.zero,
                                 ),
                               ),
                           ],
