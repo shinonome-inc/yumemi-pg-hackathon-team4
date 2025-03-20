@@ -42,17 +42,13 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
-        // print("pickedFile.name:${pickedFile.name}"); //元のファイル名
-        // final uuid = const Uuid().v4();
-        // final extension = pickedFile.name.split('.').last;
-        // final fileName = '$uuid.$extension'; // ファイル名をUUIDに変更し，拡張子を下のファイルから取得.
         _selectedImage = File(pickedFile.path);
       });
     }
   }
 
   void _showImagePickerDialog() {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return Container(
@@ -446,9 +442,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                 padding: const EdgeInsets.all(2),
                                 child: IconButton(
                                   icon: const Icon(Icons.more_horiz, size: 16),
-                                  onPressed: () {
-                                    print('Click');
-                                  },
+                                  onPressed: () {},
                                   padding: EdgeInsets.zero,
                                 ),
                               ),
