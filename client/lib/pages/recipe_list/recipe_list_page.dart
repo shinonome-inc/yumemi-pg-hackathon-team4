@@ -132,6 +132,7 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
                       child: RecipeItem(
                         title: recipe.title,
                         description: recipe.description,
+                        userImageUrl: recipe.user.imageUrl,
                         userName: recipe.user.name,
                         likes: recipe.likesCounts,
                         comments: recipe.comments.length,

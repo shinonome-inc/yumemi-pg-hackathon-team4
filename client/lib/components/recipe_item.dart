@@ -8,6 +8,7 @@ class RecipeItem extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
+    required this.userImageUrl,
     required this.userName,
     required this.likes,
     required this.comments,
@@ -16,10 +17,11 @@ class RecipeItem extends StatelessWidget {
 
   final String title;
   final String description;
+  final String userImageUrl;
   final String userName;
   final int likes;
   final int comments;
-  static const String thumbnailUrl = 'https://picsum.photos/id/292/160';
+  // final String thumbnailUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,8 @@ class RecipeItem extends StatelessWidget {
         child: Row(
           children: [
             // 画像部分
-            Image.network(
-              thumbnailUrl,
+            Image.asset(
+              'assets/images/FlyedSawagani.png',
               width: 160,
               height: 120,
               fit: BoxFit.cover,
@@ -65,8 +67,13 @@ class RecipeItem extends StatelessWidget {
                       ),
                       const Spacer(),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        spacing: 4,
                         children: [
+                          const CircleAvatar(
+                            backgroundColor: AppColors.gray3,
+                            // backgroundImage: NetworkImage(userImageUrl),
+                            radius: 7,
+                          ),
                           Text(
                             userName,
                             style: context.textTheme.labelSmall,
@@ -77,18 +84,16 @@ class RecipeItem extends StatelessWidget {
                             size: 12,
                             color: AppColors.gray1,
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             '$likes',
                             style: context.textTheme.labelSmallBold,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 4),
                           const Icon(
                             Icons.chat_bubble_outline,
                             size: 12,
                             color: AppColors.gray1,
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             '$comments',
                             style: context.textTheme.labelSmallBold,
