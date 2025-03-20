@@ -13,7 +13,6 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tips = models.TextField(blank=True)
     AI_comment = models.TextField(blank=True)
-   
 
 
 class Ingredient(models.Model):

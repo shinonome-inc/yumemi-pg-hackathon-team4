@@ -1,14 +1,19 @@
-
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
+
 class UserManager(BaseUserManager):
-    def create_user(self, email, firebase_uid=None, username="", password=None, **extra_fields):
+    def create_user(
+        self, email, firebase_uid=None, username="", password=None, **extra_fields
+    ):
         if not email:
             raise ValueError("Email is required")
         email = self.normalize_email(email)
-        user = self.model(email=email, firebase_uid=firebase_uid, username=username, **extra_fields)
-        
+        user = self.model(
+            email=email, firebase_uid=firebase_uid, username=username, **extra_fields
+        )
+
         # Firebase で認証するので password は不要
         if password:
             user.set_password(password)
@@ -19,7 +24,10 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-        return self.create_user(email, username="admin", password=password, **extra_fields)
+        return self.create_user(
+            email, username="admin", password=password, **extra_fields
+        )
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -32,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Firebase のユーザー ID を保存
     firebase_uid = models.CharField(max_length=255, unique=True, blank=True, null=True)
-    
+
     objects = UserManager()
 
     # Django の認証用設定
