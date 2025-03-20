@@ -156,7 +156,6 @@ class _TopPageState extends ConsumerState<UserPage> {
                       Row(
                         textBaseline: TextBaseline.alphabetic,
                         crossAxisAlignment: CrossAxisAlignment.baseline,
-                        // spacing: ,
                         children: [
                           Text(
                             'いいねしたレシピ',
