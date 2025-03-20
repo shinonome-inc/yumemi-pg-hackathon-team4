@@ -4,7 +4,6 @@ import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:uuid/uuid.dart';
 
 class RecipeCommentsComponent extends StatefulWidget {
   const RecipeCommentsComponent({super.key});
