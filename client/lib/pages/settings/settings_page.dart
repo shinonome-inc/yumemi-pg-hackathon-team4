@@ -17,39 +17,35 @@ class _TopPageState extends ConsumerState<SettingsPage> {
     final package = AppInfo.of(context).package;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white, // 白背景
+        backgroundColor: AppColors.white,
         title: Text(
           '設定',
           style: context.textTheme.titleLarge,
         ),
         leading: IconButton(
-          icon:
-              const Icon(Icons.menu, color: AppColors.gray1), // ハンバーガーメニューアイコン
-          onPressed: () {
-            // ハンバーガーメニューのアクション
-          },
+          icon: const Icon(Icons.menu, color: AppColors.gray1),
+          onPressed: () {},
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8), // アイコンの周りに8pxの余白
+            padding: const EdgeInsets.all(8),
             child: Container(
-              padding: const EdgeInsets.all(8), // アイコン自体のパディング
+              padding: const EdgeInsets.all(8),
               child: const Icon(
-                Icons.account_circle, // ユーザーアイコン
-                size: 24, // アイコンの大きさ
-                color: Colors.black, // アイコンの色
+                Icons.account_circle,
+                size: 24,
+                color: Colors.black,
               ),
             ),
           ),
         ],
       ),
       body: Container(
-        color: AppColors.background, // 背景色を灰色に
+        color: AppColors.background,
         child: Column(
           children: [
             Column(
               children: [
-                // アプリ情報の上に32pxの余白を追加
                 const SizedBox(height: 32),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -60,9 +56,9 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                     children: [
                       const Icon(
                         Icons.info_outline,
-                        size: 24, // 注意アイコンの大きさ
+                        size: 24,
                       ),
-                      const SizedBox(width: 8), // アイコンとテキストの間にスペース
+                      const SizedBox(width: 8),
                       Text(
                         'アプリ情報',
                         style: context.textTheme.bodyMedium,
@@ -70,8 +66,7 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16), // 利用規約と間にスペースを追加
-
+                const SizedBox(height: 16),
                 ListTile(
                   title: Text(
                     '利用規約',
@@ -79,14 +74,12 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
-                  ), // パディングの設定
+                  ),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    size: 24, // 矢印アイコンの大きさ
+                    size: 24,
                   ),
-                  onTap: () {
-                    // 利用規約画面に遷移
-                  },
+                  onTap: () {},
                 ),
                 ListTile(
                   title: Text(
@@ -95,47 +88,44 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
-                  ), // パディングの設定
+                  ),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    size: 24, // 矢印アイコンの大きさ
+                    size: 24,
                   ),
-                  onTap: () {
-                    // プライバシーポリシー画面に遷移
-                  },
+                  onTap: () {},
                 ),
-                // アプリバージョンのListTile
                 ListTile(
                   contentPadding: const EdgeInsets.only(
                     left: 16,
                     right: 24,
-                  ), // 上下8px、左右16px（右24px）のパディング
+                  ),
                   title: Text(
                     'アプリバージョン',
                     style: context.textTheme.bodyMedium,
                   ),
                   trailing: Text(
-                    'v.${package.versionWithoutBuild}', // 右端に表示されるアプリバージョン
+                    'v.${package.versionWithoutBuild}',
                     style: context.textTheme.bodyMedium,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 40), // アプリ情報とログアウト間に16pxの余白を追加
+            const SizedBox(height: 40),
             Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16,
                     right: 16,
-                  ), // 上に32pxの余白
+                  ),
                   child: Row(
                     children: [
                       const Icon(
                         Icons.person_outline,
-                        size: 24, // 注意アイコンの大きさ
+                        size: 24,
                       ),
-                      const SizedBox(width: 8), // アイコンとテキストの間にスペース
+                      const SizedBox(width: 8),
                       Text(
                         'アカウント',
                         style: context.textTheme.bodyMedium,
@@ -143,8 +133,7 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16), // 利用規約と間にスペースを追加
-
+                const SizedBox(height: 16),
                 ListTile(
                   title: Text(
                     'ログアウト',
@@ -152,14 +141,12 @@ class _TopPageState extends ConsumerState<SettingsPage> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
-                  ), // パディングの設定
+                  ),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    size: 24, // 矢印アイコンの大きさ
+                    size: 24,
                   ),
-                  onTap: () {
-                    // 利用規約画面に遷移
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
