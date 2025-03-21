@@ -186,6 +186,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 const SizedBox(width: 4),
                 FilledButton(
                   onPressed: () {
+                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    // API繋ぎ込みで修正が必要　　コメントのデータ送信
+                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     comment = myController.text;
                     myController.clear();
                     _selectedImage = null;
