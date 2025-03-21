@@ -118,11 +118,14 @@ class RecipeStepsComponent extends StatelessWidget {
           ),
           child: Column(
             children: List.generate(ingredients.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Column(
-                  children: [
-                    Row(
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 9.5,
+                    ),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Expanded(
@@ -143,13 +146,17 @@ class RecipeStepsComponent extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (index < ingredients.length - 1)
-                      const Divider(
+                  ),
+                  if (index < ingredients.length - 1)
+                    const Padding(
+                      padding: EdgeInsets.zero,
+                      child: Divider(
                         color: AppColors.gray4,
                         thickness: 1,
+                        height: 1,
                       ),
-                  ],
-                ),
+                    ),
+                ],
               );
             }),
           ),
@@ -166,7 +173,7 @@ class RecipeStepsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('採集方法', '', context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Column(
           children: harvestingMethods.map((method) {
             return Container(
@@ -236,7 +243,7 @@ class RecipeStepsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('料理方法', '', context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Column(
           children: cookingMethods.map((method) {
             return Container(
@@ -303,7 +310,7 @@ class RecipeStepsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('コツ・ポイント', '', context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Text(
           tips,
           style: context.textTheme.bodyLarge?.copyWith(
@@ -319,7 +326,7 @@ class RecipeStepsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('食レポ', '', context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Text(
           eatReport,
           style: context.textTheme.bodyLarge?.copyWith(
@@ -335,7 +342,7 @@ class RecipeStepsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('AIの補足コメント', '', context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Text(
           aiComment,
           style: context.textTheme.bodyLarge?.copyWith(
