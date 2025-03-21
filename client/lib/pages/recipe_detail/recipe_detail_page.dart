@@ -50,38 +50,36 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
       backgroundColor: AppColors.white,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            sliver: SliverAppBar(
-              surfaceTintColor: AppColors.white,
-              backgroundColor: AppColors.white,
-              pinned: true,
-              leading: IconButton(
-                icon: const Icon(Icons.chevron_left, size: 24), // アイコンサイズ24px
-                iconSize: 24, // 念のため明示
-                onPressed: () => Navigator.pop(context),
-                padding: EdgeInsets.zero, // パディングは0
-                constraints: const BoxConstraints(
-                  minWidth: 48,
-                  minHeight: 48, // ボタン全体のサイズを48x48に固定
-                ),
+          SliverAppBar(
+            toolbarHeight: 64,
+            surfaceTintColor: AppColors.white,
+            backgroundColor: AppColors.white,
+            pinned: true,
+            leading: IconButton(
+              icon: const Icon(Icons.chevron_left, size: 24), // アイコンサイズ24px
+              iconSize: 24, // 念のため明示
+              onPressed: () => Navigator.pop(context),
+              padding: EdgeInsets.zero, // パディングは0
+              constraints: const BoxConstraints(
+                minWidth: 48,
+                minHeight: 48, // ボタン全体のサイズを48x48に固定
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: GestureDetector(
-                    onTap: () {
-                      // ボタンのアクションを書く
-                    },
-                    child: SvgPicture.asset(
-                      'assets/images/edit.svg',
-                      width: 20,
-                      height: 20,
-                    ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(14),
+                child: GestureDetector(
+                  onTap: () {
+                    // ボタンのアクションを書く
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/edit.svg',
+                    width: 20,
+                    height: 20,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Column(
