@@ -53,16 +53,6 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             surfaceTintColor: AppColors.white,
             backgroundColor: AppColors.white,
             pinned: true,
-            expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              background: AspectRatio(
-                aspectRatio: 393 / 351,
-                child: Image.asset(
-                  apiData['titleImage']!,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             leading: Padding(
               padding: const EdgeInsets.all(14),
               child: IconButton(
@@ -81,101 +71,118 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             ],
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    apiData['recipeTitle']!,
-                    style: context.textTheme.titleLargeBold?.copyWith(
-                      color: AppColors.gray1,
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 393 / 351,
+                  child: Image.asset(
+                    apiData['titleImage']!,
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 12),
-                  Row(
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipOval(
-                        child: Image.asset(
-                          apiData['userIcon']!,
-                          width: 24,
-                          height: 24,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
                       Text(
-                        apiData['userName']!,
-                        style: context.textTheme.bodyMedium?.copyWith(
+                        apiData['recipeTitle']!,
+                        style: context.textTheme.titleLargeBold?.copyWith(
                           color: AppColors.gray1,
                         ),
                       ),
-                      const Spacer(),
-                      OutlinedButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLiked = !_isLiked;
-                          });
-                        },
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              _isLiked ? AppColors.green1 : Colors.transparent,
-                          side: const BorderSide(color: AppColors.green1),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.thumb_up,
-                              size: 20,
-                              color:
-                                  _isLiked ? AppColors.white : AppColors.green1,
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          ClipOval(
+                            child: Image.asset(
+                              apiData['userIcon']!,
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              apiData['likeCount']!,
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: _isLiked
-                                    ? AppColors.white
-                                    : AppColors.green1,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            apiData['userName']!,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.gray1,
+                            ),
+                          ),
+                          const Spacer(),
+                          OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLiked = !_isLiked;
+                              });
+                            },
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: _isLiked
+                                  ? AppColors.green1
+                                  : Colors.transparent,
+                              side: const BorderSide(color: AppColors.green1),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                          ],
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.thumb_up,
+                                  size: 20,
+                                  color: _isLiked
+                                      ? AppColors.white
+                                      : AppColors.green1,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  apiData['likeCount']!,
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    color: _isLiked
+                                        ? AppColors.white
+                                        : AppColors.green1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.green3,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          apiData['comment']!,
+                          style: context.textTheme.titleSmall?.copyWith(
+                            color: AppColors.gray1A80,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '投稿日：${apiData['postDate']!}',
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: AppColors.gray2,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.green3,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      apiData['comment']!,
-                      style: context.textTheme.titleSmall?.copyWith(
-                        color: AppColors.gray1A80,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      '投稿日：${apiData['postDate']!}',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: AppColors.gray2,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           SliverPersistentHeader(
