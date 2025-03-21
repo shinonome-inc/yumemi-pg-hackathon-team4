@@ -11,6 +11,10 @@ class SignUpPage extends ConsumerStatefulWidget {
 class _TopPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('サインアップ画面'),
+      ),
+    );
   }
 }

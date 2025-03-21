@@ -31,7 +31,7 @@ class _TopPageState extends ConsumerState<SamplePage> {
     final state = ref.watch(sampleNotifierProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sample Page'),
+        title: const Text('サンプル画面'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

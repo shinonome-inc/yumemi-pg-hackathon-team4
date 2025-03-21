@@ -11,6 +11,10 @@ class RecipeFormPage extends ConsumerStatefulWidget {
 class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('レシピフォーム画面'),
+      ),
+    );
   }
 }
