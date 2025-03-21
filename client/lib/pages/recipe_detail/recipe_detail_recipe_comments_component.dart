@@ -443,6 +443,10 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                   icon: const Icon(Icons.more_horiz, size: 16),
                                   onPressed: () {},
                                   padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(
+                                    minWidth: 20,
+                                    minHeight: 20,
+                                  ),
                                 ),
                               ),
                           ],
