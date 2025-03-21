@@ -112,6 +112,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     );
   }
 
+// コメント入力欄
   Widget _buildCommentInput() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -137,7 +138,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
               ),
               filled: true,
               fillColor: AppColors.white,
-              hoverColor: AppColors.white, // ホバー時の色変更を無効化
+              hoverColor: AppColors.white,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: AppColors.gray3),
@@ -213,6 +214,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     );
   }
 
+// コメント入力欄内の画像選択ボタン
   Widget _buildImageButton() {
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -259,6 +261,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
     );
   }
 
+// コメントリスト
   Widget _buildCommentList() {
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // API繋ぎ込みで修正が必要 (コメントのデータ取得)
@@ -511,6 +514,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   }
 }
 
+//  タイトル
 Widget _buildTitle(String title, String subtitle, BuildContext context) {
   return Stack(
     children: [

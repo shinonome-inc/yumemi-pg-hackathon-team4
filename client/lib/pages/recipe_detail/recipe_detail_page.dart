@@ -56,13 +56,13 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             backgroundColor: AppColors.white,
             pinned: true,
             leading: IconButton(
-              icon: const Icon(Icons.chevron_left, size: 24), // アイコンサイズ24px
-              iconSize: 24, // 念のため明示
+              icon: const Icon(Icons.chevron_left, size: 24),
+              iconSize: 24,
               onPressed: () => Navigator.pop(context),
-              padding: EdgeInsets.zero, // パディングは0
+              padding: EdgeInsets.zero,
               constraints: const BoxConstraints(
                 minWidth: 48,
-                minHeight: 48, // ボタン全体のサイズを48x48に固定
+                minHeight: 48,
               ),
             ),
             actions: [
