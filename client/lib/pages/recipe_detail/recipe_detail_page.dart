@@ -5,6 +5,7 @@ import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_compone
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 class RecipeDetailPage extends ConsumerStatefulWidget {
   const RecipeDetailPage({super.key});
@@ -49,26 +50,38 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
       backgroundColor: AppColors.white,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            surfaceTintColor: AppColors.white,
-            backgroundColor: AppColors.white,
-            pinned: true,
-            leading: Padding(
-              padding: const EdgeInsets.all(14),
-              child: IconButton(
-                icon: const Icon(Icons.chevron_left, size: 20),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            sliver: SliverAppBar(
+              surfaceTintColor: AppColors.white,
+              backgroundColor: AppColors.white,
+              pinned: true,
+              leading: IconButton(
+                icon: const Icon(Icons.chevron_left, size: 24), // アイコンサイズ24px
+                iconSize: 24, // 念のため明示
                 onPressed: () => Navigator.pop(context),
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(14),
-                child: IconButton(
-                  icon: const Icon(Icons.edit, size: 20),
-                  onPressed: () {},
+                padding: EdgeInsets.zero, // パディングは0
+                constraints: const BoxConstraints(
+                  minWidth: 48,
+                  minHeight: 48, // ボタン全体のサイズを48x48に固定
                 ),
               ),
-            ],
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: GestureDetector(
+                    onTap: () {
+                      // ボタンのアクションを書く
+                    },
+                    child: SvgPicture.asset(
+                      'assets/images/edit.svg',
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -132,12 +145,16 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  Icons.thumb_up,
-                                  size: 20,
-                                  color: _isLiked
-                                      ? AppColors.white
-                                      : AppColors.green1,
+                                SvgPicture.asset(
+                                  'assets/images/thumb_up.svg',
+                                  width: 20,
+                                  height: 20,
+                                  colorFilter: ColorFilter.mode(
+                                    _isLiked
+                                        ? AppColors.white
+                                        : AppColors.green1,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
