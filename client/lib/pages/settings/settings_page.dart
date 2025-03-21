@@ -13,7 +13,7 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _TopPageState extends ConsumerState<SettingsPage> {
   void _onTapSignOut() {
     // TODO: サインアウトの処理を実装する。
-    context.pushReplacement(AppPage.top.path);
+    context.pushReplacement(AppPage.signIn.path);
   }
 
   @override

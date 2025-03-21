@@ -6,7 +6,6 @@ import 'package:client/pages/sample/sample_page.dart';
 import 'package:client/pages/settings/settings_page.dart';
 import 'package:client/pages/sign_in/sign_in_page.dart';
 import 'package:client/pages/sign_up/sign_up_page.dart';
-import 'package:client/pages/top/top_page.dart';
 import 'package:client/pages/user/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
@@ -15,9 +14,6 @@ import 'package:recase/recase.dart';
 enum AppPage {
   /// 認証中ユーザー画面
   currentUser,
-
-  /// トップ画面
-  top,
 
   /// サインイン画面
   signIn,
@@ -49,17 +45,15 @@ enum AppPage {
 
   /// 画面のパスを取得する。
   ///
-  /// トップ画面の場合は'/'、それ以外の画面は'/画面名'を返す。
+  /// サインイン画面の場合は'/'、それ以外の画面は'/画面名'を返す。
   /// パスに含まれる画面名はスネークケースで返される。
-  String get path => this == AppPage.top ? '/' : '/${name.snakeCase}';
+  String get path => this == AppPage.signIn ? '/' : '/${name.snakeCase}';
 
   /// 画面に対応する `Widget` を取得する。
   Widget? get child {
     switch (this) {
       case AppPage.currentUser:
         return const CurrentUserPage();
-      case AppPage.top:
-        return const TopPage();
       case AppPage.signIn:
         return const SignInPage();
       case AppPage.signUp:
