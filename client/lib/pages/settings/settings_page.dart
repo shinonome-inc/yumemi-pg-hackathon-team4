@@ -117,7 +117,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }) {
     return ListTile(
       title: Text(title, style: context.textTheme.bodyMedium),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      contentPadding: trailing != null
+          ? const EdgeInsets.only(left: 16, right: 24)
+          : const EdgeInsets.symmetric(horizontal: 16),
       trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 24),
       onTap: onTap,
     );
