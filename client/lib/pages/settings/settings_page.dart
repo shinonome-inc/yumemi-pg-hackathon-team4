@@ -109,8 +109,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  Widget _settingItem(BuildContext context, String title,
-      {Widget? trailing, VoidCallback? onTap}) {
+  Widget _settingItem(
+    BuildContext context,
+    String title, {
+    Widget? trailing,
+    VoidCallback? onTap,
+  }) {
     return ListTile(
       title: Text(title, style: context.textTheme.bodyMedium),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
