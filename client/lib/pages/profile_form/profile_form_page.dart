@@ -46,7 +46,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           child: Column(
-            spacing: 16,
+            spacing: 12,
             children: [
               Container(
                 width: 56,
@@ -62,20 +62,29 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                 ),
               ),
               TextField(
+                maxLength: 20,
                 decoration: InputDecoration(
                   labelText: '表示名',
                   labelStyle: context.textTheme.titleMediumBold,
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  counterText: '10', // 文字数カウント (未実装)
                 ),
               ),
+              const SizedBox(
+                height: 8,
+              ),
               TextField(
+                maxLength: 100,
+                keyboardType: TextInputType.multiline,
+                minLines: 2,
+                maxLines: null,
                 decoration: InputDecoration(
                   labelText: '自己紹介',
                   labelStyle: context.textTheme.titleMediumBold,
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  counterText: '60',
                 ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
