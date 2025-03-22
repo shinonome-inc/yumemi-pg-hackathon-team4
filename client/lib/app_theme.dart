@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 ThemeData appTheme() {
   return ThemeData(
     fontFamily: FontFamilies.notoSansJP,
-    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.green1),
+    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.green1).copyWith(
+      primary: AppColors.green1,
+    ),
     textTheme: ThemeData.light().textTheme.apply(
           bodyColor: AppColors.gray1, // 文字色（本文）
           displayColor: AppColors.gray1, // 文字色（見出しなど）
