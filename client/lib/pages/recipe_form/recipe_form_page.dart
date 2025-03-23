@@ -227,11 +227,9 @@ class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
                                 },
                                 icon: const Icon(
                                   Icons.add,
-                                  color: AppColors.green1,
                                 ),
                                 label: const Text(
                                   '材料を追加',
-                                  style: TextStyle(color: AppColors.green1),
                                 ),
                               ),
                             ),

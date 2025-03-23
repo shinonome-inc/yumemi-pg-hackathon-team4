@@ -123,11 +123,9 @@ class _StepsItemState extends State<StepsItem> {
             },
             icon: const Icon(
               Icons.add,
-              color: AppColors.green1,
             ),
             label: Text(
               widget.stepType == StepType.gathering ? '採集方法を追加' : '作り方を追加',
-              style: const TextStyle(color: AppColors.green1),
             ),
           ),
         ),
