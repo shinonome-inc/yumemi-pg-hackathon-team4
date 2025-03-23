@@ -17,9 +17,7 @@ Future<void> main() async {
     ProviderScope(
       child: AppInfo(
         data: await AppInfoData.get(),
-        child: const ProviderScope(
-          child: MyApp(),
-        ),
+        child: const MyApp(),
       ),
     ),
   );
