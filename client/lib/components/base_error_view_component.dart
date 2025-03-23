@@ -4,8 +4,8 @@ import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ErrorMessageView extends StatelessWidget {
-  const ErrorMessageView({
+class BaseErrorMessageViewComponent extends StatelessWidget {
+  const BaseErrorMessageViewComponent({
     super.key,
     required this.imagePath,
     required this.title,

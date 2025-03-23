@@ -6,7 +6,7 @@ class NoRecipeExistsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorMessageView(
+    return BaseErrorMessageViewComponent(
       imagePath: 'assets/images/Lizard.svg',
       title: 'まだレシピがありません',
       message: 'まだ誰もレシピを投稿していないみたいです。\n記念すべき最初のレシピを投稿するチャンスです！',

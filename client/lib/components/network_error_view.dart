@@ -6,7 +6,7 @@ class NetworkError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorMessageView(
+    return BaseErrorMessageViewComponent(
       imagePath: 'assets/images/Scorpion.svg',
       title: 'ネットワークエラー',
       message: 'ネットワーク環境の良い場所で\n再度再読み込みを行ってください。',
