@@ -13,6 +13,10 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tips = models.TextField(blank=True)
     AI_comment = models.TextField(blank=True)
+    servings = models.IntegerField(default=1)  # 何人前なのかを示すフィールド
+    flavor_review = models.TextField(blank=True)  # 食レポを追加
+    
+    
 
 
 class Ingredient(models.Model):

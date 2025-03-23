@@ -31,9 +31,9 @@ class RecipeSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True)
     gathering_steps = GatheringStepSerializer(many=True)
     cooking_steps = CookingStepSerializer(many=True)
-    user = UserSerializer(read_only=True)  # Add user field
-    is_liked = serializers.SerializerMethodField()
-    like_count = serializers.SerializerMethodField()
+    user = UserSerializer(read_only=True)
+    liked_by_me = serializers.SerializerMethodField()
+    likes_counts = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -43,17 +43,17 @@ class RecipeSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "user",
-            "is_liked",
-            "like_count",
-        ]  # Make user read-only
+            "liked_by_me",
+            "likes_counts",
+        ]
 
-    def get_is_liked(self, obj):
+    def get_liked_by_me(self, obj):
         request = self.context.get("request")
         if request and request.user.is_authenticated:
             return Like.objects.filter(recipe=obj, user=request.user).exists()
-        return True
+        return False
 
-    def get_like_count(self, obj):
+    def get_likes_counts(self, obj):
         return Like.objects.filter(recipe=obj).count()
 
     def create(self, validated_data):
@@ -61,7 +61,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         gathering_steps_data = validated_data.pop("gathering_steps")
         cooking_steps_data = validated_data.pop("cooking_steps")
 
-        recipe = Recipe.objects.create(**validated_data)  # Remove user
+        recipe = Recipe.objects.create(**validated_data)
 
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
@@ -86,6 +86,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get("description", instance.description)
         instance.tips = validated_data.get("tips", instance.tips)
         instance.AI_comment = validated_data.get("AI_comment", instance.AI_comment)
+        instance.servings = validated_data.get("servings", instance.servings)
+        instance.flavor_review = validated_data.get("flavor_review", instance.flavor_review)
         instance.save()
 
         instance.ingredients.all().delete()
