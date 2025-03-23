@@ -1,3 +1,6 @@
+import 'package:client/components/user_contents.dart';
+import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/mock_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +14,23 @@ class UserPage extends ConsumerStatefulWidget {
 class _TopPageState extends ConsumerState<UserPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        leading:
+            IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_left)),
+      ),
+      body: SafeArea(
+        child: UserContents(
+          username: user1.name,
+          imageUrl: 'https://picsum.photos/200',
+          profileDescription: '自己紹介テキスト',
+          recipes: recipes,
+          likedRecipes: recipes,
+          isCurrentUser: false,
+        ),
+      ),
+    );
   }
 }
