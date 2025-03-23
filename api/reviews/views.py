@@ -8,9 +8,13 @@ from recipes.models import Recipe
 
 from .models import Comment, Like
 from .serializers import CommentSerializer
+from rest_framework.permissions import IsAuthenticated
+from authentication.authentication import FirebaseAuthentication
 
 
 class LikeRecipeView(APIView):
+    authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
+    permission_classes = [IsAuthenticated]
     def post(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user = request.user
@@ -30,6 +34,8 @@ class LikeRecipeView(APIView):
 
 
 class CommentRecipeView(APIView):
+    authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
+    permission_classes = [IsAuthenticated]
     def post(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user = request.user

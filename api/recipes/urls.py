@@ -6,9 +6,7 @@ from .views import (CookingStepViewSet, GatheringStepViewSet,
 
 router = DefaultRouter()
 router.register(r"recipes", RecipeViewSet)
-router.register(r"ingredients", IngredientViewSet)
-router.register(r"gathering-steps", GatheringStepViewSet)
-router.register(r"cooking-steps", CookingStepViewSet)
+
 
 urlpatterns = [
     path("", include(router.urls)),
