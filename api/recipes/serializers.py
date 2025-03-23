@@ -87,7 +87,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.tips = validated_data.get("tips", instance.tips)
         instance.AI_comment = validated_data.get("AI_comment", instance.AI_comment)
         instance.servings = validated_data.get("servings", instance.servings)
-        instance.flavor_review = validated_data.get("flavor_review", instance.flavor_review)
+        instance.flavor_review = validated_data.get(
+            "flavor_review", instance.flavor_review
+        )
         instance.save()
 
         instance.ingredients.all().delete()

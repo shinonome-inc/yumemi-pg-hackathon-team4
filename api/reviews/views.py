@@ -1,20 +1,21 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from authentication.authentication import FirebaseAuthentication
 from recipes.models import Recipe
 
 from .models import Comment, Like
 from .serializers import CommentSerializer
-from rest_framework.permissions import IsAuthenticated
-from authentication.authentication import FirebaseAuthentication
 
 
 class LikeRecipeView(APIView):
     authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
     permission_classes = [IsAuthenticated]
+
     def post(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user = request.user
@@ -36,6 +37,7 @@ class LikeRecipeView(APIView):
 class CommentRecipeView(APIView):
     authentication_classes = [FirebaseAuthentication]  # Firebase 認証を適用
     permission_classes = [IsAuthenticated]
+
     def post(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user = request.user
