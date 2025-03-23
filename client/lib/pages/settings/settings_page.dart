@@ -52,11 +52,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 padding: const EdgeInsets.symmetric(vertical: 32),
                 child: Column(
                   children: [
-                    _sectionTitle(context, Icons.info_outline, 'アプリ情報'),
-                    _settingItem(context, '利用規約', onTap: () {}),
-                    _settingItem(context, 'プライバシーポリシー', onTap: () {}),
-                    _settingItem(
-                      context,
+                    const _SectionTitle(Icons.info_outline, 'アプリ情報'),
+                    _SettingItem('利用規約', onTap: () {}),
+                    _SettingItem('プライバシーポリシー', onTap: () {}),
+                    _SettingItem(
                       'アプリバージョン',
                       trailing: Text(
                         'v.${package.versionWithoutBuild}',
@@ -64,8 +63,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    _sectionTitle(context, Icons.person_outline, 'アカウント'),
-                    _settingItem(context, 'ログアウト', onTap: () {}),
+                    const _SectionTitle(Icons.person_outline, 'アカウント'),
+                    _SettingItem('ログアウト', onTap: () {}),
                   ],
                 ),
               ),
@@ -95,8 +94,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ),
     );
   }
+}
 
-  Widget _sectionTitle(BuildContext context, IconData icon, String title) {
+// 設定タイトルウィジェット
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle(this.icon, this.title);
+  final IconData icon;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -108,13 +115,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ),
     );
   }
+}
 
-  Widget _settingItem(
-    BuildContext context,
-    String title, {
-    Widget? trailing,
-    VoidCallback? onTap,
-  }) {
+// 設定項目ウィジェット
+class _SettingItem extends StatelessWidget {
+  const _SettingItem(
+    this.title, {
+    this.trailing,
+    this.onTap,
+  });
+  final String title;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       title: Text(title, style: context.textTheme.bodyMedium),
       contentPadding: trailing != null
