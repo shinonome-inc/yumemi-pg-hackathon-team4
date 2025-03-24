@@ -1,9 +1,10 @@
+from django.contrib.auth import get_user_model
 from firebase_admin import auth
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class FirebaseAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -22,9 +23,12 @@ class FirebaseAuthentication(BaseAuthentication):
             raise AuthenticationFailed("Invalid Firebase ID token")
 
         # Firebase UID から Django ユーザーを取得 or 作成
-        user, created = User.objects.get_or_create(firebase_uid=firebase_uid, defaults={
-            "email": decoded_token.get("email", ""),
-            "username": decoded_token.get("name", "") or f"user_{firebase_uid[:8]}"
-        })
+        user, created = User.objects.get_or_create(
+            firebase_uid=firebase_uid,
+            defaults={
+                "email": decoded_token.get("email", ""),
+                "username": decoded_token.get("name", "") or f"user_{firebase_uid[:8]}",
+            },
+        )
 
         return (user, None)
