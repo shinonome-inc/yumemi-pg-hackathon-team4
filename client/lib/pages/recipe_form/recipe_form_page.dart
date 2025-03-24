@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_form/recipe_form_steps_input_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RecipeFormPage extends ConsumerStatefulWidget {
   const RecipeFormPage({super.key});
@@ -12,12 +15,79 @@ class RecipeFormPage extends ConsumerStatefulWidget {
   ConsumerState createState() => _RecipeFormPageState();
 }
 
+class RecipeStep {
+  RecipeStep({
+    required this.text,
+    this.image,
+  });
+
+  final String text;
+  File? image;
+}
+
 class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
   final List<Map<String, String>> _ingredients = [
     {'name': '', 'amount': ''},
   ];
-  final List<String> _gatheringSteps = [''];
-  final List<String> _cookingSteps = [''];
+
+  File? _thumbnailImage;
+
+  final List<RecipeStep> _gatheringSteps = [RecipeStep(text: '')];
+  final List<RecipeStep> _cookingSteps = [RecipeStep(text: '')];
+  final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
+
+  // 選択した画像の取得
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _thumbnailImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _showImagePickerDialog() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: AppColors.white,
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('アルバムから選択'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('写真を撮る'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              if (_thumbnailImage != null)
+                ListTile(
+                  leading: const Icon(Icons.delete, color: Colors.red),
+                  title:
+                      const Text('写真を削除', style: TextStyle(color: Colors.red)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _thumbnailImage = null;
+                    });
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,31 +113,42 @@ class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
               child: Column(
                 spacing: 32,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.gray4,
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: AppColors.gray3,
+                  GestureDetector(
+                    onTap: _showImagePickerDialog,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: AppColors.gray4,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: AppColors.gray3),
+                          image: _thumbnailImage != null
+                              ? DecorationImage(
+                                  image: NetworkImage(
+                                    _thumbnailImage!.path,
+                                  ), // Web でも動作可能のため，NetworkImageを使用
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                         ),
-                      ),
-                      child: Column(
-                        spacing: 8,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.camera_alt,
-                            color: AppColors.gray2,
-                            size: 64,
-                          ),
-                          Text(
-                            '料理の写真をのせる',
-                            style: context.textTheme.titleMediumBold,
-                          ),
-                        ],
+                        child: _thumbnailImage == null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.photo_camera,
+                                    color: AppColors.gray2,
+                                    size: 64,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '料理の写真をのせる',
+                                    style: context.textTheme.titleMediumBold,
+                                  ),
+                                ],
+                              )
+                            : null,
                       ),
                     ),
                   ),
