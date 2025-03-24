@@ -17,3 +17,4 @@ local_settings.py
 # その他
 *.DS_Store
 firebase_credentials.json
+terraform-gcp-learning-yo2-firebase-adminsdk-fbsvc-a9e392360f.json

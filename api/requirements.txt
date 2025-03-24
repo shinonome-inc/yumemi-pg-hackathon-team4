@@ -5,6 +5,7 @@ gunicorn
 psycopg2-binary
 dj-database-url
 drf-yasg
+django-cors-headers
 isort
 black
 flake8
