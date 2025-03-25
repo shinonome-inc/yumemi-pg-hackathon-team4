@@ -54,6 +54,7 @@ dependencies:
   path: ^1.8.0
   image_size_getter: ^2.4.0
   firebase_storage: ^12.4.4
+  google_generative_ai: ^0.4.6
 
 dev_dependencies:
   flutter_test:
