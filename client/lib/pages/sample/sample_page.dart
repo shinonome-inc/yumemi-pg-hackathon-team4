@@ -1,10 +1,8 @@
-import 'package:client/constants/mock_data.dart';
 import 'package:client/pages/sample/sample_notifier.dart';
 import 'package:client/pages/sample/sample_recipe_view.dart';
 import 'package:client/pages/sample/sample_sign_in_view.dart';
 import 'package:client/pages/sample/sample_sign_up_view.dart';
 import 'package:client/services/auth_service.dart';
-import 'package:client/services/gemini_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -115,23 +113,6 @@ class _SamplePageState extends ConsumerState<SamplePage> {
                                 const Icon(Icons.drive_folder_upload_outlined),
                           ),
                       ],
-                    ),
-                  ],
-                ),
-                ExpansionTile(
-                  title: const Text('AI Comment Sample'),
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () async {
-                        final inputText = '${recipes.first.toJson()}';
-                        print('input text');
-                        final comment =
-                            await GeminiService.instance.generateMessage(
-                          inputText: inputText,
-                        );
-                        print(comment);
-                      },
-                      child: const Text('コメントを生成'),
                     ),
                   ],
                 ),
