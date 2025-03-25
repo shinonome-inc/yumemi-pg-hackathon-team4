@@ -1,9 +1,11 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class TopPage extends ConsumerStatefulWidget {
   const TopPage({super.key});
@@ -118,7 +120,9 @@ class _TopPageState extends ConsumerState<TopPage> {
                         width: double.infinity,
                         height: 40,
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.push(AppPage.recipeList.path);
+                          },
                           child: const Text('ログイン'),
                         ),
                       ),
@@ -182,7 +186,9 @@ class _TopPageState extends ConsumerState<TopPage> {
                       Container(
                         height: 40,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.push(AppPage.signUp.path);
+                          },
                           child: const Text(
                             '新規登録はこちら',
                             style: TextStyle(

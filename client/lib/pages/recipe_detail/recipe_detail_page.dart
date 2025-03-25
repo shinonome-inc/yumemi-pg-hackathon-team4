@@ -1,14 +1,22 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/models/recipe.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_component.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class RecipeDetailPage extends ConsumerStatefulWidget {
-  const RecipeDetailPage({super.key});
+  const RecipeDetailPage({
+    super.key,
+    required this.recipe,
+  });
+
+  final Recipe recipe;
 
   @override
   ConsumerState createState() => _RecipeDetailPageState();
@@ -58,7 +66,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             leading: IconButton(
               icon: const Icon(Icons.chevron_left, size: 24),
               iconSize: 24,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(
                 minWidth: 48,
@@ -68,14 +76,14 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
             actions: [
               Padding(
                 padding: const EdgeInsets.all(14),
-                child: GestureDetector(
-                  onTap: () {
-                    // ボタンのアクションを書く
+                child: IconButton(
+                  onPressed: () {
+                    // pushだとエラーが出るためgoにしている
+                    context.go(AppPage.recipeForm.path);
                   },
-                  child: SvgPicture.asset(
-                    'assets/images/edit.svg',
-                    width: 20,
-                    height: 20,
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 20,
                   ),
                 ),
               ),
@@ -99,7 +107,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        apiData['recipeTitle']!,
+                        widget.recipe.title,
                         style: context.textTheme.titleLargeBold?.copyWith(
                           color: AppColors.gray1,
                         ),
@@ -107,19 +115,28 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          ClipOval(
-                            child: Image.asset(
-                              apiData['userIcon']!,
-                              width: 24,
-                              height: 24,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            apiData['userName']!,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color: AppColors.gray1,
+                          GestureDetector(
+                            onTap: () {
+                              context.push(AppPage.user.path);
+                            },
+                            child: Row(
+                              spacing: 4,
+                              children: [
+                                ClipOval(
+                                  child: Image.asset(
+                                    apiData['userIcon']!,
+                                    width: 24,
+                                    height: 24,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Text(
+                                  apiData['userName']!,
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.gray1,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const Spacer(),

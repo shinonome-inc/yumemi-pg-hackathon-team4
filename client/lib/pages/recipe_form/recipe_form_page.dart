@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_form/recipe_form_steps_input_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RecipeFormPage extends ConsumerStatefulWidget {
@@ -95,7 +97,10 @@ class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
       backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: AppColors.white,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: const Icon(Icons.close),
+        ),
         title: Text(
           'レシピを書く',
           style: context.textTheme.titleMediumBold,
@@ -394,7 +399,9 @@ class _RecipeFormPageState extends ConsumerState<RecipeFormPage> {
                     width: double.infinity,
                     height: 40,
                     child: FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go(AppPage.recipeList.path);
+                      },
                       child: const Text('レシピを公開する'),
                     ),
                   ),
