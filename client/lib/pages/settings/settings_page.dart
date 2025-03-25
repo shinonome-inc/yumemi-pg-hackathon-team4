@@ -1,4 +1,5 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_info/flutter_app_info.dart';
@@ -54,8 +55,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 child: Column(
                   children: [
                     const _SectionTitle(Icons.info_outline, 'アプリ情報'),
-                    _SettingItem('利用規約', onTap: () {}),
-                    _SettingItem('プライバシーポリシー', onTap: () {}),
+                    _SettingItem(
+                      '利用規約',
+                      onTap: () => context.push(AppPage.termsOfService.path),
+                    ),
+                    _SettingItem(
+                      'プライバシーポリシー',
+                      onTap: () => context.push(AppPage.privacyPolicy.path),
+                    ),
                     _SettingItem(
                       'アプリバージョン',
                       trailing: Text(
