@@ -1,3 +1,5 @@
+import 'package:client/enums/app_contents_type.dart';
+import 'package:client/models/app_content.dart';
 import 'package:client/models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,6 +12,7 @@ enum _CollectionPath {
   likes,
   recipes,
   users,
+  appContents,
 }
 
 /// Firestore によるデータ操作を行うクラスです。
@@ -24,7 +27,7 @@ class FirestoreRepository {
   /// コメント一覧を取得します。
   Future<List<Comment>> getComments() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.comments.name).get();
+        await _firestore.collection(_CollectionPath.comments.name).get();
     return snapshot.docs.map((doc) => Comment.fromJson(doc.data())).toList();
   }
 
@@ -44,7 +47,7 @@ class FirestoreRepository {
   /// 調理手順一覧を取得します。
   Future<List<CookingSteps>> getCookingSteps() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.cookingSteps.name).get();
+        await _firestore.collection(_CollectionPath.cookingSteps.name).get();
     return snapshot.docs
         .map((doc) => CookingSteps.fromJson(doc.data()))
         .toList();
@@ -66,7 +69,7 @@ class FirestoreRepository {
   /// 採取方法一覧を取得します。
   Future<List<GatheringSteps>> getGatheringSteps() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.gatheringSteps.name).get();
+        await _firestore.collection(_CollectionPath.gatheringSteps.name).get();
     return snapshot.docs
         .map((doc) => GatheringSteps.fromJson(doc.data()))
         .toList();
@@ -88,7 +91,7 @@ class FirestoreRepository {
   /// 食材一覧を取得します。
   Future<List<Ingredient>> getIngredients() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.ingredients.name).get();
+        await _firestore.collection(_CollectionPath.ingredients.name).get();
     return snapshot.docs.map((doc) => Ingredient.fromJson(doc.data())).toList();
   }
 
@@ -108,7 +111,7 @@ class FirestoreRepository {
   /// いいね一覧を取得します。
   Future<List<Like>> getLikes() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.likes.name).get();
+        await _firestore.collection(_CollectionPath.likes.name).get();
     return snapshot.docs.map((doc) => Like.fromJson(doc.data())).toList();
   }
 
@@ -136,7 +139,7 @@ class FirestoreRepository {
   /// レシピ一覧を取得します。
   Future<List<Recipe>> getRecipes() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.recipes.name).get();
+        await _firestore.collection(_CollectionPath.recipes.name).get();
     return snapshot.docs.map((doc) => Recipe.fromJson(doc.data())).toList();
   }
 
@@ -180,7 +183,7 @@ class FirestoreRepository {
   /// ユーザー一覧を取得します。
   Future<List<User>> getUsers() async {
     final snapshot =
-    await _firestore.collection(_CollectionPath.users.name).get();
+        await _firestore.collection(_CollectionPath.users.name).get();
     return snapshot.docs.map((doc) => User.fromJson(doc.data())).toList();
   }
 
@@ -203,5 +206,18 @@ class FirestoreRepository {
         .collection(_CollectionPath.users.name)
         .doc(user.id)
         .update(user.toJson());
+  }
+
+  /// 指定したAppContentsTypeのアプリコンテンツを取得します。
+  Future<AppContent> getAppContentByType(AppContentType appContentType) async {
+    final doc = await _firestore
+        .collection(_CollectionPath.appContents.name)
+        .doc(appContentType.name)
+        .get();
+    final data = doc.data();
+    if (data == null) {
+      throw Exception('App Content not found');
+    }
+    return AppContent.fromJson(data);
   }
 }
