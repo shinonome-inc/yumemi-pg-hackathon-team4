@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:client/models/recipe.dart';
 import 'package:client/models/user.dart';
 import 'package:client/pages/sample/sample_state.dart';
 import 'package:client/services/cook_wild_service.dart';
+import 'package:client/services/firebase_storage_service.dart';
+import 'package:client/utis/image_utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'sample_notifier.g.dart';
 
@@ -11,6 +17,8 @@ part 'sample_notifier.g.dart';
 /// 状態を保持し、状態を更新するためのメソッドを提供する。
 @riverpod
 class SampleNotifier extends _$SampleNotifier {
+  final _uuid = const Uuid();
+
   /// 初期状態を構築する。
   @override
   SampleState build() {
@@ -29,7 +37,14 @@ class SampleNotifier extends _$SampleNotifier {
     state = state.copyWith(users: users);
   }
 
+  void setSelectedImage({required File? selectedImage}) {
+    state = state.copyWith(selectedImage: selectedImage);
+  }
+
   Future<void> fetchRecipesAndUsers() async {
+    if (state.isLoading) {
+      return;
+    }
     setIsLoading(isLoading: true);
     try {
       final recipes = await CookWildService.instance.getRecipes();
@@ -41,5 +56,41 @@ class SampleNotifier extends _$SampleNotifier {
     } finally {
       setIsLoading(isLoading: false);
     }
+  }
+
+  Future<void> selectImage() async {
+    if (state.isLoading) {
+      return;
+    }
+    setIsLoading(isLoading: true);
+    try {
+      final pickedImage = await ImageUtil.pickCroppedImage(
+        source: ImageSource.camera,
+      );
+      setSelectedImage(selectedImage: pickedImage);
+    } catch (e) {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
+  }
+
+  Future<void> uploadImage() async {
+    if (state.isLoading || state.selectedImage == null) {
+      return;
+    }
+    final storagePath = 'recipes/${_uuid.v4()}';
+    try {
+      await FirebaseStorageService.instance
+          .put(state.selectedImage!, storagePath);
+    } catch (e) {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
+  }
+
+  void clearImage() {
+    setSelectedImage(selectedImage: null);
   }
 }
