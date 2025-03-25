@@ -1,4 +1,5 @@
 import 'package:client/pages/current_user/current_user_page.dart';
+import 'package:client/pages/privacy_policy_page/privacy_policy_page.dart';
 import 'package:client/pages/profile_form/profile_form_page.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_page.dart';
 import 'package:client/pages/recipe_form/recipe_form_page.dart';
@@ -6,6 +7,7 @@ import 'package:client/pages/recipe_list/recipe_list_page.dart';
 import 'package:client/pages/sample/sample_page.dart';
 import 'package:client/pages/settings/settings_page.dart';
 import 'package:client/pages/sign_up/sign_up_page.dart';
+import 'package:client/pages/terms_of_service_page/terms_of_service_page.dart';
 import 'package:client/pages/top/top_page.dart';
 import 'package:client/pages/user/user_page.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,12 @@ enum AppPage {
   /// ユーザー画面
   user,
 
+  /// プライバシーポリシー画面
+  privacyPolicy,
+
+  /// 利用規約画面
+  termsOfService,
+
   /// サンプル画面
   /// TODO: 本実装とは関係ないため、Flutter初心者組のキャッチアップ完了後に削除する。
   sample;
@@ -71,6 +79,10 @@ enum AppPage {
         return const ProfileFormPage();
       case AppPage.user:
         return const UserPage();
+      case AppPage.privacyPolicy:
+        return const PrivacyPolicyPage();
+      case AppPage.termsOfService:
+        return const TermsOfServicePage();
       case AppPage.sample:
         return const SamplePage();
     }
