@@ -14,6 +14,39 @@ class TopPage extends ConsumerStatefulWidget {
 }
 
 class _TopPageState extends ConsumerState<TopPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _onTapSignInWithEmail() async {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    try {
+      await notifier.signInWithEmail(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+    }
+    // TODO: 画面遷移する。
+  }
+
+  Future<void> _onTapSignInWithGoogle() async {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    try {
+      await notifier.signInWithGoogle();
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+    }
+    // TODO: 画面遷移する。
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(topNotifierProvider);
@@ -77,9 +110,10 @@ class _TopPageState extends ConsumerState<TopPage> {
                         ),
                       ),
                       const SizedBox(height: 36),
-                      const TextField(
+                      TextField(
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'メールアドレス',
                           border: OutlineInputBorder(),
@@ -91,6 +125,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                       ),
                       const SizedBox(height: 24),
                       TextField(
+                        controller: _passwordController,
                         obscureText: state.isObscurePassword,
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
@@ -114,7 +149,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                         width: double.infinity,
                         height: 40,
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: _onTapSignInWithEmail,
                           child: const Text('ログイン'),
                         ),
                       ),
@@ -145,7 +180,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                         width: double.infinity,
                         height: 40,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: _onTapSignInWithGoogle,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
