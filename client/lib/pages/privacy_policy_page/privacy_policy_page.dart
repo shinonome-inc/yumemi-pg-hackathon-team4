@@ -22,7 +22,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         AppContentType.privacyPolicy,
       );
       setState(() {
-        _privacyPolicyText = content.displayText.replaceAll(r'\n', '\n');
+        _privacyPolicyText = content.displayText;
       });
     });
   }
