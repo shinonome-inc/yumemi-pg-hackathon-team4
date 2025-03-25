@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:client/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,6 +13,7 @@ class SampleState with _$SampleState {
     required bool isLoading,
     required List<Recipe> recipes,
     required List<User> users,
+    required File? selectedImage,
   }) = _SampleState;
 }
 
@@ -19,4 +22,5 @@ const SampleState initialSampleState = SampleState(
   isLoading: false,
   recipes: [],
   users: [],
+  selectedImage: null,
 );
