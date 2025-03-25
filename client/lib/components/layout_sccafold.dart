@@ -1,9 +1,9 @@
+import 'package:client/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 /// GoRouterを用いてBottomNavigationBarのitemを表示するためのWidget。
 ///
-/// TODO: UIは仮のものなので、デザイン完成後に修正する。
 class LayoutScaffold extends StatelessWidget {
   const LayoutScaffold({
     required this.navigationShell,
@@ -15,9 +15,9 @@ class LayoutScaffold extends StatelessWidget {
   /// 各タブのUIの情報をリスト化
   static const _tabs = [
     (
-      filled: Icons.library_books,
-      outlined: Icons.library_books_outlined,
-      label: 'レシピ',
+      filled: Icons.home,
+      outlined: Icons.home_outlined,
+      label: 'ホーム',
     ),
     (
       filled: Icons.my_library_add,
@@ -52,6 +52,7 @@ class LayoutScaffold extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        backgroundColor: AppColors.white,
         currentIndex: navigationShell.currentIndex,
         onTap: navigationShell.goBranch,
         items: _buildItems(navigationShell.currentIndex),
