@@ -1,4 +1,5 @@
 import 'package:client/pages/sign_up/sign_up_state.dart';
+import 'package:client/services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up_notifier.g.dart';
@@ -16,5 +17,40 @@ class SignUpNotifier extends _$SignUpNotifier {
 
   void setIsLoading({required bool isLoading}) {
     state = state.copyWith(isLoading: isLoading);
+  }
+
+  void setIsObscurePassword({required bool isObscurePassword}) {
+    state = state.copyWith(isObscurePassword: isObscurePassword);
+  }
+
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    if (state.isLoading) {
+      return;
+    }
+    setIsLoading(isLoading: true);
+    try {
+      await AuthService.instance.signUpWithEmail(email, password);
+    } on Exception {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
+  }
+
+  Future<void> signUpWithGoogle() async {
+    if (state.isLoading) {
+      return;
+    }
+    setIsLoading(isLoading: true);
+    try {
+      await AuthService.instance.signInWithGoogle();
+    } on Exception {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
   }
 }

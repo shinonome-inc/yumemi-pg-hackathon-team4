@@ -1,4 +1,5 @@
 import 'package:client/pages/top/top_state.dart';
+import 'package:client/services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'top_notifier.g.dart';
@@ -16,5 +17,40 @@ class TopNotifier extends _$TopNotifier {
 
   void setIsLoading({required bool isLoading}) {
     state = state.copyWith(isLoading: isLoading);
+  }
+
+  void setIsObscurePassword({required bool isObscurePassword}) {
+    state = state.copyWith(isObscurePassword: isObscurePassword);
+  }
+
+  Future<void> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    if (state.isLoading) {
+      return;
+    }
+    setIsLoading(isLoading: true);
+    try {
+      await AuthService.instance.signInWithEmail(email, password);
+    } on Exception {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    if (state.isLoading) {
+      return;
+    }
+    setIsLoading(isLoading: true);
+    try {
+      await AuthService.instance.signInWithGoogle();
+    } on Exception {
+      // TODO: エラーの処理を追加する。
+    } finally {
+      setIsLoading(isLoading: false);
+    }
   }
 }
