@@ -14,6 +14,39 @@ class SignUpPage extends ConsumerStatefulWidget {
 }
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _onTapSignUpWithEmail() async {
+    final notifier = ref.read(signUpNotifierProvider.notifier);
+    try {
+      await notifier.signUpWithEmail(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+    }
+    // TODO: 画面遷移する。
+  }
+
+  Future<void> _onTapSignInWithGoogle() async {
+    final notifier = ref.read(signUpNotifierProvider.notifier);
+    try {
+      await notifier.signUpWithGoogle();
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+    }
+    // TODO: 画面遷移する。
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(signUpNotifierProvider);
@@ -81,9 +114,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        const TextField(
+                        TextField(
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'メールアドレス',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -95,6 +129,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         ),
                         const SizedBox(height: 24),
                         TextField(
+                          controller: _passwordController,
                           obscureText: state.isObscurePassword,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
@@ -118,7 +153,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           width: double.infinity,
                           height: 40,
                           child: FilledButton(
-                            onPressed: () {},
+                            onPressed: _onTapSignUpWithEmail,
                             child: const Text('新規登録'),
                           ),
                         ),
@@ -149,7 +184,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           width: double.infinity,
                           height: 40,
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: _onTapSignInWithGoogle,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
