@@ -23,6 +23,11 @@ class TopNotifier extends _$TopNotifier {
     state = state.copyWith(isObscurePassword: isObscurePassword);
   }
 
+  /// パスワードの表示・非表示の状態を切り替える。
+  void toggleIsObscurePassword() {
+    setIsObscurePassword(isObscurePassword: !state.isObscurePassword);
+  }
+
   Future<void> signInWithEmail({
     required String email,
     required String password,

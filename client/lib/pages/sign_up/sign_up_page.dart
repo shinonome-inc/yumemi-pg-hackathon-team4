@@ -1,6 +1,7 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/pages/sign_up/sign_up_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,15 +10,14 @@ class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  ConsumerState createState() => _TopPageState();
+  ConsumerState createState() => _SignUpPageState();
 }
 
-class _TopPageState extends ConsumerState<SignUpPage> {
-  // パスワードの表示・非表示を切り替えるためのフラグ
-  bool _isObscure = true;
-
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(signUpNotifierProvider);
+    final notifier = ref.read(signUpNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -95,22 +95,18 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                         ),
                         const SizedBox(height: 24),
                         TextField(
-                          obscureText: _isObscure,
+                          obscureText: state.isObscurePassword,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               // 文字の表示・非表示でアイコンを変える
                               icon: Icon(
-                                _isObscure
+                                state.isObscurePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                                 color: AppColors.gray2,
                               ),
                               // アイコンがタップされたら現在と反対の状態をセットする
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure = !_isObscure;
-                                });
-                              },
+                              onPressed: notifier.toggleIsObscurePassword,
                             ),
                             border: const OutlineInputBorder(),
                             labelText: 'パスワード',
