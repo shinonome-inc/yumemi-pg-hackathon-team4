@@ -68,7 +68,7 @@ class SampleNotifier extends _$SampleNotifier {
         source: ImageSource.camera,
       );
       setSelectedImage(selectedImage: pickedImage);
-    } catch (e) {
+    } on Exception {
       // TODO: エラーの処理を追加する。
     } finally {
       setIsLoading(isLoading: false);
@@ -83,7 +83,7 @@ class SampleNotifier extends _$SampleNotifier {
     try {
       await FirebaseStorageService.instance
           .put(state.selectedImage!, storagePath);
-    } catch (e) {
+    } on Exception {
       // TODO: エラーの処理を追加する。
     } finally {
       setIsLoading(isLoading: false);
