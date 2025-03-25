@@ -78,8 +78,10 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                 padding: const EdgeInsets.all(14),
                 child: IconButton(
                   onPressed: () {
-                    // pushだとエラーが出るためgoにしている
-                    context.go(AppPage.recipeForm.path);
+                    context.push(
+                      AppPage.recipeEditForm.path,
+                      extra: widget.recipe,
+                    );
                   },
                   icon: const Icon(
                     Icons.edit_outlined,
