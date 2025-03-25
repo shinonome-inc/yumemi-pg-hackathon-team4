@@ -1,10 +1,12 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/constants/mock_data.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_list/recipe_list_item_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class RecipeListPage extends ConsumerStatefulWidget {
   const RecipeListPage({super.key});
@@ -129,13 +131,21 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
                     final recipe = recipes[index];
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: RecipeItem(
-                        title: recipe.title,
-                        description: recipe.description,
-                        userImageUrl: recipe.user.imageUrl,
-                        userName: recipe.user.name,
-                        likes: recipe.likesCounts,
-                        comments: recipe.comments.length,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push(
+                            AppPage.recipeDetail.path,
+                            extra: recipe,
+                          );
+                        },
+                        child: RecipeItem(
+                          title: recipe.title,
+                          description: recipe.description,
+                          userImageUrl: recipe.user.imageUrl,
+                          userName: recipe.user.name,
+                          likes: recipe.likesCounts,
+                          comments: recipe.comments.length,
+                        ),
                       ),
                     );
                   },

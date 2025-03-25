@@ -1,9 +1,11 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_info/flutter_app_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -23,8 +25,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         backgroundColor: AppColors.white,
         title: Text('設定', style: context.textTheme.titleLarge),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: AppColors.gray1),
-          onPressed: () {},
+          icon: const Icon(Icons.chevron_left, color: AppColors.gray1),
+          onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
@@ -53,8 +55,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 child: Column(
                   children: [
                     const _SectionTitle(Icons.info_outline, 'アプリ情報'),
-                    _SettingItem('利用規約', onTap: () {}),
-                    _SettingItem('プライバシーポリシー', onTap: () {}),
+                    _SettingItem(
+                      '利用規約',
+                      onTap: () => context.push(AppPage.termsOfService.path),
+                    ),
+                    _SettingItem(
+                      'プライバシーポリシー',
+                      onTap: () => context.push(AppPage.privacyPolicy.path),
+                    ),
                     _SettingItem(
                       'アプリバージョン',
                       trailing: Text(
