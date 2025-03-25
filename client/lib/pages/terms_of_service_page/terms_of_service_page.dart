@@ -1,5 +1,6 @@
 import 'package:client/components/app_content_view.dart';
 import 'package:client/enums/app_contents_type.dart';
+import 'package:client/extensions/app_content_extension.dart';
 import 'package:client/repository/firestore_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
         AppContentType.termsOfService,
       );
       setState(() {
-        _termsOfServiceText = content.text.replaceAll(RegExp(r'\r?\n'), 'fa');
+        _termsOfServiceText = content.displayText;
       });
     });
   }
