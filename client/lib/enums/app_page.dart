@@ -1,7 +1,6 @@
 import 'package:client/pages/current_user/current_user_page.dart';
 import 'package:client/pages/privacy_policy_page/privacy_policy_page.dart';
 import 'package:client/pages/profile_form/profile_form_page.dart';
-import 'package:client/pages/recipe_edit_form.dart/recipe_edit_form_page.dart';
 import 'package:client/pages/recipe_form/recipe_form_page.dart';
 import 'package:client/pages/recipe_list/recipe_list_page.dart';
 import 'package:client/pages/sample/sample_page.dart';
