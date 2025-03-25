@@ -1,4 +1,5 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/sign_up/sign_up_notifier.dart';
@@ -27,8 +28,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       );
     } on Exception {
       // TODO: エラーの際の処理を追加する。
+      return;
     }
-    // TODO: 画面遷移する。
+    await context.push(AppPage.recipeList.path);
   }
 
   Future<void> _onTapSignInWithGoogle() async {
@@ -37,8 +39,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       await notifier.signUpWithGoogle();
     } on Exception {
       // TODO: エラーの際の処理を追加する。
+      return;
     }
-    // TODO: 画面遷移する。
+    await context.push(AppPage.recipeList.path);
   }
 
   @override
