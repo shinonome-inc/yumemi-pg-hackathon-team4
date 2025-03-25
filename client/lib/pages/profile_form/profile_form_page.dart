@@ -1,8 +1,10 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileFormPage extends ConsumerStatefulWidget {
   const ProfileFormPage({super.key});
@@ -20,7 +22,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           icon: const Icon(Icons.close),
         ),
@@ -31,7 +33,9 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              context.go(AppPage.currentUser.path);
+            },
             child: Text(
               '保存',
               style: context.textTheme.labelMediumBold?.copyWith(

@@ -1,8 +1,10 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class UserContents extends StatelessWidget {
   const UserContents({
@@ -67,7 +69,9 @@ class UserContents extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 8),
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push(AppPage.profileForm.path);
+                    },
                     child: const Text('プロフィールを編集'),
                   ),
                 ),
@@ -102,33 +106,40 @@ class UserContents extends StatelessWidget {
                         runSpacing: 20, // 行間のスペース
                         children: recipes
                             .map(
-                              (recipe) => SizedBox(
-                                width: itemWidth, // レシピの幅を設定
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          image: const DecorationImage(
-                                            image: NetworkImage(
-                                              'https://picsum.photos/200/300',
+                              (recipe) => GestureDetector(
+                                onTap: () => context.push(
+                                  AppPage.recipeDetail.path,
+                                  extra: recipe,
+                                ),
+                                child: SizedBox(
+                                  width: itemWidth, // レシピの幅を設定
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            image: const DecorationImage(
+                                              image: NetworkImage(
+                                                'https://picsum.photos/200/300',
+                                              ),
+                                              fit: BoxFit.cover,
                                             ),
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      recipe.title,
-                                      maxLines: 2,
-                                      style: context.textTheme.bodyMedium,
-                                    ),
-                                  ],
+                                      Text(
+                                        recipe.title,
+                                        maxLines: 2,
+                                        style: context.textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             )
@@ -187,34 +198,41 @@ class UserContents extends StatelessWidget {
                         runSpacing: 20, // 行間のスペース
                         children: likedRecipes
                             .map(
-                              (recipe) => SizedBox(
-                                width: itemWidth, // レシピの幅を設定
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          image: const DecorationImage(
-                                            image: NetworkImage(
-                                              'https://picsum.photos/200/300',
+                              (recipe) => GestureDetector(
+                                onTap: () => context.push(
+                                  AppPage.recipeDetail.path,
+                                  extra: recipe,
+                                ),
+                                child: SizedBox(
+                                  width: itemWidth, // レシピの幅を設定
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    spacing: 4,
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            image: const DecorationImage(
+                                              image: NetworkImage(
+                                                'https://picsum.photos/200/300',
+                                              ),
+                                              fit: BoxFit.cover,
                                             ),
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      recipe.title,
-                                      maxLines: 2,
-                                      style: context.textTheme.bodyMedium,
-                                    ),
-                                  ],
+                                      Text(
+                                        recipe.title,
+                                        maxLines: 2,
+                                        style: context.textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             )
