@@ -1,6 +1,5 @@
 import 'package:client/components/user_contents.dart';
 import 'package:client/constants/app_colors.dart';
-import 'package:client/constants/mock_data.dart';
 import 'package:client/models/user.dart';
 import 'package:client/pages/user/user_notifier.dart';
 import 'package:flutter/material.dart';
