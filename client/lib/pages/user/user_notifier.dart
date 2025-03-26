@@ -1,5 +1,4 @@
 import 'package:client/models/recipe.dart';
-import 'package:client/models/user.dart';
 import 'package:client/pages/user/user_state.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

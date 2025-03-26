@@ -1,6 +1,7 @@
 import 'package:client/components/user_contents.dart';
 import 'package:client/constants/app_colors.dart';
 import 'package:client/constants/mock_data.dart';
+import 'package:client/models/user.dart';
 import 'package:client/pages/user/user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,15 @@ class _TopPageState extends ConsumerState<UserPage> {
       ),
       body: SafeArea(
         child: UserContents(
-          user: recipes[0].user,
+          user: recipes.isEmpty
+              ? User(
+                  id: '',
+                  name: '',
+                  imageUrl: '',
+                  profileDescription: '',
+                  createdAt: DateTime.now(),
+                )
+              : recipes[0].user,
           recipes: recipes,
           likedRecipes: recipes,
           isCurrentUser: false,
