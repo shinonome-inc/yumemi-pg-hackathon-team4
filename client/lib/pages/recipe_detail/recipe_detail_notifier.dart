@@ -1,4 +1,7 @@
+import 'package:client/models/recipe.dart';
+import 'package:client/models/user.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_state.dart';
+import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'recipe_detail_notifier.g.dart';
@@ -16,5 +19,13 @@ class RecipeDetailNotifier extends _$RecipeDetailNotifier {
 
   void setIsLoading({required bool isLoading}) {
     state = state.copyWith(isLoading: isLoading);
+  }
+
+  Future<void> addLikeRecipe(Recipe recipe, User user) async {
+    await CookWildService.instance.likeRecipe(recipe, user);
+  }
+
+  Future<void> removeLikeRecipe(Recipe recipe, User user) async {
+    await CookWildService.instance.undoLikeRecipe(recipe, user);
   }
 }
