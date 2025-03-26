@@ -1,6 +1,6 @@
 import 'package:client/components/layout_sccafold.dart';
 import 'package:client/enums/app_page.dart';
-import 'package:client/models/recipe.dart';
+import 'package:client/models/models.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_page.dart';
 import 'package:client/pages/recipe_edit_form.dart/recipe_edit_form_page.dart';
 import 'package:flutter/material.dart';
@@ -45,11 +45,13 @@ final router = GoRouter(
         pageBuilder: (context, state) {
           return MaterialPage(
             key: state.pageKey,
-            child: page == AppPage.recipeDetail
-                ? RecipeDetailPage(recipe: state.extra! as Recipe)
-                : page == AppPage.recipeEditForm
-                    ? RecipeEditFormPage(recipe: state.extra! as Recipe)
-                    : page.child!,
+            child: switch (page) {
+              AppPage.recipeDetail =>
+                RecipeDetailPage(recipe: state.extra! as Recipe),
+              AppPage.recipeEditForm =>
+                RecipeEditFormPage(recipe: state.extra! as Recipe),
+              _ => page.child!,
+            },
           );
         },
       ),

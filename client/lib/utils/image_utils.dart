@@ -9,7 +9,7 @@ class ImageUtil {
   static final _picker = ImagePicker();
 
   /// 画像の取得する。
-  static Future<File?> pickCroppedImage({required ImageSource source}) async {
+  static Future<File?> pickImage({required ImageSource source}) async {
     final pickedImage = await _picker.pickImage(source: source);
     if (pickedImage == null) {
       return null;

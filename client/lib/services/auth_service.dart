@@ -85,4 +85,7 @@ class AuthService {
 
   /// 現在のログインユーザーを取得します。
   User? get currentUser => _auth.currentUser;
+
+  /// ユーザーのログイン状態が保持されているかどうかを判定する。
+  bool get isSignedIn => _auth.currentUser != null;
 }

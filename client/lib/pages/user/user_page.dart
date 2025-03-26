@@ -26,9 +26,7 @@ class _TopPageState extends ConsumerState<UserPage> {
       ),
       body: SafeArea(
         child: UserContents(
-          username: user1.name,
-          imageUrl: 'https://picsum.photos/200',
-          profileDescription: '自己紹介テキスト',
+          user: user1,
           recipes: recipes,
           likedRecipes: recipes,
           isCurrentUser: false,

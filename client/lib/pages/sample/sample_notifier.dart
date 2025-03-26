@@ -5,7 +5,7 @@ import 'package:client/models/user.dart';
 import 'package:client/pages/sample/sample_state.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:client/services/firebase_storage_service.dart';
-import 'package:client/utis/image_utils.dart';
+import 'package:client/utils/image_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -64,7 +64,7 @@ class SampleNotifier extends _$SampleNotifier {
     }
     setIsLoading(isLoading: true);
     try {
-      final pickedImage = await ImageUtil.pickCroppedImage(
+      final pickedImage = await ImageUtil.pickImage(
         source: ImageSource.camera,
       );
       setSelectedImage(selectedImage: pickedImage);
