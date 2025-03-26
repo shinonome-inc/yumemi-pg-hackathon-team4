@@ -8,7 +8,6 @@ import 'package:client/pages/settings/settings_page.dart';
 import 'package:client/pages/sign_up/sign_up_page.dart';
 import 'package:client/pages/terms_of_service_page/terms_of_service_page.dart';
 import 'package:client/pages/top/top_page.dart';
-import 'package:client/pages/user/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 
