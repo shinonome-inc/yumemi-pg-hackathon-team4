@@ -1,5 +1,4 @@
 import 'package:client/constants/app_colors.dart';
-import 'package:client/constants/mock_data.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_list/recipe_list_item_component.dart';
