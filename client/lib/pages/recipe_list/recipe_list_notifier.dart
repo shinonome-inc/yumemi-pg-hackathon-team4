@@ -29,7 +29,9 @@ class RecipeListNotifier extends _$RecipeListNotifier {
       final recipes = await CookWildService.instance.getRecipes();
       setRecipes(recipes: recipes);
     } catch (e) {
-      throw Exception('Failed to fetch recipes or users: $e');
+      throw Exception(
+        'レシピまたはユーザーの取得に失敗しました: $e',
+      );
     } finally {
       setIsLoading(isLoading: false);
     }

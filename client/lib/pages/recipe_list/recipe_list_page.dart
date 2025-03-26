@@ -29,9 +29,12 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
   void initState() {
     super.initState();
     Future(() async {
-      await ref
-          .read(recipeListNotifierProvider.notifier)
-          .fetchRecipesAndUsers();
+      if (mounted) {
+        // mounted を確認
+        await ref
+            .read(recipeListNotifierProvider.notifier)
+            .fetchRecipesAndUsers();
+      }
     });
   }
 
