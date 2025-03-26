@@ -144,10 +144,11 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
       );
 
       await CookWildService.instance.postRecipe(recipe);
-    } on Exception catch (e) {
+    } catch (e) {
       // エラー処理
-      print('Error submitting recipe: $e');
-      // エラー状態をstateに反映する
+      throw Exception(
+        'レシピの投稿に失敗しました: $e',
+      );
     } finally {
       setIsLoading(isLoading: false);
     }
