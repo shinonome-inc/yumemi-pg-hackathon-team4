@@ -1,25 +1,22 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/image_urls.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
-import 'package:client/models/recipe.dart';
+import 'package:client/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class UserContents extends StatelessWidget {
   const UserContents({
     super.key,
-    required this.username,
-    required this.imageUrl,
-    required this.profileDescription,
+    required this.user,
     required this.recipes,
     required this.likedRecipes,
     required this.isCurrentUser,
   });
 
-  final String username;
-  final String imageUrl;
-  final String profileDescription;
+  final User user;
   final List<Recipe> recipes;
   final List<Recipe> likedRecipes;
   final bool isCurrentUser;
@@ -46,7 +43,7 @@ class UserContents extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: NetworkImage(
-                          imageUrl,
+                          user.imageUrl ?? ImageUrls.defaultUserIcon,
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -54,14 +51,14 @@ class UserContents extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      username,
+                      user.name,
                       style: context.textTheme.titleLargeBold,
                     ),
                   ),
                 ],
               ),
               Text(
-                profileDescription,
+                user.profileDescription,
                 style: context.textTheme.bodyMedium,
               ),
               if (isCurrentUser)
