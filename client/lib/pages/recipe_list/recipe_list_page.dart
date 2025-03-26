@@ -161,6 +161,7 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
                           userName: recipe.user.name,
                           likes: recipe.likesCounts,
                           comments: recipe.comments.length,
+                          thumbnailUrl: recipe.thumbnailImageUrls[0],
                         ),
                       ),
                     );
