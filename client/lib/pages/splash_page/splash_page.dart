@@ -11,7 +11,7 @@ class SplashPage extends StatelessWidget {
         child: Center(
           child: SvgPicture.asset(
             'assets/images/Splash.svg',
-            width: 320,
+            width: MediaQuery.of(context).size.width * 0.8,
           ),
         ),
       ),
