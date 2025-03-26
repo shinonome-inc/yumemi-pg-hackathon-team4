@@ -64,7 +64,7 @@ class SampleNotifier extends _$SampleNotifier {
     }
     setIsLoading(isLoading: true);
     try {
-      final pickedImage = await ImageUtil.pickCroppedImage(
+      final pickedImage = await ImageUtil.pickImage(
         source: ImageSource.camera,
       );
       setSelectedImage(selectedImage: pickedImage);
