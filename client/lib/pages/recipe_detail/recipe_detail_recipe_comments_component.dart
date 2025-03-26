@@ -149,7 +149,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             minLines: isTextFieldActive ? 3 : 1,
             maxLines: null,
             decoration: InputDecoration(
-              suffixIcon: isTextFieldActive ? _buildImageButton() : null,
+              // suffixIcon: isTextFieldActive ? _buildImageButton() : null,
               hintText: 'コメントする...',
               hintStyle: context.textTheme.labelLarge?.copyWith(
                 color: AppColors.gray3,
@@ -409,26 +409,26 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             );
           }).toList(),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 22),
-              backgroundColor: AppColors.green3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(1000),
-              ),
-            ),
-            onPressed: () {},
-            child: Text(
-              'もっと見る',
-              style: context.textTheme.labelLargeBold?.copyWith(
-                color: AppColors.gray1,
-              ),
-            ),
-          ),
-        ),
+        // const SizedBox(height: 16),
+        // SizedBox(
+        //   width: double.infinity,
+        //   child: FilledButton(
+        //     style: ElevatedButton.styleFrom(
+        //       padding: const EdgeInsets.symmetric(vertical: 22),
+        //       backgroundColor: AppColors.green3,
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(1000),
+        //       ),
+        //     ),
+        //     onPressed: () {},
+        //     child: Text(
+        //       'もっと見る',
+        //       style: context.textTheme.labelLargeBold?.copyWith(
+        //         color: AppColors.gray1,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
