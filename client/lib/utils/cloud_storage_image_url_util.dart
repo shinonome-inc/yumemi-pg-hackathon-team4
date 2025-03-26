@@ -1,4 +1,4 @@
-import 'package:client/utis/date_time_util.dart';
+import 'package:client/utils/date_time_util.dart';
 
 /// CloudStorageの画像関連のユーティリティクラス。
 class CloudStorageImageUrlUtil {

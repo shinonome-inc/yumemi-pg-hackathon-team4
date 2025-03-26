@@ -5,8 +5,8 @@ import 'package:client/pages/profile_form/profile_form_state.dart';
 import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:client/services/firebase_storage_service.dart';
-import 'package:client/utis/cloud_storage_image_url_util.dart';
-import 'package:client/utis/image_utils.dart';
+import 'package:client/utils/cloud_storage_image_url_util.dart';
+import 'package:client/utils/image_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
