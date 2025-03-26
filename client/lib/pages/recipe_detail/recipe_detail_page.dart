@@ -149,6 +149,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                             onTap: () {
                               context.push(
                                 AppPage.user.path,
+                                extra: widget.recipe,
                               );
                             },
                             child: Row(

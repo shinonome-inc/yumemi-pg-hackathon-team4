@@ -82,7 +82,7 @@ enum AppPage {
       case AppPage.profileForm:
         return const ProfileFormPage();
       case AppPage.user:
-        return const UserPage();
+        return null;
       case AppPage.privacyPolicy:
         return const PrivacyPolicyPage();
       case AppPage.termsOfService:
