@@ -1,5 +1,8 @@
 import 'package:client/components/layout_sccafold.dart';
 import 'package:client/enums/app_page.dart';
+import 'package:client/models/recipe.dart';
+import 'package:client/pages/recipe_detail/recipe_detail_page.dart';
+import 'package:client/pages/recipe_edit_form.dart/recipe_edit_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,8 +16,7 @@ final _bottomNavigationPages = <AppPage>[
 ///
 /// ルーティングする画面の追加・削除・変更を行う場合は、列挙型`AppPage`を変更する。
 final router = GoRouter(
-  // TODO: initialLocationはAppPage.top.pathに変更する。
-  initialLocation: AppPage.sample.path,
+  initialLocation: AppPage.top.path,
   routes: [
     // BottomNavigationBar用のルーティング
     StatefulShellRoute.indexedStack(
@@ -29,7 +31,7 @@ final router = GoRouter(
                 path: branch.path,
                 pageBuilder: (context, state) => MaterialPage(
                   key: state.pageKey,
-                  child: branch.child,
+                  child: branch.child!,
                 ),
               ),
             ],
@@ -43,7 +45,11 @@ final router = GoRouter(
         pageBuilder: (context, state) {
           return MaterialPage(
             key: state.pageKey,
-            child: page.child,
+            child: page == AppPage.recipeDetail
+                ? RecipeDetailPage(recipe: state.extra! as Recipe)
+                : page == AppPage.recipeEditForm
+                    ? RecipeEditFormPage(recipe: state.extra! as Recipe)
+                    : page.child!,
           );
         },
       ),

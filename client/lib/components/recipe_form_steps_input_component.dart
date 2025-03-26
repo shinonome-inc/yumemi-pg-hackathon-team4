@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:client/components/recipe_form_view.dart';
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
-import 'package:client/pages/recipe_form/recipe_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -136,6 +136,9 @@ class _StepsItemState extends State<StepsItem> {
                   Flexible(
                     flex: 2,
                     child: TextField(
+                      controller: TextEditingController(
+                        text: stepList[index].description,
+                      ),
                       minLines: 2,
                       maxLines: null,
                       decoration: InputDecoration(
@@ -193,7 +196,7 @@ class _StepsItemState extends State<StepsItem> {
           child: TextButton.icon(
             onPressed: () {
               setState(() {
-                stepList.add(RecipeStep(text: ''));
+                stepList.add(RecipeStep(description: ''));
               });
             },
             icon: const Icon(

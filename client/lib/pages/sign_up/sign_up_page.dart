@@ -4,6 +4,7 @@ import 'package:client/extensions/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -23,7 +24,9 @@ class _TopPageState extends ConsumerState<SignUpPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.chevron_left),
-          onPressed: () {},
+          onPressed: () {
+            context.pop();
+          },
         ),
         backgroundColor: AppColors.background,
       ),
@@ -186,7 +189,9 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                         Container(
                           height: 40,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.pop();
+                            },
                             child: const Text(
                               'ログインはこちら',
                               style: TextStyle(

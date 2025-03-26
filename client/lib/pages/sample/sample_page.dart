@@ -10,10 +10,10 @@ class SamplePage extends ConsumerStatefulWidget {
   const SamplePage({super.key});
 
   @override
-  ConsumerState createState() => _TopPageState();
+  ConsumerState createState() => _SamplePageState();
 }
 
-class _TopPageState extends ConsumerState<SamplePage> {
+class _SamplePageState extends ConsumerState<SamplePage> {
   Future<void> _onPressedSignOut() async {
     await AuthService.instance.signOut();
   }
@@ -29,6 +29,7 @@ class _TopPageState extends ConsumerState<SamplePage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(sampleNotifierProvider);
+    final notifier = ref.read(sampleNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sample Page'),
@@ -82,6 +83,36 @@ class _TopPageState extends ConsumerState<SamplePage> {
                           subtitle: Text('@${user.id}'),
                         );
                       },
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: const Text('Image Upload Sample'),
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: notifier.selectImage,
+                          icon: const Icon(Icons.add_a_photo_outlined),
+                        ),
+                        Container(
+                          width: 64,
+                          height: 64,
+                          color: Colors.grey,
+                          child: state.selectedImage == null
+                              ? const SizedBox.shrink()
+                              : Image.file(
+                                  state.selectedImage!,
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                        if (state.selectedImage != null)
+                          IconButton(
+                            onPressed: notifier.uploadImage,
+                            icon:
+                                const Icon(Icons.drive_folder_upload_outlined),
+                          ),
+                      ],
                     ),
                   ],
                 ),
