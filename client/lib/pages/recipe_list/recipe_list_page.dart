@@ -1,10 +1,10 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/constants/image_urls.dart';
-import 'package:client/constants/mock_data.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/recipe_list/recipe_list_item_component.dart';
+import 'package:client/pages/recipe_list/recipe_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +25,21 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
   final TextEditingController _controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      if (!mounted) {
+        return;
+      }
+      await ref
+          .read(recipeListNotifierProvider.notifier)
+          .fetchRecipesAndUsers();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(recipeListNotifierProvider);
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -127,9 +141,9 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
               // レシピリスト（スクロール可能）
               Expanded(
                 child: ListView.builder(
-                  itemCount: recipes.length,
+                  itemCount: state.recipes.length,
                   itemBuilder: (context, index) {
-                    final recipe = recipes[index];
+                    final recipe = state.recipes.elementAt(index);
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: GestureDetector(
