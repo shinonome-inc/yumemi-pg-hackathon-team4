@@ -12,7 +12,7 @@ class RecipeItem extends StatelessWidget {
     required this.userName,
     required this.likes,
     required this.comments,
-    // required this.thumbnailUrl,
+    required this.thumbnailUrl,
   });
 
   final String title;
@@ -21,7 +21,7 @@ class RecipeItem extends StatelessWidget {
   final String userName;
   final int likes;
   final int comments;
-  // final String thumbnailUrl;
+  final String thumbnailUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +36,15 @@ class RecipeItem extends StatelessWidget {
         child: Row(
           children: [
             // 画像部分
-            Image.asset(
-              'assets/images/FlyedSawagani.png',
+            SizedBox(
               width: 160,
               height: 120,
-              fit: BoxFit.cover,
+              child: Image.network(
+                thumbnailUrl,
+                fit: BoxFit.cover,
+              ),
             ),
+
             Expanded(
               child: Container(
                 color: AppColors.white,

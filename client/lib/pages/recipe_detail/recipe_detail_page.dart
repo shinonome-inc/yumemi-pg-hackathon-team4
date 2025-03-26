@@ -1,14 +1,17 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/mock_data.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/recipe.dart';
+import 'package:client/pages/recipe_detail/recipe_detail_notifier.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_component.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class RecipeDetailPage extends ConsumerStatefulWidget {
   const RecipeDetailPage({
@@ -26,11 +29,16 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   bool _isLiked = false;
+  int _likesCount = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    setState(() {
+      _isLiked = widget.recipe.likes.any((like) => like.user.id == user1.id);
+      _likesCount = widget.recipe.likesCounts;
+    });
   }
 
   @override
@@ -39,19 +47,40 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     super.dispose();
   }
 
+  Future<void> _handleLikeRecipe() async {
+    if (!_isLiked) {
+      await ref
+          .read(recipeDetailNotifierProvider.notifier)
+          .addLikeRecipe(widget.recipe, user1);
+
+      setState(() {
+        _isLiked = true;
+        _likesCount++;
+      });
+    } else {
+      await ref
+          .read(recipeDetailNotifierProvider.notifier)
+          .removeLikeRecipe(widget.recipe, user1);
+
+      setState(() {
+        _isLiked = false;
+        _likesCount--;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // API繋ぎ込みで修正が必要
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    final formattedDate =
+        DateFormat('yyyy/MM/dd').format(widget.recipe.createdAt);
     final apiData = {
-      'titleImage': 'assets/images/FlyedSawagani.png',
-      'recipeTitle': 'タイトルタイトルタイトルタイトルタイトル',
-      'userIcon': 'assets/images/FlyedSawagani.png',
-      'userName': 'ユーザー名',
-      'likeCount': '24',
-      'comment': 'コメントコメントコメントコメントコメントコメントコメントコメント',
-      'postDate': 'YYYY/MM/DD',
+      'titleImage': widget.recipe.thumbnailImageUrls[0],
+      'recipeTitle': widget.recipe.title,
+      'userIcon': widget.recipe.user.imageUrl,
+      'userName': widget.recipe.user.name,
+      'likeCount': widget.recipe.likesCounts.toString(),
+      'comment': widget.recipe.description,
+      'createdAt': formattedDate,
     };
 
     return Scaffold(
@@ -97,9 +126,8 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
               children: [
                 AspectRatio(
                   aspectRatio: 393 / 351,
-                  child: Image.asset(
+                  child: Image.network(
                     apiData['titleImage']!,
-                    fit: BoxFit.cover,
                   ),
                 ),
                 Padding(
@@ -124,12 +152,14 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                             child: Row(
                               spacing: 4,
                               children: [
-                                ClipOval(
-                                  child: Image.asset(
-                                    apiData['userIcon']!,
-                                    width: 24,
-                                    height: 24,
-                                    fit: BoxFit.cover,
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      apiData['userIcon']!,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -143,11 +173,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                           ),
                           const Spacer(),
                           OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLiked = !_isLiked;
-                              });
-                            },
+                            onPressed: _handleLikeRecipe,
                             style: OutlinedButton.styleFrom(
                               backgroundColor: _isLiked
                                   ? AppColors.green1
@@ -175,7 +201,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  apiData['likeCount']!,
+                                  _likesCount.toString(),
                                   style:
                                       context.textTheme.titleMedium?.copyWith(
                                     color: _isLiked
@@ -207,7 +233,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          '投稿日：${apiData['postDate']!}',
+                          '投稿日：${apiData['createdAt']!}',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: AppColors.gray2,
                           ),
@@ -250,9 +276,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
         ],
         body: TabBarView(
           controller: _tabController,
-          children: const [
-            RecipeStepsComponent(),
-            RecipeCommentsComponent(),
+          children: [
+            RecipeStepsComponent(recipe: widget.recipe),
+            RecipeCommentsComponent(recipe: widget.recipe),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
+import 'package:client/models/recipe.dart';
 import 'package:client/pages/recipe_list/recipe_list_state.dart';
+import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 part 'recipe_list_notifier.g.dart';
 
 /// stateを管理し、状態の変更を行うクラス。
@@ -14,7 +15,25 @@ class RecipeListNotifier extends _$RecipeListNotifier {
     return initialRecipeListState;
   }
 
+  void setRecipes({required List<Recipe> recipes}) {
+    state = state.copyWith(recipes: recipes);
+  }
+
   void setIsLoading({required bool isLoading}) {
     state = state.copyWith(isLoading: isLoading);
+  }
+
+  Future<void> fetchRecipesAndUsers() async {
+    setIsLoading(isLoading: true);
+    try {
+      final recipes = await CookWildService.instance.getRecipes();
+      setRecipes(recipes: recipes);
+    } catch (e) {
+      throw Exception(
+        'レシピまたはユーザーの取得に失敗しました: $e',
+      );
+    } finally {
+      setIsLoading(isLoading: false);
+    }
   }
 }

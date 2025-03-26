@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe_form_state.freezed.dart';
@@ -8,10 +10,12 @@ part 'recipe_form_state.freezed.dart';
 class RecipeFormState with _$RecipeFormState {
   const factory RecipeFormState({
     required bool isLoading,
+    required File? selectedImage,
   }) = _RecipeFormState;
 }
 
 /// Stateの初期値。
 const RecipeFormState initialRecipeFormState = RecipeFormState(
   isLoading: false,
+  selectedImage: null,
 );

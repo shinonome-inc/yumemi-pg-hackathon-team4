@@ -26,11 +26,19 @@ class StepsItem extends StatefulWidget {
 class _StepsItemState extends State<StepsItem> {
   late List<RecipeStep> stepList;
   final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
+  late List<TextEditingController> _descriptionController = [
+    TextEditingController(),
+  ];
 
   @override
   void initState() {
     super.initState();
     stepList = widget.stepList;
+    _descriptionController = stepList
+        .map(
+          (item) => TextEditingController(text: item.description),
+        )
+        .toList();
   }
 
   // 選択した画像の取得
@@ -136,9 +144,7 @@ class _StepsItemState extends State<StepsItem> {
                   Flexible(
                     flex: 2,
                     child: TextField(
-                      controller: TextEditingController(
-                        text: stepList[index].description,
-                      ),
+                      controller: _descriptionController[index],
                       minLines: 2,
                       maxLines: null,
                       decoration: InputDecoration(
@@ -150,6 +156,9 @@ class _StepsItemState extends State<StepsItem> {
                         ),
                         border: InputBorder.none,
                       ),
+                      onChanged: (value) => setState(() {
+                        stepList[index].description = value;
+                      }),
                     ),
                   ),
                   GestureDetector(
@@ -197,6 +206,7 @@ class _StepsItemState extends State<StepsItem> {
             onPressed: () {
               setState(() {
                 stepList.add(RecipeStep(description: ''));
+                _descriptionController.add(TextEditingController());
               });
             },
             icon: const Icon(

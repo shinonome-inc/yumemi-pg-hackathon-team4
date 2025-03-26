@@ -1,5 +1,4 @@
 import 'package:client/constants/app_colors.dart';
-import 'package:client/constants/image_urls.dart';
 import 'package:client/constants/mock_data.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
@@ -142,8 +141,7 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
                         child: RecipeItem(
                           title: recipe.title,
                           description: recipe.description,
-                          userImageUrl:
-                              recipe.user.imageUrl ?? ImageUrls.defaultUserIcon,
+                          userImageUrl: recipe.user.imageUrl,
                           userName: recipe.user.name,
                           likes: recipe.likesCounts,
                           comments: recipe.comments.length,

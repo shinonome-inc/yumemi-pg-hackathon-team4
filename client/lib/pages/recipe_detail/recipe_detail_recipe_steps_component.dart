@@ -1,61 +1,26 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/models/models.dart';
 import 'package:flutter/material.dart';
 
 class RecipeStepsComponent extends StatelessWidget {
-  const RecipeStepsComponent({super.key});
+  const RecipeStepsComponent({
+    super.key,
+    required this.recipe,
+  });
+
+  final Recipe recipe;
+
   @override
   Widget build(BuildContext context) {
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // API繋ぎ込みで修正が必要
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     final apiData = {
-      'ingredients': [
-        {'name': '材料A材料A材料A材料A材料A材料A材料A材料A材料A材料A', 'amount': '10g'},
-        {'name': '材料B', 'amount': '20g'},
-        {'name': '材料C', 'amount': '30g'},
-        {'name': '材料D', 'amount': '40g'},
-        {'name': '材料E', 'amount': '50g'},
-      ],
-      'harvestingMethods': [
-        {
-          'step': '1',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-        {
-          'step': '2',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-        {
-          'step': '3',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-      ],
-      'cookingMethods': [
-        {
-          'step': '1',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-        {
-          'step': '2',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-        {
-          'step': '3',
-          'description': 'HowToテキストHowToテキストHowToテキストHowToテキスト',
-          'image': 'assets/images/FlyedSawagani.png',
-        },
-      ],
-      'tips':
-          'コツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキストコツテキスト',
-      'eatReport': '感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト感想テキスト',
-      'aiComment': 'コメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメント',
+      'ingredients': recipe.ingredients,
+      'gatheringSteps': recipe.gatheringSteps,
+      'cookingSteps': recipe.cookingSteps,
+      'tips': recipe.tips,
+      'eatReport': recipe.description,
+      'aiComment': recipe.aiComment,
     };
     return CustomScrollView(
       slivers: [
@@ -65,32 +30,32 @@ class RecipeStepsComponent extends StatelessWidget {
             delegate: SliverChildListDelegate.fixed(
               [
                 _buildIngredientsSection(
-                  apiData['ingredients']! as List<Map<String, String>>,
+                  recipe.ingredients,
                   context,
                 ),
                 const SizedBox(height: 48),
-                _buildHarvestingMethodsSection(
-                  apiData['harvestingMethods']! as List<Map<String, String>>,
+                _buildGatheringStepsSection(
+                  recipe.gatheringSteps,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildCookingMethodsSection(
-                  apiData['cookingMethods']! as List<Map<String, String>>,
+                  recipe.cookingSteps,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildTipsSection(
-                  apiData['tips']! as String,
+                  apiData['tips'] as String?,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildEatReportSection(
-                  apiData['eatReport']! as String,
+                  apiData['eatReport'] as String?,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildAICommentSection(
-                  apiData['aiComment']! as String,
+                  apiData['aiComment'] as String?,
                   context,
                 ),
               ],
@@ -102,7 +67,7 @@ class RecipeStepsComponent extends StatelessWidget {
   }
 
   Widget _buildIngredientsSection(
-    List<Map<String, String>> ingredients,
+    List<Ingredient> ingredients,
     BuildContext context,
   ) {
     return Column(
@@ -130,7 +95,7 @@ class RecipeStepsComponent extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            ingredients[index]['name']!,
+                            ingredients[index].ingredientName,
                             style: context.textTheme.bodyLarge?.copyWith(
                               color: AppColors.gray1,
                             ),
@@ -139,7 +104,7 @@ class RecipeStepsComponent extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          ingredients[index]['amount']!,
+                          ingredients[index].quantity,
                           style: context.textTheme.bodyLarge?.copyWith(
                             color: AppColors.gray1,
                           ),
@@ -165,8 +130,8 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildHarvestingMethodsSection(
-    List<Map<String, String>> harvestingMethods,
+  Widget _buildGatheringStepsSection(
+    List<GatheringSteps> gatheringSteps,
     BuildContext context,
   ) {
     return Column(
@@ -175,7 +140,9 @@ class RecipeStepsComponent extends StatelessWidget {
         _buildTitle('採集方法', '', context),
         const SizedBox(height: 12),
         Column(
-          children: harvestingMethods.map((method) {
+          children: gatheringSteps.asMap().entries.map((entry) {
+            final index = entry.key;
+            final method = entry.value;
             return Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -199,7 +166,7 @@ class RecipeStepsComponent extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        method['step']!,
+                        '${index + 1}',
                         style: context.textTheme.labelSmall?.copyWith(
                           color: AppColors.white,
                         ),
@@ -208,7 +175,7 @@ class RecipeStepsComponent extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        method['description']!,
+                        method.description,
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: AppColors.gray1,
                         ),
@@ -216,13 +183,15 @@ class RecipeStepsComponent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Image.asset(
-                        method['image']!,
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.cover,
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.network(
+                          method.imageUrl ?? '',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
@@ -236,7 +205,7 @@ class RecipeStepsComponent extends StatelessWidget {
   }
 
   Widget _buildCookingMethodsSection(
-    List<Map<String, String>> cookingMethods,
+    List<CookingSteps> cookingMethods,
     BuildContext context,
   ) {
     return Column(
@@ -245,7 +214,9 @@ class RecipeStepsComponent extends StatelessWidget {
         _buildTitle('料理方法', '', context),
         const SizedBox(height: 12),
         Column(
-          children: cookingMethods.map((method) {
+          children: cookingMethods.asMap().entries.map((entry) {
+            final index = entry.key;
+            final method = entry.value;
             return Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -269,7 +240,7 @@ class RecipeStepsComponent extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        method['step']!,
+                        '${index + 1}',
                         style: context.textTheme.labelSmall?.copyWith(
                           color: AppColors.white,
                         ),
@@ -278,7 +249,7 @@ class RecipeStepsComponent extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        method['description']!,
+                        method.description,
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: AppColors.gray1,
                         ),
@@ -286,13 +257,15 @@ class RecipeStepsComponent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Image.asset(
-                        method['image']!,
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.cover,
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.asset(
+                          method.imageUrl ?? '',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
@@ -305,14 +278,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildTipsSection(String tips, BuildContext context) {
+  Widget _buildTipsSection(String? tips, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('コツ・ポイント', '', context),
         const SizedBox(height: 12),
         Text(
-          tips,
+          tips ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),
@@ -321,14 +294,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildEatReportSection(String eatReport, BuildContext context) {
+  Widget _buildEatReportSection(String? eatReport, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('食レポ', '', context),
         const SizedBox(height: 12),
         Text(
-          eatReport,
+          eatReport ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),
@@ -337,14 +310,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildAICommentSection(String aiComment, BuildContext context) {
+  Widget _buildAICommentSection(String? aiComment, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('AIの補足コメント', '', context),
         const SizedBox(height: 12),
         Text(
-          aiComment,
+          aiComment ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),
