@@ -63,7 +63,7 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
     try {
       await FirebaseStorageService.instance
           .put(state.selectedImage!, storagePath);
-    } catch (e) {
+    } on Exception {
       // エラー処理を追加
       return;
     } finally {
@@ -144,7 +144,7 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
       );
 
       await CookWildService.instance.postRecipe(recipe);
-    } catch (e) {
+    } on Exception catch (e) {
       // エラー処理
       print('Error submitting recipe: $e');
       // エラー状態をstateに反映する

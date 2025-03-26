@@ -171,6 +171,9 @@ class _RecipeFormViewState extends State<RecipeFormView> {
 
   @override
   void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _tipsController.dispose();
     for (final controller in _ingredientNameControllers) {
       controller.dispose();
     }
