@@ -8,6 +8,7 @@ part 'top_state.freezed.dart';
 class TopState with _$TopState {
   const factory TopState({
     required bool isLoading,
+    required bool isInitializeLoading,
     required bool isObscurePassword,
   }) = _TopState;
 }
@@ -15,5 +16,6 @@ class TopState with _$TopState {
 /// Stateの初期値。
 const TopState initialTopState = TopState(
   isLoading: false,
+  isInitializeLoading: true,
   isObscurePassword: true,
 );

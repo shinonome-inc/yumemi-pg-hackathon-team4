@@ -2,7 +2,9 @@ import 'package:client/constants/app_colors.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/pages/splash_page/splash_page.dart';
 import 'package:client/pages/top/top_notifier.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,7 +32,10 @@ class _TopPageState extends ConsumerState<TopPage> {
       // TODO: エラーの際の処理を追加する。
       return;
     }
-    await context.push(AppPage.recipeList.path);
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
   }
 
   Future<void> _onTapSignInWithGoogle() async {
@@ -41,7 +46,10 @@ class _TopPageState extends ConsumerState<TopPage> {
       // TODO: エラーの際の処理を追加する。
       return;
     }
-    await context.push(AppPage.recipeList.path);
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
   }
 
   @override
@@ -52,9 +60,24 @@ class _TopPageState extends ConsumerState<TopPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final isUserSignedIn =
+          await ref.read(topNotifierProvider.notifier).isUserSignedIn();
+      if (isUserSignedIn) {
+        context.pushReplacement(AppPage.recipeList.path);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(topNotifierProvider);
     final notifier = ref.read(topNotifierProvider.notifier);
+    if (state.isInitializeLoading) {
+      return const SplashPage();
+    }
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
