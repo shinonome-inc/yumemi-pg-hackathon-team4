@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class RecipeDetailPage extends ConsumerStatefulWidget {
   const RecipeDetailPage({
@@ -41,17 +42,16 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // API繋ぎ込みで修正が必要
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    final formattedDate =
+        DateFormat('yyyy/MM/dd').format(widget.recipe.createdAt);
     final apiData = {
-      'titleImage': 'assets/images/FlyedSawagani.png',
-      'recipeTitle': 'タイトルタイトルタイトルタイトルタイトル',
-      'userIcon': 'assets/images/FlyedSawagani.png',
-      'userName': 'ユーザー名',
-      'likeCount': '24',
-      'comment': 'コメントコメントコメントコメントコメントコメントコメントコメント',
-      'postDate': 'YYYY/MM/DD',
+      'titleImage': widget.recipe.thumbnailImageUrls[0],
+      'recipeTitle': widget.recipe.title,
+      'userIcon': widget.recipe.user.imageUrl,
+      'userName': widget.recipe.user.name,
+      'likeCount': widget.recipe.likesCounts.toString(),
+      'comment': widget.recipe.description,
+      'createdAt': formattedDate,
     };
 
     return Scaffold(
@@ -97,9 +97,8 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
               children: [
                 AspectRatio(
                   aspectRatio: 393 / 351,
-                  child: Image.asset(
+                  child: Image.network(
                     apiData['titleImage']!,
-                    fit: BoxFit.cover,
                   ),
                 ),
                 Padding(
@@ -124,12 +123,14 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                             child: Row(
                               spacing: 4,
                               children: [
-                                ClipOval(
-                                  child: Image.asset(
-                                    apiData['userIcon']!,
-                                    width: 24,
-                                    height: 24,
-                                    fit: BoxFit.cover,
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      apiData['userIcon']!,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -207,7 +208,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          '投稿日：${apiData['postDate']!}',
+                          '投稿日：${apiData['createdAt']!}',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: AppColors.gray2,
                           ),
@@ -250,9 +251,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
         ],
         body: TabBarView(
           controller: _tabController,
-          children: const [
-            RecipeStepsComponent(),
-            RecipeCommentsComponent(),
+          children: [
+            RecipeStepsComponent(recipe: widget.recipe),
+            RecipeCommentsComponent(recipe: widget.recipe),
           ],
         ),
       ),

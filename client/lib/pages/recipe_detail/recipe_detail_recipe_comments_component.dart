@@ -2,11 +2,15 @@ import 'dart:io';
 import 'package:client/constants/app_colors.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class RecipeCommentsComponent extends StatefulWidget {
-  const RecipeCommentsComponent({super.key});
+  const RecipeCommentsComponent({super.key, required this.recipe});
+
+  final Recipe recipe;
 
   @override
   RecipeCommentsComponentState createState() => RecipeCommentsComponentState();
@@ -266,131 +270,16 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
 
 // コメントリスト
   Widget _buildCommentList() {
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // API繋ぎ込みで修正が必要 (コメントのデータ取得)
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    final comments = [
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '12345',
-        'username': '自分の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは自分の投稿で、画像がありません。',
-        'image': null,
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真あり)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像があります。',
-        'image': 'assets/images/FlyedSawagani.png',
-      },
-      {
-        'userID': '1',
-        'username': '他人の投稿 (写真なし)',
-        'datetime': '2024/03/18',
-        'content': 'これは他人の投稿で、画像がありません。',
-        'image': null,
-      },
-    ];
+    final comments = widget.recipe.comments;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle('コメント', '(201)', context),
+        _buildTitle('コメント', '(${comments.length})', context),
         const SizedBox(height: 16),
         Column(
           children: comments.map((comment) {
+            final datetime = DateFormat('yyyy/MM/dd').format(comment.updatedAt);
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: const BoxDecoration(
@@ -403,14 +292,16 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: Image.asset(
-                      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                      // API繋ぎ込みで修正が必要　　アイコンの表示
-                      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                      'assets/images/FlyedSawagani.png',
+                    child: SizedBox(
                       width: 28,
                       height: 28,
-                      fit: BoxFit.cover,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.network(
+                          comment.imageUrl!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -425,7 +316,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    comment['username']!,
+                                    comment.user.name,
                                     style: context.textTheme.bodyMediumBold
                                         ?.copyWith(
                                       color: AppColors.gray1,
@@ -433,7 +324,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    comment['datetime']!,
+                                    datetime,
                                     style:
                                         context.textTheme.bodySmall?.copyWith(
                                       color: AppColors.gray2,
@@ -442,7 +333,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                                 ],
                               ),
                             ),
-                            if (comment['userID'] == '12345') // ユーザーが自分自身かどうか判定
+
+                            // TODO: ログイン処理が完了次第修正
+                            if (comment.user.id == '12345') // ユーザーが自分自身かどうか判定
                               Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: IconButton(
@@ -463,22 +356,24 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                           children: [
                             Expanded(
                               child: Text(
-                                comment['content']!,
+                                comment.contentText,
                                 style: context.textTheme.bodyMedium?.copyWith(
                                   color: AppColors.gray1,
                                 ),
                                 softWrap: true,
                               ),
                             ),
-                            if (comment['image'] != null) ...[
+                            if (comment.imageUrl == null) ...[
                               const SizedBox(width: 4),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: Image.network(
-                                  comment['image']!,
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
+                              SizedBox(
+                                width: 70,
+                                height: 70,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.network(
+                                    comment.imageUrl!,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ],
