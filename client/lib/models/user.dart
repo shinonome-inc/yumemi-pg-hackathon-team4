@@ -9,7 +9,7 @@ class User with _$User {
   const factory User({
     required String id,
     required String name,
-    required String imageUrl,
+    required String? imageUrl,
     required String profileDescription,
     required DateTime createdAt,
   }) = _User;
