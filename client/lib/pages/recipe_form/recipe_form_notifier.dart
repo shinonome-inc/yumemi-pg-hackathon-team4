@@ -6,7 +6,7 @@ import 'package:client/models/models.dart';
 import 'package:client/pages/recipe_form/recipe_form_state.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:client/services/firebase_storage_service.dart';
-import 'package:client/utis/image_utils.dart';
+import 'package:client/utils/image_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -44,7 +44,7 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
     }
     setIsLoading(isLoading: true);
     try {
-      final pickedImage = await ImageUtil.pickCroppedImage(
+      final pickedImage = await ImageUtil.pickImage(
         source: source,
       );
       setSelectedImage(selectedImage: pickedImage);
