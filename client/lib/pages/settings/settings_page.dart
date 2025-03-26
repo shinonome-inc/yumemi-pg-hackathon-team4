@@ -1,6 +1,8 @@
 import 'package:client/constants/app_colors.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
+import 'package:client/pages/settings/settings_notifier.dart';
+import 'package:client/pages/top/top_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_info/flutter_app_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +17,19 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  Future<void> _onTapSigneOut() async {
+    try {
+      ref.read(topNotifierProvider.notifier).setIsInitializeLoading(
+            isInitializeLoading: false,
+          );
+      await ref.read(settingsNotifierProvider.notifier).signOut();
+    } on Exception {
+      // TODO: エラーの処理を追加する。
+      return;
+    }
+    context.pushReplacement(AppPage.top.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     final package = AppInfo.of(context).package;
@@ -72,7 +87,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     ),
                     const SizedBox(height: 40),
                     const _SectionTitle(Icons.person_outline, 'アカウント'),
-                    _SettingItem('ログアウト', onTap: () {}),
+                    _SettingItem(
+                      'ログアウト',
+                      onTap: _onTapSigneOut,
+                    ),
                   ],
                 ),
               ),
