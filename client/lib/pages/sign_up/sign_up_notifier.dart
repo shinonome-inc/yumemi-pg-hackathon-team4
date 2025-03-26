@@ -1,5 +1,7 @@
 import 'package:client/pages/sign_up/sign_up_state.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:client/services/auth_service.dart';
+import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up_notifier.g.dart';
@@ -29,6 +31,7 @@ class SignUpNotifier extends _$SignUpNotifier {
   }
 
   Future<void> signUpWithEmail({
+    required String userName,
     required String email,
     required String password,
   }) async {
@@ -37,21 +40,37 @@ class SignUpNotifier extends _$SignUpNotifier {
     }
     setIsLoading(isLoading: true);
     try {
-      await AuthService.instance.signUpWithEmail(email, password);
-    } on Exception {
+      final credential = await AuthService.instance.signUpWithEmail(
+        email,
+        password,
+      );
+      final user = await CookWildService.instance.postUser(
+        credential: credential,
+        userName: userName,
+      );
+      ref.read(signedInUserNotifierProvider.notifier).setSignedInUser(user);
+    } catch (e) {
       // TODO: エラーの処理を追加する。
+      throw Exception('Failed to sign up with email: $e');
     } finally {
       setIsLoading(isLoading: false);
     }
   }
 
-  Future<void> signUpWithGoogle() async {
+  Future<void> signUpWithGoogle({
+    required String userName,
+  }) async {
     if (state.isLoading) {
       return;
     }
     setIsLoading(isLoading: true);
     try {
-      await AuthService.instance.signInWithGoogle();
+      final credential = await AuthService.instance.signInWithGoogle();
+      final user = await CookWildService.instance.postUser(
+        credential: credential,
+        userName: userName,
+      );
+      ref.read(signedInUserNotifierProvider.notifier).setSignedInUser(user);
     } on Exception {
       // TODO: エラーの処理を追加する。
     } finally {

@@ -3,6 +3,7 @@ import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/pages/sign_up/sign_up_notifier.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,6 +17,7 @@ class SignUpPage extends ConsumerStatefulWidget {
 }
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
+  final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -23,29 +25,37 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     final notifier = ref.read(signUpNotifierProvider.notifier);
     try {
       await notifier.signUpWithEmail(
+        userName: _userNameController.text,
         email: _emailController.text,
         password: _passwordController.text,
       );
-    } on Exception {
+    } catch (e) {
       // TODO: エラーの際の処理を追加する。
-      return;
+      throw Exception(e);
     }
-    await context.push(AppPage.recipeList.path);
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
   }
 
   Future<void> _onTapSignInWithGoogle() async {
     final notifier = ref.read(signUpNotifierProvider.notifier);
     try {
-      await notifier.signUpWithGoogle();
-    } on Exception {
+      await notifier.signUpWithGoogle(userName: _userNameController.text);
+    } catch (e) {
       // TODO: エラーの際の処理を追加する。
-      return;
+      throw Exception(e);
     }
-    await context.push(AppPage.recipeList.path);
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
   }
 
   @override
   void dispose() {
+    _userNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -108,8 +118,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           style: context.textTheme.titleLargeBold,
                         ),
                         const SizedBox(height: 36),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: _userNameController,
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: '表示名',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
