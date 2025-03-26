@@ -3,6 +3,7 @@ import 'package:client/enums/app_page.dart';
 import 'package:client/models/models.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_page.dart';
 import 'package:client/pages/recipe_edit_form.dart/recipe_edit_form_page.dart';
+import 'package:client/pages/user/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,6 +49,7 @@ final router = GoRouter(
             child: switch (page) {
               AppPage.recipeDetail =>
                 RecipeDetailPage(recipe: state.extra! as Recipe),
+              AppPage.user => UserPage(recipe: state.extra! as Recipe),
               AppPage.recipeEditForm =>
                 RecipeEditFormPage(recipe: state.extra! as Recipe),
               _ => page.child!,
