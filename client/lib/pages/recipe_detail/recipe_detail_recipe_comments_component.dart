@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/mock_data.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/models.dart';
@@ -8,9 +9,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class RecipeCommentsComponent extends StatefulWidget {
-  const RecipeCommentsComponent({super.key, required this.recipe});
+  const RecipeCommentsComponent({
+    super.key,
+    required this.recipe,
+    this.sendComment,
+  });
 
   final Recipe recipe;
+  final void Function(
+    String contentText,
+    String? imageUrl,
+  )? sendComment;
 
   @override
   RecipeCommentsComponentState createState() => RecipeCommentsComponentState();
@@ -23,10 +32,14 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   String comment = '';
   File? _selectedImage; // 選択された画像
   final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
+  late final List<Comment> comments;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      comments = widget.recipe.comments;
+    });
     _focusNode.addListener(() {
       setState(() {
         isTextFieldActive = _focusNode.hasFocus; // フォーカスがあるかどうかを判定
@@ -104,8 +117,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 sliver: SliverList(
-                  delegate:
-                      SliverChildListDelegate.fixed([_buildCommentList()]),
+                  delegate: SliverChildListDelegate.fixed(
+                    [_buildCommentList(comments)],
+                  ),
                 ),
               ),
             ],
@@ -190,10 +204,20 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 const SizedBox(width: 4),
                 FilledButton(
                   onPressed: () {
-                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                    // API繋ぎ込みで修正が必要　　コメントのデータ送信
-                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     comment = myController.text;
+                    widget.sendComment!(comment, '');
+                    setState(() {
+                      comments.add(
+                        Comment(
+                          id: '1234',
+                          user: user1,
+                          contentText: comment,
+                          imageUrl: '',
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                      );
+                    });
                     myController.clear();
                     _selectedImage = null;
                   },
@@ -269,9 +293,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   }
 
 // コメントリスト
-  Widget _buildCommentList() {
-    final comments = widget.recipe.comments;
-
+  Widget _buildCommentList(List<Comment> comments) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

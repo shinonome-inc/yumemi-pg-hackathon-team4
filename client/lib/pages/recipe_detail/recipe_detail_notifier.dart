@@ -28,4 +28,19 @@ class RecipeDetailNotifier extends _$RecipeDetailNotifier {
   Future<void> removeLikeRecipe(Recipe recipe, User user) async {
     await CookWildService.instance.undoLikeRecipe(recipe, user);
   }
+
+  Future<void> sendComment(
+    Recipe recipe,
+    User user,
+    String contentText,
+    String? imageUrl,
+  ) async {
+    setIsLoading(isLoading: true);
+    await CookWildService.instance.postComment(
+      recipe: recipe,
+      authenticatedUser: user,
+      contentText: contentText,
+      imageUrl: imageUrl!,
+    );
+  }
 }
