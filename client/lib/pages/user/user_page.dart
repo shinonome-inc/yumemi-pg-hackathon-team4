@@ -44,11 +44,7 @@ class _TopPageState extends ConsumerState<UserPage> {
       ),
       body: SafeArea(
         child: UserContents(
-          //ユーザでフィルタリング済みなので、0番目のユーザを取得
-          username: recipes.isEmpty ? '' : recipes[0].user.name,
-          imageUrl: recipes.isEmpty ? '' : recipes[0].user.imageUrl,
-          profileDescription:
-              recipes.isEmpty ? '' : recipes[0].user.profileDescription,
+          user: recipes[0].user,
           recipes: recipes,
           likedRecipes: recipes,
           isCurrentUser: false,

@@ -1,4 +1,5 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/image_urls.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
@@ -9,9 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class RecipeListPage extends ConsumerStatefulWidget {
-  const RecipeListPage({
-    super.key,
-  });
+  const RecipeListPage({super.key});
 
   @override
   ConsumerState createState() => _TopPageState();
@@ -29,18 +28,17 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
   void initState() {
     super.initState();
     Future(() async {
-      if (mounted) {
-        // mounted を確認
-        await ref
-            .read(recipeListNotifierProvider.notifier)
-            .fetchRecipesAndUsers();
+      if (!mounted) {
+        return;
       }
+      await ref.read(recipeListNotifierProvider.notifier).fetchRecipes();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(recipeListNotifierProvider);
+    final notifier = ref.read(recipeListNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -141,31 +139,35 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
 
               // レシピリスト（スクロール可能）
               Expanded(
-                child: ListView.builder(
-                  itemCount: state.recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = state.recipes.elementAt(index);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.push(
-                            AppPage.recipeDetail.path,
-                            extra: recipe,
-                          );
-                        },
-                        child: RecipeItem(
-                          title: recipe.title,
-                          description: recipe.description,
-                          userImageUrl: recipe.user.imageUrl,
-                          userName: recipe.user.name,
-                          likes: recipe.likesCounts,
-                          comments: recipe.comments.length,
-                          thumbnailUrl: recipe.thumbnailImageUrls[0],
+                child: RefreshIndicator(
+                  onRefresh: notifier.reloadRecipes,
+                  child: ListView.builder(
+                    itemCount: state.recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = state.recipes.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.push(
+                              AppPage.recipeDetail.path,
+                              extra: recipe,
+                            );
+                          },
+                          child: RecipeItem(
+                            title: recipe.title,
+                            description: recipe.description,
+                            userImageUrl: recipe.user.imageUrl ??
+                                ImageUrls.defaultUserIcon,
+                            userName: recipe.user.name,
+                            likes: recipe.likesCounts,
+                            comments: recipe.comments.length,
+                            thumbnailUrl: recipe.thumbnailImageUrls.first,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

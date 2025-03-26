@@ -1,8 +1,10 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/mock_data.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/recipe.dart';
+import 'package:client/pages/recipe_detail/recipe_detail_notifier.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_comments_component.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_recipe_steps_component.dart';
 import 'package:flutter/material.dart';
@@ -27,17 +29,44 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   bool _isLiked = false;
+  int _likesCount = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    setState(() {
+      _isLiked = widget.recipe.likes.any((like) => like.user.id == user1.id);
+      _likesCount = widget.recipe.likesCounts;
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleLikeRecipe() async {
+    if (!_isLiked) {
+      await ref
+          .read(recipeDetailNotifierProvider.notifier)
+          .addLikeRecipe(widget.recipe, user1);
+
+      setState(() {
+        _isLiked = true;
+        _likesCount++;
+      });
+    } else {
+      await ref
+          .read(recipeDetailNotifierProvider.notifier)
+          .removeLikeRecipe(widget.recipe, user1);
+
+      setState(() {
+        _isLiked = false;
+        _likesCount--;
+      });
+    }
   }
 
   @override
@@ -146,11 +175,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                           ),
                           const Spacer(),
                           OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLiked = !_isLiked;
-                              });
-                            },
+                            onPressed: _handleLikeRecipe,
                             style: OutlinedButton.styleFrom(
                               backgroundColor: _isLiked
                                   ? AppColors.green1
@@ -178,7 +203,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  apiData['likeCount']!,
+                                  _likesCount.toString(),
                                   style:
                                       context.textTheme.titleMedium?.copyWith(
                                     color: _isLiked

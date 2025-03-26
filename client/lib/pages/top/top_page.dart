@@ -2,6 +2,9 @@ import 'package:client/constants/app_colors.dart';
 import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/pages/splash_page/splash_page.dart';
+import 'package:client/pages/top/top_notifier.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,11 +18,66 @@ class TopPage extends ConsumerStatefulWidget {
 }
 
 class _TopPageState extends ConsumerState<TopPage> {
-  // パスワードの表示・非表示を切り替えるためのフラグ
-  bool _isObscure = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _onTapSignInWithEmail() async {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    try {
+      await notifier.signInWithEmail(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+      return;
+    }
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
+  }
+
+  Future<void> _onTapSignInWithGoogle() async {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    try {
+      await notifier.signInWithGoogle();
+    } on Exception {
+      // TODO: エラーの際の処理を追加する。
+      return;
+    }
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final isUserSignedIn =
+          await ref.read(topNotifierProvider.notifier).isUserSignedIn();
+      if (isUserSignedIn) {
+        context.pushReplacement(AppPage.recipeList.path);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(topNotifierProvider);
+    final notifier = ref.read(topNotifierProvider.notifier);
+    if (state.isInitializeLoading) {
+      return const SplashPage();
+    }
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -79,9 +137,10 @@ class _TopPageState extends ConsumerState<TopPage> {
                         ),
                       ),
                       const SizedBox(height: 36),
-                      const TextField(
+                      TextField(
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'メールアドレス',
                           border: OutlineInputBorder(),
@@ -93,22 +152,19 @@ class _TopPageState extends ConsumerState<TopPage> {
                       ),
                       const SizedBox(height: 24),
                       TextField(
-                        obscureText: _isObscure,
+                        controller: _passwordController,
+                        obscureText: state.isObscurePassword,
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             // 文字の表示・非表示でアイコンを変える
                             icon: Icon(
-                              _isObscure
+                              state.isObscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                               color: AppColors.gray2,
                             ),
                             // アイコンがタップされたら現在と反対の状態をセットする
-                            onPressed: () {
-                              setState(() {
-                                _isObscure = !_isObscure;
-                              });
-                            },
+                            onPressed: notifier.toggleIsObscurePassword,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'パスワード',
@@ -120,9 +176,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                         width: double.infinity,
                         height: 40,
                         child: FilledButton(
-                          onPressed: () {
-                            context.push(AppPage.recipeList.path);
-                          },
+                          onPressed: _onTapSignInWithEmail,
                           child: const Text('ログイン'),
                         ),
                       ),
@@ -153,7 +207,7 @@ class _TopPageState extends ConsumerState<TopPage> {
                         width: double.infinity,
                         height: 40,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: _onTapSignInWithGoogle,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:client/models/models.dart';
 import 'package:client/repository/firestore_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:uuid/uuid.dart';
 
 /// CookWild のバックエンドとのデータ操作を行うクラス。
@@ -278,10 +279,26 @@ class CookWildService {
     }
   }
 
-  /// ユーザーを投稿します。
-  Future<void> postUser(User user) async {
+  /// 認証済みの新規ユーザーを作成してFirestoreにユーザーのデータを登録する。
+  ///
+  /// ユーザーのデータはFirebase AuthenticationのUserCredentialを元に作成される。
+  ///
+  Future<User> postUser({
+    required UserCredential credential,
+    required String userName,
+  }) async {
+    final generatedId = _uuid.v4();
+    final userId = credential.user?.uid ?? generatedId;
+    final createdUser = User(
+      id: userId,
+      name: userName,
+      imageUrl: null,
+      profileDescription: '',
+      createdAt: DateTime.now(),
+    );
     try {
-      await _repository.setUser(user);
+      await _repository.setUser(createdUser);
+      return createdUser;
     } catch (e) {
       throw Exception('Failed to post user: $e');
     }
@@ -297,11 +314,11 @@ class CookWildService {
   }
 
   /// 指定したユーザーIDのユーザーを取得します。
-  Future<User> getUserById(String userId) async {
+  Future<User?> getUserById(String userId) async {
     try {
       return await _repository.getUserById(userId);
-    } catch (e) {
-      throw Exception('Failed to get user: $e');
+    } on Exception {
+      return null;
     }
   }
 
@@ -316,7 +333,7 @@ class CookWildService {
   /// [user] が [authenticatedUser] と一致しない場合、
   /// ArgumentErrorをスローします。
   ///
-  Future<void> updateUser({
+  Future<User?> updateUser({
     required User user,
     required User authenticatedUser,
     String? name,
@@ -324,7 +341,7 @@ class CookWildService {
     String? profileDescription,
   }) async {
     if (name == null && imageUrl == null && profileDescription == null) {
-      return;
+      return null;
     }
     if (user.id != authenticatedUser.id) {
       throw ArgumentError('User does not match authenticated user');
@@ -336,6 +353,7 @@ class CookWildService {
     );
     try {
       await _repository.updateUser(updatedUser);
+      return updatedUser;
     } catch (e) {
       throw Exception('Failed to update user: $e');
     }

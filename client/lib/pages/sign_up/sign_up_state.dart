@@ -8,10 +8,12 @@ part 'sign_up_state.freezed.dart';
 class SignUpState with _$SignUpState {
   const factory SignUpState({
     required bool isLoading,
+    required bool isObscurePassword,
   }) = _SignUpState;
 }
 
 /// Stateの初期値。
 const SignUpState initialSignUpState = SignUpState(
   isLoading: false,
+  isObscurePassword: true,
 );

@@ -1,6 +1,9 @@
 import 'package:client/constants/app_colors.dart';
+import 'package:client/enums/app_page.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
+import 'package:client/pages/sign_up/sign_up_notifier.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,15 +13,58 @@ class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  ConsumerState createState() => _TopPageState();
+  ConsumerState createState() => _SignUpPageState();
 }
 
-class _TopPageState extends ConsumerState<SignUpPage> {
-  // パスワードの表示・非表示を切り替えるためのフラグ
-  bool _isObscure = true;
+class _SignUpPageState extends ConsumerState<SignUpPage> {
+  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _onTapSignUpWithEmail() async {
+    final notifier = ref.read(signUpNotifierProvider.notifier);
+    try {
+      await notifier.signUpWithEmail(
+        userName: _userNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } catch (e) {
+      // TODO: エラーの際の処理を追加する。
+      throw Exception(e);
+    }
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
+  }
+
+  Future<void> _onTapSignInWithGoogle() async {
+    final notifier = ref.read(signUpNotifierProvider.notifier);
+    try {
+      await notifier.signUpWithGoogle(userName: _userNameController.text);
+    } catch (e) {
+      // TODO: エラーの際の処理を追加する。
+      throw Exception(e);
+    }
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser != null) {
+      await context.push(AppPage.recipeList.path);
+    }
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(signUpNotifierProvider);
+    final notifier = ref.read(signUpNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -72,8 +118,9 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                           style: context.textTheme.titleLargeBold,
                         ),
                         const SizedBox(height: 36),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: _userNameController,
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: '表示名',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -84,9 +131,10 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        const TextField(
+                        TextField(
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'メールアドレス',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -98,22 +146,19 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                         ),
                         const SizedBox(height: 24),
                         TextField(
-                          obscureText: _isObscure,
+                          controller: _passwordController,
+                          obscureText: state.isObscurePassword,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               // 文字の表示・非表示でアイコンを変える
                               icon: Icon(
-                                _isObscure
+                                state.isObscurePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                                 color: AppColors.gray2,
                               ),
                               // アイコンがタップされたら現在と反対の状態をセットする
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure = !_isObscure;
-                                });
-                              },
+                              onPressed: notifier.toggleIsObscurePassword,
                             ),
                             border: const OutlineInputBorder(),
                             labelText: 'パスワード',
@@ -125,7 +170,7 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                           width: double.infinity,
                           height: 40,
                           child: FilledButton(
-                            onPressed: () {},
+                            onPressed: _onTapSignUpWithEmail,
                             child: const Text('新規登録'),
                           ),
                         ),
@@ -156,7 +201,7 @@ class _TopPageState extends ConsumerState<SignUpPage> {
                           width: double.infinity,
                           height: 40,
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: _onTapSignInWithGoogle,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
