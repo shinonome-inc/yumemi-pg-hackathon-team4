@@ -118,7 +118,9 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              context.push(AppPage.user.path);
+                              context.push(
+                                AppPage.user.path,
+                              );
                             },
                             child: Row(
                               spacing: 4,

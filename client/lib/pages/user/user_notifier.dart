@@ -1,4 +1,7 @@
+import 'package:client/models/recipe.dart';
+import 'package:client/models/user.dart';
 import 'package:client/pages/user/user_state.dart';
+import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_notifier.g.dart';
@@ -14,7 +17,25 @@ class UserNotifier extends _$UserNotifier {
     return initialUserState;
   }
 
+  void setRecipes({required List<Recipe> recipes}) {
+    state = state.copyWith(recipes: recipes);
+  }
+
   void setIsLoading({required bool isLoading}) {
     state = state.copyWith(isLoading: isLoading);
+  }
+
+  Future<void> fetchRecipesAndUsers() async {
+    setIsLoading(isLoading: true);
+    try {
+      final recipes = await CookWildService.instance.getRecipes();
+      setRecipes(recipes: recipes);
+    } catch (e) {
+      throw Exception(
+        'レシピまたはユーザーの取得に失敗しました: $e',
+      );
+    } finally {
+      setIsLoading(isLoading: false);
+    }
   }
 }

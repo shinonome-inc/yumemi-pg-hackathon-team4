@@ -1,3 +1,4 @@
+import 'package:client/models/recipe.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_state.freezed.dart';
@@ -8,10 +9,9 @@ part 'user_state.freezed.dart';
 class UserState with _$UserState {
   const factory UserState({
     required bool isLoading,
+    required List<Recipe> recipes,
   }) = _UserState;
 }
 
 /// Stateの初期値。
-const UserState initialUserState = UserState(
-  isLoading: false,
-);
+const UserState initialUserState = UserState(isLoading: false, recipes: []);

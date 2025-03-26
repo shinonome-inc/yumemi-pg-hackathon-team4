@@ -124,9 +124,9 @@ class UserContents extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(4),
-                                            image: const DecorationImage(
+                                            image: DecorationImage(
                                               image: NetworkImage(
-                                                'https://picsum.photos/200/300',
+                                                recipe.thumbnailImageUrls[0],
                                               ),
                                               fit: BoxFit.cover,
                                             ),
@@ -146,119 +146,6 @@ class UserContents extends StatelessWidget {
                             .toList(),
                       );
                     },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 24),
-                    height: 40,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'もっと見る',
-                        style: context.textTheme.bodyMediumBold?.copyWith(
-                          color: AppColors.green1,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        side: const BorderSide(
-                          width: 2,
-                          color: AppColors.green1,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //　いいねしたレシピ
-              Column(
-                spacing: 12,
-                children: [
-                  Row(
-                    textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    children: [
-                      Text(
-                        'いいねしたレシピ',
-                        style: context.textTheme.titleMediumBold,
-                      ),
-                      Text(
-                        '（${likedRecipes.length}）', // 揃えるために全角括弧を使用
-                        style: context.textTheme.titleMediumBold
-                            ?.copyWith(color: AppColors.gray2),
-                      ),
-                    ],
-                  ),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final itemWidth =
-                          (constraints.maxWidth - 16) / 3; // レシピの幅を計算
-                      return Wrap(
-                        spacing: 8, // 列間のスペース
-                        runSpacing: 20, // 行間のスペース
-                        children: likedRecipes
-                            .map(
-                              (recipe) => GestureDetector(
-                                onTap: () => context.push(
-                                  AppPage.recipeDetail.path,
-                                  extra: recipe,
-                                ),
-                                child: SizedBox(
-                                  width: itemWidth, // レシピの幅を設定
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    spacing: 4,
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            image: const DecorationImage(
-                                              image: NetworkImage(
-                                                'https://picsum.photos/200/300',
-                                              ),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        recipe.title,
-                                        maxLines: 2,
-                                        style: context.textTheme.bodyMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      );
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 24),
-                    height: 40,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'もっと見る',
-                        style: context.textTheme.bodyMediumBold?.copyWith(
-                          color: AppColors.green1,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        side: const BorderSide(
-                          width: 2,
-                          color: AppColors.green1,
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
