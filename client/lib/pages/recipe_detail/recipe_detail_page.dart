@@ -75,7 +75,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
   ) async {
     await ref
         .read(recipeDetailNotifierProvider.notifier)
-        .sendComment(widget.recipe, user1, contentText, imageUrl);
+        .sendComment(widget.recipe, contentText, imageUrl);
   }
 
   @override

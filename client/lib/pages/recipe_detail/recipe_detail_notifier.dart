@@ -1,6 +1,7 @@
 import 'package:client/models/recipe.dart';
 import 'package:client/models/user.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_state.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,16 +32,26 @@ class RecipeDetailNotifier extends _$RecipeDetailNotifier {
 
   Future<void> sendComment(
     Recipe recipe,
-    User user,
     String contentText,
     String? imageUrl,
   ) async {
     setIsLoading(isLoading: true);
-    await CookWildService.instance.postComment(
-      recipe: recipe,
-      authenticatedUser: user,
-      contentText: contentText,
-      imageUrl: imageUrl!,
-    );
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser == null) {
+      // TODO: サインイン中のユーザーが存在しない場合の処理を追加する。
+      return;
+    }
+    try {
+      await CookWildService.instance.postComment(
+        recipe: recipe,
+        authenticatedUser: signedInUser,
+        contentText: contentText,
+        imageUrl: imageUrl!,
+      );
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      setIsLoading(isLoading: false);
+    }
   }
 }
