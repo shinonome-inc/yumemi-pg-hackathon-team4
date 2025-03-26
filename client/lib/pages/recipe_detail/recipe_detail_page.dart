@@ -69,6 +69,15 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
     }
   }
 
+  Future<void> _sendComment(
+    String contentText,
+    String? imageUrl,
+  ) async {
+    await ref
+        .read(recipeDetailNotifierProvider.notifier)
+        .sendComment(widget.recipe, contentText, imageUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     final formattedDate =
@@ -281,7 +290,10 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
           controller: _tabController,
           children: [
             RecipeStepsComponent(recipe: widget.recipe),
-            RecipeCommentsComponent(recipe: widget.recipe),
+            RecipeCommentsComponent(
+              recipe: widget.recipe,
+              sendComment: _sendComment,
+            ),
           ],
         ),
       ),

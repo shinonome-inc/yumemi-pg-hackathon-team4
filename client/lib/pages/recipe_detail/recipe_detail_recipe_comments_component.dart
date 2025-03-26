@@ -1,16 +1,23 @@
-import 'dart:io';
 import 'package:client/constants/app_colors.dart';
+import 'package:client/constants/mock_data.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class RecipeCommentsComponent extends StatefulWidget {
-  const RecipeCommentsComponent({super.key, required this.recipe});
+  const RecipeCommentsComponent({
+    super.key,
+    required this.recipe,
+    this.sendComment,
+  });
 
   final Recipe recipe;
+  final void Function(
+    String contentText,
+    String? imageUrl,
+  )? sendComment;
 
   @override
   RecipeCommentsComponentState createState() => RecipeCommentsComponentState();
@@ -21,12 +28,16 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   final myController = TextEditingController(); // コメント入力欄のコントローラー
   final FocusNode _focusNode = FocusNode(); // フォーカスを管理するためのFocusNode
   String comment = '';
-  File? _selectedImage; // 選択された画像
-  final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
+  // File? _selectedImage; // 選択された画像
+  // final ImagePicker _picker = ImagePicker(); // 画像選択用のImagePicker
+  late final List<Comment> comments;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      comments = widget.recipe.comments;
+    });
     _focusNode.addListener(() {
       setState(() {
         isTextFieldActive = _focusNode.hasFocus; // フォーカスがあるかどうかを判定
@@ -41,57 +52,57 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   }
 
 // 選択した画像の取得
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-    }
-  }
+  // Future<void> _pickImage(ImageSource source) async {
+  //   final pickedFile = await _picker.pickImage(source: source);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _selectedImage = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
-  void _showImagePickerDialog() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return Container(
-          color: AppColors.white,
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('アルバムから選択'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.gallery);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('写真を撮る'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.camera);
-                },
-              ),
-              if (_selectedImage != null)
-                ListTile(
-                  leading: const Icon(Icons.delete, color: Colors.red),
-                  title:
-                      const Text('写真を削除', style: TextStyle(color: Colors.red)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      _selectedImage = null;
-                    });
-                  },
-                ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showImagePickerDialog() {
+  //   showModalBottomSheet<void>(
+  //     context: context,
+  //     builder: (context) {
+  //       return Container(
+  //         color: AppColors.white,
+  //         child: Wrap(
+  //           children: [
+  //             ListTile(
+  //               leading: const Icon(Icons.photo_library),
+  //               title: const Text('アルバムから選択'),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 _pickImage(ImageSource.gallery);
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: const Icon(Icons.camera_alt),
+  //               title: const Text('写真を撮る'),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 _pickImage(ImageSource.camera);
+  //               },
+  //             ),
+  //             if (_selectedImage != null)
+  //               ListTile(
+  //                 leading: const Icon(Icons.delete, color: Colors.red),
+  //                 title:
+  //                     const Text('写真を削除', style: TextStyle(color: Colors.red)),
+  //                 onTap: () {
+  //                   Navigator.pop(context);
+  //                   setState(() {
+  //                     _selectedImage = null;
+  //                   });
+  //                 },
+  //               ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +115,9 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 sliver: SliverList(
-                  delegate:
-                      SliverChildListDelegate.fixed([_buildCommentList()]),
+                  delegate: SliverChildListDelegate.fixed(
+                    [_buildCommentList(comments)],
+                  ),
                 ),
               ),
             ],
@@ -135,7 +147,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             minLines: isTextFieldActive ? 3 : 1,
             maxLines: null,
             decoration: InputDecoration(
-              suffixIcon: isTextFieldActive ? _buildImageButton() : null,
+              // suffixIcon: isTextFieldActive ? _buildImageButton() : null,
               hintText: 'コメントする...',
               hintStyle: context.textTheme.labelLarge?.copyWith(
                 color: AppColors.gray3,
@@ -167,10 +179,7 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                  onPressed: () {
-                    myController.clear();
-                    _selectedImage = null;
-                  },
+                  onPressed: myController.clear,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
                     foregroundColor: AppColors.gray2,
@@ -190,12 +199,21 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                 const SizedBox(width: 4),
                 FilledButton(
                   onPressed: () {
-                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                    // API繋ぎ込みで修正が必要　　コメントのデータ送信
-                    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     comment = myController.text;
+                    widget.sendComment!(comment, '');
+                    setState(() {
+                      comments.add(
+                        Comment(
+                          id: '1234',
+                          user: user1,
+                          contentText: comment,
+                          imageUrl: '',
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                      );
+                    });
                     myController.clear();
-                    _selectedImage = null;
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.green1,
@@ -222,56 +240,54 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
   }
 
 // コメント入力欄内の画像選択ボタン
-  Widget _buildImageButton() {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: GestureDetector(
-        onTap: _showImagePickerDialog,
-        child: Container(
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            color: AppColors.gray4,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: AppColors.gray3),
-            image: _selectedImage != null
-                ? DecorationImage(
-                    image: NetworkImage(
-                      _selectedImage!.path,
-                    ), // Web でも動作可能のため，NetworkImageを使用
-                    fit: BoxFit.cover,
-                  )
-                : null,
-          ),
-          child: _selectedImage == null
-              ? const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.photo_camera,
-                      color: AppColors.gray2,
-                      size: 24,
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '写真をのせる',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: AppColors.gray2,
-                      ),
-                    ),
-                  ],
-                )
-              : null,
-        ),
-      ),
-    );
-  }
+  // Widget _buildImageButton() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8),
+  //     child: GestureDetector(
+  //       onTap: _showImagePickerDialog,
+  //       child: Container(
+  //         width: 70,
+  //         height: 70,
+  //         decoration: BoxDecoration(
+  //           color: AppColors.gray4,
+  //           borderRadius: BorderRadius.circular(4),
+  //           border: Border.all(color: AppColors.gray3),
+  //           image: _selectedImage != null
+  //               ? DecorationImage(
+  //                   image: NetworkImage(
+  //                     _selectedImage!.path,
+  //                   ), // Web でも動作可能のため，NetworkImageを使用
+  //                   fit: BoxFit.cover,
+  //                 )
+  //               : null,
+  //         ),
+  //         child: _selectedImage == null
+  //             ? const Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     Icons.photo_camera,
+  //                     color: AppColors.gray2,
+  //                     size: 24,
+  //                   ),
+  //                   SizedBox(height: 8),
+  //                   Text(
+  //                     '写真をのせる',
+  //                     style: TextStyle(
+  //                       fontSize: 10,
+  //                       color: AppColors.gray2,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               )
+  //             : null,
+  //       ),
+  //     ),
+  //   );
+  // }
 
 // コメントリスト
-  Widget _buildCommentList() {
-    final comments = widget.recipe.comments;
-
+  Widget _buildCommentList(List<Comment> comments) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -387,26 +403,26 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
             );
           }).toList(),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 22),
-              backgroundColor: AppColors.green3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(1000),
-              ),
-            ),
-            onPressed: () {},
-            child: Text(
-              'もっと見る',
-              style: context.textTheme.labelLargeBold?.copyWith(
-                color: AppColors.gray1,
-              ),
-            ),
-          ),
-        ),
+        // const SizedBox(height: 16),
+        // SizedBox(
+        //   width: double.infinity,
+        //   child: FilledButton(
+        //     style: ElevatedButton.styleFrom(
+        //       padding: const EdgeInsets.symmetric(vertical: 22),
+        //       backgroundColor: AppColors.green3,
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(1000),
+        //       ),
+        //     ),
+        //     onPressed: () {},
+        //     child: Text(
+        //       'もっと見る',
+        //       style: context.textTheme.labelLargeBold?.copyWith(
+        //         color: AppColors.gray1,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
