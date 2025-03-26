@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:client/components/recipe_form_view.dart';
-import 'package:client/constants/mock_data.dart';
 import 'package:client/models/models.dart';
 import 'package:client/pages/recipe_form/recipe_form_state.dart';
+import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:client/services/cook_wild_service.dart';
 import 'package:client/services/firebase_storage_service.dart';
+import 'package:client/services/gemini_service.dart';
 import 'package:client/utils/image_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -125,6 +126,12 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
         }).toList(),
       );
 
+      final signedInUser = ref.read(signedInUserNotifierProvider);
+      if (signedInUser == null) {
+        // TODO: サインイン中のユーザーが存在しない場合の処理を追加する。
+        return;
+      }
+
       final recipe = Recipe(
         id: _generateUuid(),
         title: title,
@@ -136,14 +143,19 @@ class RecipeFormNotifier extends _$RecipeFormNotifier {
         thumbnailImageUrls: [imageUrl ?? ''],
         createdAt: _now,
         updatedAt: _now,
-        user: user1, // TODO: モックデータなのでカレントユーザーに置き換える
+        user: signedInUser,
         likes: [],
         likesCounts: 0,
         comments: [],
         aiComment: '',
       );
+      final aiComment = await GeminiService.instance.generateMessage(
+        inputText: recipe.toJson().toString(),
+      );
 
-      await CookWildService.instance.postRecipe(recipe);
+      await CookWildService.instance.postRecipe(
+        recipe.copyWith(aiComment: aiComment),
+      );
     } catch (e) {
       // エラー処理
       throw Exception(
