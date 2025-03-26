@@ -251,8 +251,8 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
         ],
         body: TabBarView(
           controller: _tabController,
-          children: const [
-            RecipeStepsComponent(),
+          children: [
+            RecipeStepsComponent(recipe: widget.recipe),
             RecipeCommentsComponent(),
           ],
         ),
