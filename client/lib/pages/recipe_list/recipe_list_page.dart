@@ -31,15 +31,14 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
       if (!mounted) {
         return;
       }
-      await ref
-          .read(recipeListNotifierProvider.notifier)
-          .fetchRecipesAndUsers();
+      await ref.read(recipeListNotifierProvider.notifier).fetchRecipes();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(recipeListNotifierProvider);
+    final notifier = ref.read(recipeListNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -140,32 +139,35 @@ class _TopPageState extends ConsumerState<RecipeListPage> {
 
               // レシピリスト（スクロール可能）
               Expanded(
-                child: ListView.builder(
-                  itemCount: state.recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = state.recipes.elementAt(index);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.push(
-                            AppPage.recipeDetail.path,
-                            extra: recipe,
-                          );
-                        },
-                        child: RecipeItem(
-                          title: recipe.title,
-                          description: recipe.description,
-                          userImageUrl:
-                              recipe.user.imageUrl ?? ImageUrls.defaultUserIcon,
-                          userName: recipe.user.name,
-                          likes: recipe.likesCounts,
-                          comments: recipe.comments.length,
-                          thumbnailUrl: recipe.thumbnailImageUrls.first,
+                child: RefreshIndicator(
+                  onRefresh: notifier.reloadRecipes,
+                  child: ListView.builder(
+                    itemCount: state.recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = state.recipes.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.push(
+                              AppPage.recipeDetail.path,
+                              extra: recipe,
+                            );
+                          },
+                          child: RecipeItem(
+                            title: recipe.title,
+                            description: recipe.description,
+                            userImageUrl: recipe.user.imageUrl ??
+                                ImageUrls.defaultUserIcon,
+                            userName: recipe.user.name,
+                            likes: recipe.likesCounts,
+                            comments: recipe.comments.length,
+                            thumbnailUrl: recipe.thumbnailImageUrls.first,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
