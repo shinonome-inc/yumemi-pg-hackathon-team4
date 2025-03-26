@@ -14,9 +14,6 @@ class RecipeStepsComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // API繋ぎ込みで修正が必要
-    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     final apiData = {
       'ingredients': recipe.ingredients,
       'gatheringSteps': recipe.gatheringSteps,
@@ -48,17 +45,17 @@ class RecipeStepsComponent extends StatelessWidget {
                 ),
                 const SizedBox(height: 48),
                 _buildTipsSection(
-                  apiData['tips']! as String,
+                  apiData['tips'] as String?,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildEatReportSection(
-                  apiData['eatReport']! as String,
+                  apiData['eatReport'] as String?,
                   context,
                 ),
                 const SizedBox(height: 48),
                 _buildAICommentSection(
-                  apiData['aiComment']! as String,
+                  apiData['aiComment'] as String?,
                   context,
                 ),
               ],
@@ -192,7 +189,7 @@ class RecipeStepsComponent extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: Image.network(
-                          method.imageUrl!,
+                          method.imageUrl ?? '',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -266,7 +263,7 @@ class RecipeStepsComponent extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: Image.asset(
-                          method.imageUrl!,
+                          method.imageUrl ?? '',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -281,14 +278,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildTipsSection(String tips, BuildContext context) {
+  Widget _buildTipsSection(String? tips, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('コツ・ポイント', '', context),
         const SizedBox(height: 12),
         Text(
-          tips,
+          tips ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),
@@ -297,14 +294,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildEatReportSection(String eatReport, BuildContext context) {
+  Widget _buildEatReportSection(String? eatReport, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('食レポ', '', context),
         const SizedBox(height: 12),
         Text(
-          eatReport,
+          eatReport ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),
@@ -313,14 +310,14 @@ class RecipeStepsComponent extends StatelessWidget {
     );
   }
 
-  Widget _buildAICommentSection(String aiComment, BuildContext context) {
+  Widget _buildAICommentSection(String? aiComment, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle('AIの補足コメント', '', context),
         const SizedBox(height: 12),
         Text(
-          aiComment,
+          aiComment ?? '',
           style: context.textTheme.bodyLarge?.copyWith(
             color: AppColors.gray1,
           ),

@@ -253,7 +253,7 @@ class _RecipeDetailPageState extends ConsumerState<RecipeDetailPage>
           controller: _tabController,
           children: [
             RecipeStepsComponent(recipe: widget.recipe),
-            RecipeCommentsComponent(),
+            RecipeCommentsComponent(recipe: widget.recipe),
           ],
         ),
       ),
