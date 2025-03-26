@@ -1,5 +1,4 @@
 import 'package:client/models/recipe.dart';
-import 'package:client/models/user.dart';
 import 'package:client/pages/recipe_detail/recipe_detail_state.dart';
 import 'package:client/providers/signed_in_user_notifier.dart';
 import 'package:client/services/cook_wild_service.dart';
@@ -22,12 +21,22 @@ class RecipeDetailNotifier extends _$RecipeDetailNotifier {
     state = state.copyWith(isLoading: isLoading);
   }
 
-  Future<void> addLikeRecipe(Recipe recipe, User user) async {
-    await CookWildService.instance.likeRecipe(recipe, user);
+  Future<void> addLikeRecipe(Recipe recipe) async {
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser == null) {
+      // TODO: サインイン中のユーザーが存在しない場合の処理を追加する。
+      return;
+    }
+    await CookWildService.instance.likeRecipe(recipe, signedInUser);
   }
 
-  Future<void> removeLikeRecipe(Recipe recipe, User user) async {
-    await CookWildService.instance.undoLikeRecipe(recipe, user);
+  Future<void> removeLikeRecipe(Recipe recipe) async {
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    if (signedInUser == null) {
+      // TODO: サインイン中のユーザーが存在しない場合の処理を追加する。
+      return;
+    }
+    await CookWildService.instance.undoLikeRecipe(recipe, signedInUser);
   }
 
   Future<void> sendComment(
