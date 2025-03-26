@@ -182,18 +182,18 @@ class RecipeStepsComponent extends StatelessWidget {
                         softWrap: true,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Image.network(
-                          method.imageUrl ?? '',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(width: 8),
+                    // SizedBox(
+                    //   width: 80,
+                    //   height: 80,
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(4),
+                    //     child: Image.network(
+                    //       method.imageUrl ?? '',
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -256,18 +256,18 @@ class RecipeStepsComponent extends StatelessWidget {
                         softWrap: true,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Image.asset(
-                          method.imageUrl ?? '',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(width: 8),
+                    // SizedBox(
+                    //   width: 80,
+                    //   height: 80,
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(4),
+                    //     child: Image.asset(
+                    //       method.imageUrl ?? '',
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

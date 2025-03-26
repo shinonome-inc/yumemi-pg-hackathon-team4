@@ -1,5 +1,4 @@
 import 'package:client/constants/app_colors.dart';
-import 'package:client/constants/mock_data.dart';
 import 'package:client/extensions/build_context_extension.dart';
 import 'package:client/extensions/text_theme_extension.dart';
 import 'package:client/models/models.dart';
@@ -201,18 +200,6 @@ class RecipeCommentsComponentState extends State<RecipeCommentsComponent> {
                   onPressed: () {
                     comment = myController.text;
                     widget.sendComment!(comment, '');
-                    setState(() {
-                      comments.add(
-                        Comment(
-                          id: '1234',
-                          user: user1,
-                          contentText: comment,
-                          imageUrl: '',
-                          createdAt: DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        ),
-                      );
-                    });
                     myController.clear();
                   },
                   style: ElevatedButton.styleFrom(
