@@ -22,7 +22,7 @@ jobs:
           channel: stable
           flutter-version: 3.29.0
       - name: Generate env
-        run: echo "${{ secrets.ENV }}" | base64 --decode > env
+        run: echo "${{ secrets.ENV }}" | base64 --decode > .env
         working-directory: client
       - name: Generate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart
