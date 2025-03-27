@@ -28,13 +28,13 @@ jobs:
         with:
           channel: stable
           flutter-version: 3.29.0
-      - name: Generate .env in root
-        run: echo "${{ secrets.ENV }}" | base64 --decode > .env
+      - name: Generate env in root
+        run: echo "${{ secrets.ENV }}" | base64 --decode > env
         working-directory: client
-      - name: Generate .env in web/assets
+      - name: Generate env in web/assets
         run: |
           mkdir -p web/assets
-          echo "${{ secrets.ENV }}" | base64 --decode > web/assets/.env
+          echo "${{ secrets.ENV }}" | base64 --decode > web/assets/env
         working-directory: client
       - name: Generate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 --decode > lib/firebase_options.dart

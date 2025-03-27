@@ -54,6 +54,7 @@ lib/firebase_options.dart
 
 # env
 *.env
+*env
 
 # iOS
 ios/build
